@@ -3,77 +3,94 @@
 <head>
   <meta charset="utf-8">
   <title>Webhook Redactor Demo</title>
-  <link rel="stylesheet" href="lib/redactor/redactor.css">
-  <style>
-    /*.redactor_container { width: 50%; margin: 0 auto; }*/
-  </style>
+  <link rel="stylesheet" href="css/site.css">
+  <script type="text/javascript" src="//use.typekit.net/fdk6nwk.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
 <body>
 
-  <div class="redactor_container">
+  <div class="wh-grid-one-col">
+
     <textarea id="redactor" name="content">
 
-      <p>http://www.youtube.com/watch?v=8NS-VQLzLmE</p>
+      <h1>Wysiwyg example</h1>
 
-      <p>https://vimeo.com/themuirproject/trailer</p>
+      <p>Hey everybody, it's Tuuuuuuuesday! Can we enhance this? He's like the J.R.R. Tolkien of being shitty. This is like a fuckin' Woody Allen heist going on here. They're basically sperm. You know, up until the part where you died, I thought you were having a pretty good run there. Let's play some meat! I hate Game Room so much. I'm going to ride my fucking resentment into a fucking volcano! </p>
 
-      <h1>HTML Ipsum Presents</h1>
+      <figure class="wh-figure-image">
+        <img src="img/ryancop.png">
+        <figcaption>Type to add caption (optional)</figcaption>
+      </figure>
 
-      <img src="https://si0.twimg.com/profile_images/3521217457/23662e69d69eff66e16d099421b67220.jpeg">
+      <p>You know, up until the part where you died, I thought you were having a pretty good run there. Let's play some meat! I hate Game Room so much. I'm going to ride my fucking resentment into a fucking volcano! Fuck you, Brad Garrett! I hope you burn in hell! Oh, Dennis Leary is in this for no good reason. Walk the cow through a warm room, and then bring it to my plate. I didn't come here to get harassed by asshole teenagers, I get enough of that as it is. </p>
 
-      <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+      <figure class="wh-figure-table">
+        <table class="wh-table wh-table-bordered-rows full-width">
+          <thead>
+          <tr>
+            <th>Header</th>
+            <th>Header</th>
+            <th>Header</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+          </tr>
+          <tr>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+          </tr>
+          <tr>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+          </tr>
+          <tr>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+          </tr>
+          <tr>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+          </tr>
+          </tbody>
+        </table>
+      </figure>
 
-      <h2>Header Level 2</h2>
+      <figure class="wh-figure-image wh-figure-medium wh-figure-right">
+        <img src="img/ryancop.png">
+        <figcaption>Type to add caption (optional)</figcaption>
+      </figure>
 
-      <ol>
-         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-         <li>Aliquam tincidunt mauris eu risus.</li>
-      </ol>
+      <p>BLOCKED. CHINA DON'T CARE. You are history's greatest monster. THESE ARE SHEETS FOR FUCKING IN. You're talking about sex, right? Because the Dutch are cheap. </p>
+      <p>Fuck your milk! Exécutable? What the fuck are you saying!? Let me put my hot blade inside you. What PopCap game do you think the Master Chief would like the most? I hate socks. This Quick Look is over! I don't believe in wheels. You are looking for far too much logical consistency. You don't have to go home, but you can't stay here. </p>
+      <p>My dick doesn't have tits. BLOCKED. CHINA DON'T CARE. You are history's greatest monster. THESE ARE SHEETS FOR FUCKING IN. You're talking about sex, right? Because the Dutch are cheap. I can play Simon Says like a motherfucker. I'm gonna no scope these crops. </p>
 
-      <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+      <figure class="wh-figure-image wh-figure-small wh-figure-left">
+        <img src="img/ryancop.png">
+        <figcaption>Type to add caption (optional)</figcaption>
+      </figure>
 
-      <h3>Header Level 3</h3>
-
-      <ul>
-         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-         <li>Aliquam tincidunt mauris eu risus.</li>
-      </ul>
-
-      <pre><code>
-      #header h1 a {
-        display: block;
-        width: 300px;
-        height: 80px;
-      }
-      </code></pre>
-      <h1>HTML Ipsum Presents</h1>
-
-      <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-      <h2>Header Level 2</h2>
-
-      <ol>
-         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-         <li>Aliquam tincidunt mauris eu risus.</li>
-      </ol>
-
-      <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-      <h3>Header Level 3</h3>
-
-      <ul>
-         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-         <li>Aliquam tincidunt mauris eu risus.</li>
-      </ul>
-
-      <pre><code>
-      #header h1 a {
-        display: block;
-        width: 300px;
-        height: 80px;
-      }
-      </code></pre>
+      <p>Seattle is actually Spanish for "taco." The laziest dubstep is arguably the best dubstep. You're just anti-people-believing-in-things. My dick doesn't have tits. BLOCKED. CHINA DON'T CARE. You are history's greatest monster. THESE ARE SHEETS FOR FUCKING IN. You're talking about sex, right? </p>
+      <p>Fuck you, Brad Garrett! I hope you burn in hell! Oh, Dennis Leary is in this for no good reason. Walk the cow through a warm room, and then bring it to my plate. I didn't come here to get harassed by asshole teenagers, I get enough of that as it is. It's 18 years old, Daytona USA. You could fuck it if you wanted to. There's nothing I'd rather talk about right now than Peter Molyneux's balls! Jeff, I have a question. Why do we keep doing this? I've got a salty mustache. </p>
+      <figure class="wh-figure-video">
+        <iframe width="560" height="315" src="//www.youtube.com/embed/MLrC7e3vSv8?list=FL7uO9V1Frl_wPd9d1qOm_RQ" frameborder="0" allowfullscreen=""></iframe>
+        <figcaption>Type to add caption (optional)</figcaption>
+      </figure>
+      <p>He's like the J.R.R. Tolkien of being shitty. This is like a fuckin' Woody Allen heist going on here. They're basically sperm. You know, up until the part where you died, I thought you were having a pretty good run there. Let's play some meat! I hate Game Room so much. </p>
+      <p>Hey everybody, it's Tuuuuuuuesday! I'm going to ride my fucking resentment into a fucking volcano! Infinite beards. I hate socks. I feel like I'm gonna throw up, but in a good way. YO THOSE ARE FUCKING DOUBLE-UNDERLINE SICK. Fuck you and your medicine ball! </p>
+      <p>Don't buy a racing wheel! I've got a salty mustache. Suck on it, Ron Weasley. This Quick Look is over! I didn't come here to get harassed by asshole teenagers, I get enough of that as it is. I just magic'd in my pants. At first I cringe, but I want more. I've been a party to many, many stupid things in my life. This is by far the stupidest. I'm an old man. I like turns. I'm gonna no scope these crops. </p>
+      <p>Take that you shitty wizard. I can't believe this was actually allowed to be released to people. I can play Simon Says like a motherfucker. Why anything about gelatinous cubes? I want a game that is nothing but kicking dumpsters at enemies. There's nothing I'd rather talk about right now than Peter Molyneux's balls! I try not to affiliate myself with Canadians. Oh, Dennis Leary is in this for no good reason. </p>
+      <p>You're just anti-people-believing-in-things. You need to spit on it first. Let's play some meat! You're talking about sex, right? I always get run over from behind. You don't have to go home, but you can't stay here. My dick doesn't have tits. I WILL CONTINUE TO CALL PAX AUSTRALIA PAXA UNTIL IT FUCKING CATCHES ON. John McTiernan, master of modern fucking action movies. The man made Predator, god dammit! If you're gonna sit there and tell me Renny Harlin made a better movie than him, you are all assholes and I don't want to work with you anymore! </p>
+      <p>At first I cringe, but I want more. I've been a party to many, many stupid things in my life. This is by far the stupidest. I'm an old man. I like turns. I'm gonna no scope these crops. I am the street! It's like I'm in a techno womb. Let me put my hot blade inside you. You are looking for far too much logical consistency. Hold on to your fucking hats, gentlemen. They called us "charmingly garrulous", which I couldn't think of a more New Yorker thing to describe us as. </p>
     </textarea>
+
   </div>
 
   <!-- Dependencies -->
@@ -82,19 +99,19 @@
   <script src="lib/jquery.embedly.js"></script>
 
   <!-- Plugins -->
+  <script src="../src/redactor.cleanup.js"></script>
   <script src="../src/redactor.fullscreen.js"></script>
   <script src="../src/redactor.fixedtoolbar.js"></script>
   <script src="../src/redactor.autoembedly.js"></script>
+  <script src="../src/redactor.traverse.js"></script>
 
   <!-- Initialization -->
   <script>
     $.embedly.defaults.key = '65874c90af644c6a8f0b7072fe857811';
     $(function () {
       $('#redactor').redactor({
-        // fixed: true, toolbarFixedBox: true
         observeImages: false,
-        convertImageLinks: true,
-        plugins: ['fullscreen', 'fixedtoolbar', 'autoembedly']
+        plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'traverse']
       });
     });
   </script>
