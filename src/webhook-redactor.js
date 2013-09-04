@@ -13,6 +13,14 @@
     return this.redactor($.extend({}, $.webhookRedactor.options, options));
   };
 
+  // Static method.
+  $.webhookRedactor = function (options) {
+    // Override default options with passed-in options.
+    options = $.extend({}, $.awesome.options, options);
+    // Return something awesome.
+    return options;
+  };
+
   // Static method default options.
   $.webhookRedactor.options = {
     observeImages: false,
