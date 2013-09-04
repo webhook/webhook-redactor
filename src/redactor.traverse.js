@@ -255,7 +255,7 @@
           break;
 
         case 'border':
-          $figure.find('table').removeClass('wh-table-bordered-all').addClass('wh-table-bordered-rows');
+          $figure.find('table').removeClass('wh-table-bordered-all').toggleClass('wh-table-bordered-rows');
           break;
 
         case 'stripe':
@@ -263,7 +263,7 @@
           break;
 
         case 'full_border':
-          $figure.find('table').removeClass('wh-table-bordered-rows').addClass('wh-table-bordered-all');
+          $figure.find('table').removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
           break;
 
         default:
