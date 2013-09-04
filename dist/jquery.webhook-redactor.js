@@ -6,6 +6,9 @@
 
   window.RedactorPlugins = window.RedactorPlugins || {};
 
+  // this needs a better home
+  $.embedly.defaults.key = '65874c90af644c6a8f0b7072fe857811';
+
   // namespacing
   var AutoEmbedly = function (redactor) {
     this.redactor = redactor;
@@ -483,6 +486,8 @@
           changeSuffix(['small', 'medium', 'large'], command);
           if (command === 'large') {
             $figure.removeClass(classString(['left', 'right']));
+          } else if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
+            $figure.addClass('wh-figure-left');
           }
           $control.addClass('on').siblings(classString(['small', 'medium', 'large'], ', ', 'controls-', true)).removeClass('on');
           break;
@@ -585,30 +590,21 @@
 (function ($) {
 
   // Collection method.
-  $.fn.awesome = function () {
-    return this.each(function (i) {
-      // Do something awesome to each selected element.
-      $(this).html('awesome' + i);
-    });
-  };
-
-  // Static method.
-  $.awesome = function (options) {
-    // Override default options with passed-in options.
-    options = $.extend({}, $.awesome.options, options);
-    // Return something awesome.
-    return 'awesome' + options.punctuation;
+  $.fn.webhookRedactor = function (options) {
+    return this.redactor($.extend({}, $.webhookRedactor.options, options));
   };
 
   // Static method default options.
-  $.awesome.options = {
-    punctuation: '.'
-  };
-
-  // Custom selector.
-  $.expr[':'].awesome = function (elem) {
-    // Is this element awesome?
-    return $(elem).text().indexOf('awesome') !== -1;
+  $.webhookRedactor.options = {
+    observeImages: false,
+    buttons: [
+      'formatting', '|',
+      'bold', 'italic', '|',
+      'unorderedlist', 'orderedlist', '|',
+      'image', 'video', 'table', 'link', '|',
+      'html'
+    ],
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'traverse']
   };
 
 }(jQuery));
