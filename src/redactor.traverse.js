@@ -59,7 +59,8 @@
                   'del_col', 'del_row', 'del_table', '|',
                   'border', 'stripe', 'full_border'
                 ]
-                }, 'remove']
+                }, 'remove'],
+        quote: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'remove']
       };
 
       this.observe();
@@ -79,15 +80,14 @@
     },
     mouseenter: function (event) {
       var $figure = $(event.currentTarget);
-      $.each(['image', 'table', 'video'], $.proxy(function (index, type) {
+      $.each(['image', 'table', 'video', 'quote'], $.proxy(function (index, type) {
         if ($figure.hasClass('wh-figure-' + type)) {
           this.getToolbar(type).data('figure', $figure).prependTo($figure);
         }
       }, this));
     },
     mouseleave: function (event) {
-      var $figure = $(event.currentTarget);
-      $figure.find('.wh-figure-controls').appendTo(this.redactor.$box);
+      $(event.currentTarget).find('.wh-figure-controls').appendTo(this.redactor.$box);
     },
     getToolbar: function (type) {
 
@@ -168,9 +168,17 @@
 
         case 'left':
         case 'right':
-          changeSuffix(['left', 'right'], command);
-          if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
-            $figure.addClass('wh-figure-medium');
+          if (command === 'left' && $figure.hasClass('wh-figure-right')) {
+            $figure.removeClass('wh-figure-right');
+            changeSuffix(['small', 'medium', 'large'], 'large');
+          } else if (command === 'right' && $figure.hasClass('wh-figure-left')) {
+            $figure.removeClass('wh-figure-left');
+            changeSuffix(['small', 'medium', 'large'], 'large');
+          } else {
+            changeSuffix(['left', 'right'], command);
+            if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
+              $figure.addClass('wh-figure-medium');
+            }
           }
           break;
 
@@ -188,6 +196,10 @@
             $figure.addClass('wh-figure-left');
           }
           $control.addClass('on').siblings(classString(['small', 'medium', 'large'], ', ', 'controls-', true)).removeClass('on');
+          break;
+
+        case 'resize':
+          $figure.toggleClass('wh-figure-full');
           break;
 
         case 'row_up':
