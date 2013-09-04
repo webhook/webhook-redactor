@@ -9,8 +9,6 @@
 (function ($) {
   "use strict";
 
-  window.RedactorPlugins = window.RedactorPlugins || {};
-
   // namespacing
   var Cleanup = function (redactor) {
     this.redactor = redactor;
@@ -31,6 +29,7 @@
   };
 
   // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
   window.RedactorPlugins.cleanup = {
     init: function () {
       this.cleanup = new Cleanup(this);

@@ -9,8 +9,6 @@
 (function ($) {
   "use strict";
 
-  window.RedactorPlugins = window.RedactorPlugins || {};
-
   // namespacing
   var Fixedtoolbar = function (redactor) {
     this.redactor = redactor;
@@ -28,15 +26,15 @@
     },
     fix: function () {
 
-      var border_left = parseInt(this.redactor.$box.css('border-left-width').replace('px', ''), 10),
-          border_right = parseInt(this.redactor.$box.css('border-left-width').replace('px', ''), 10);
+      var border_left = parseInt(this.redactor.$box.css('border-left-width').replace('px', ''), 10);
 
       this.redactor.$toolbar.css({
         position: 'fixed',
         left: this.redactor.$box.offset().left + border_left,
-        width: this.redactor.$box.width() - border_left - border_right,
+        width: this.redactor.$box.width(),
         zIndex: 1
       });
+
       this.redactor.$editor.css('padding-top', this.redactor.$toolbar.height() + 10);
     },
     unfix: function () {
@@ -50,6 +48,7 @@
   };
 
   // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
   window.RedactorPlugins.fixedtoolbar = {
     init: function () {
       this.fixedtoolbar = new Fixedtoolbar(this);
