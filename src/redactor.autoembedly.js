@@ -11,6 +11,9 @@
 
   window.RedactorPlugins = window.RedactorPlugins || {};
 
+  // this needs a better home
+  $.embedly.defaults.key = '65874c90af644c6a8f0b7072fe857811';
+
   // namespacing
   var AutoEmbedly = function (redactor) {
     this.redactor = redactor;

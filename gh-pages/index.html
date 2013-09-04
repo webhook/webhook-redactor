@@ -99,6 +99,7 @@
   <script src="lib/jquery.embedly.js"></script>
 
   <!-- Plugins -->
+  <script src="../src/webhook-redactor.js"></script>
   <script src="../src/redactor.cleanup.js"></script>
   <script src="../src/redactor.fullscreen.js"></script>
   <script src="../src/redactor.fixedtoolbar.js"></script>
@@ -107,12 +108,8 @@
 
   <!-- Initialization -->
   <script>
-    $.embedly.defaults.key = '65874c90af644c6a8f0b7072fe857811';
     $(function () {
-      $('#redactor').redactor({
-        observeImages: false,
-        plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'traverse']
-      });
+      $('#redactor').webhookRedactor();
     });
   </script>
 </body>

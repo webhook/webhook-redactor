@@ -184,6 +184,8 @@
           changeSuffix(['small', 'medium', 'large'], command);
           if (command === 'large') {
             $figure.removeClass(classString(['left', 'right']));
+          } else if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
+            $figure.addClass('wh-figure-left');
           }
           $control.addClass('on').siblings(classString(['small', 'medium', 'large'], ', ', 'controls-', true)).removeClass('on');
           break;
