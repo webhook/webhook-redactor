@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2013-09-04
+/*! webhook-redactor - v0.0.1 - 2013-09-05
 * https://github.com/gpbmike/webhook-redactor
 * Copyright (c) 2013 Mike Horn; Licensed MIT */
 (function ($) {
@@ -83,6 +83,153 @@
   window.RedactorPlugins.cleanup = {
     init: function () {
       this.cleanup = new Cleanup(this);
+    }
+  };
+
+}(jQuery));
+
+(function ($) {
+  "use strict";
+
+  // namespacing
+  var Figure = function (redactor) {
+    this.redactor = redactor;
+    this.toolbar = {};
+    this.observe();
+  };
+  Figure.prototype = {
+    control: {
+      up    : { classSuffix: 'arrow-up' },
+      down  : { classSuffix: 'arrow-down' },
+      '|'   : { classSuffix: 'divider' },
+      remove: { classSuffix: 'delete' }
+    },
+    controlGroup: ['up', 'down', 'remove'],
+    observe: function () {
+
+      // move toolbar into figure on mouseenter
+      this.redactor.$editor.on('mouseenter', 'figure', $.proxy(function (event) {
+        var $figure = $(event.currentTarget),
+            type = $figure.data('type'),
+            $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
+        $toolbar.trigger('show');
+      }, this));
+
+      // remove toolbar from figure on mouseleave
+      this.redactor.$editor.on('mouseleave', 'figure', $.proxy(function (event) {
+        $(event.currentTarget).find('.wh-figure-controls').appendTo(this.redactor.$box);
+      }, this));
+
+      // before clicking a command, make sure we save the current node within the editor
+      this.redactor.$editor.on('mousedown', '.wh-figure-controls', $.proxy(function () {
+        this.current = this.redactor.getCurrent();
+      }, this));
+
+      this.redactor.$editor.on('click', '.wh-figure-controls span, .wh-figure-controls a', $.proxy(function (event) {
+        event.stopPropagation();
+        var $target = $(event.currentTarget),
+            command = $target.data('command'),
+            $figure = $target.closest('figure'),
+            plugin  = this.redactor[$figure.data('type')];
+        this.command(command, $figure, plugin);
+      }, this));
+    },
+    getToolbar: function (type) {
+
+      if (this.toolbar[type]) {
+        return this.toolbar[type];
+      }
+
+      var controlGroup = (this.redactor[type] || this).controlGroup,
+          controls = $.extend({}, this.control, (this.redactor[type] || {}).control),
+          $controls = this.buildControls(controlGroup, controls),
+          $toolbar = $('<div class="wh-figure-controls">').append($controls);
+
+      return this.toolbar[type] = $toolbar;
+    },
+    buildControls: function (controlGroup, controls) {
+
+      var $controls = $();
+
+      $.each(controlGroup, $.proxy(function (index, command) {
+        var control;
+        // basic command
+        if (typeof command === 'string') {
+          control = controls[command];
+          $controls = $controls.add($('<span>', {
+            'class': 'wh-figure-controls-' + control.classSuffix,
+            'text': control.text
+          }).data({
+            command: command,
+            control: control
+          }));
+        }
+        // dropdown
+        else if (typeof command === 'object') {
+          $.each(command, $.proxy(function (text, commands) {
+            var dropdown = $('<span>', {
+              'class': 'wh-figure-controls-table wh-dropdown',
+              'text': ' ' + text
+            });
+            $('<span class="caret">').appendTo(dropdown);
+            var list = $('<dl class="wh-dropdown-menu wh-dropdown-bubble wh-dropdown-arrow wh-dropdown-arrow-left">').appendTo(dropdown);
+            $.each(commands, $.proxy(function (index, command) {
+              control = controls[command];
+              if (command === '|') {
+                $('<dd class="divider">').appendTo(list);
+              } else {
+                $('<a>', {
+                  text: control.text
+                }).data({
+                  command: command,
+                  control: control
+                }).appendTo($('<dd>').appendTo(list));
+              }
+            }, this));
+            $controls = $controls.add(dropdown);
+          }, this));
+        }
+      }, this));
+
+      return $controls;
+    },
+    command: function (command, $figure, plugin) {
+
+      // move the toolbar before carrying out the command so it doesn't break when undoing/redoing
+      $figure.find('.wh-figure-controls').appendTo(this.redactor.$box);
+
+      // maintain undo buffer
+      this.redactor.bufferSet();
+
+      // only handle a few commands here, everything else should be taken care of from other plugins
+      switch (command) {
+        case 'up':
+          $figure.insertBefore($figure.prev());
+          break;
+
+        case 'down':
+          $figure.insertAfter($figure.next());
+          break;
+
+        case 'remove':
+          $figure.remove();
+          break;
+
+        default:
+          if (plugin && plugin.command) {
+            plugin.command(command, $figure);
+          }
+          break;
+      }
+
+    }
+  };
+
+  // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
+  window.RedactorPlugins.figure = {
+    init: function () {
+      this.figure = new Figure(this);
     }
   };
 
@@ -312,138 +459,23 @@
   "use strict";
 
   // namespacing
-  var Traverse = function (redactor) {
+  var Image = function (redactor) {
     this.redactor = redactor;
-    this.$toolbars = {};
     this.init();
   };
-  Traverse.prototype = {
+  Image.prototype = {
     control: {
-        left  : { classSuffix: 'arrow-left' },
-        up    : { classSuffix: 'arrow-up' },
-        down  : { classSuffix: 'arrow-down' },
-        right : { classSuffix: 'arrow-right' },
-        '|'   : { classSuffix: 'divider' },
-        remove: { classSuffix: 'delete' },
-
-        // image
-        small : { classSuffix: 'small', text: 'S' },
-        medium: { classSuffix: 'medium', text: 'M' },
-        large : { classSuffix: 'large', text: 'L' },
-
-        // video
-        resize: { classSuffix: 'resize-full' },
-
-        // table
-        row_up     : { text: 'Add row above' },
-        row_down   : { text: 'Add row below' },
-        col_left   : { text: 'Add column left' },
-        col_right  : { text: 'Add column right' },
-        add_head   : { text: 'Add header' },
-        del_head   : { text: 'Delete header' },
-        del_col    : { text: 'Delete column' },
-        del_row    : { text: 'Delete row' },
-        del_table  : { text: 'Delete table' },
-        border     : { text: 'Bordered' },
-        stripe     : { text: 'Striped' },
-        full_border: { text: 'Full border' }
-
+      left  : { classSuffix: 'arrow-left' },
+      right : { classSuffix: 'arrow-right' },
+      small : { classSuffix: 'small', text: 'S' },
+      medium: { classSuffix: 'medium', text: 'M' },
+      large : { classSuffix: 'large', text: 'L' }
     },
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'remove'],
     init: function () {
-
-      this.controlgroup = {
-        image: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'remove'],
-        video: ['up', 'down', '|', 'resize', 'remove'],
-        table: ['up', 'down', '|', {
-                'Table Options': [
-                  'row_up', 'row_down', 'col_left', 'col_right', '|',
-                  'add_head', 'del_head', '|',
-                  'del_col', 'del_row', 'del_table', '|',
-                  'border', 'stripe', 'full_border'
-                ]
-                }, 'remove']
-      };
-
-      this.observe();
+      $.extend({}, this.redactor.figure.control, this.control);
     },
-    observe: function () {
-      this.redactor.$editor.on('mouseenter', 'figure', $.proxy(this.mouseenter, this));
-      this.redactor.$editor.on('mouseleave', 'figure', $.proxy(this.mouseleave, this));
-
-      this.redactor.$editor.on('mousedown', '.wh-figure-controls', $.proxy(function () {
-        this.current = this.redactor.getCurrent();
-      }, this));
-
-      this.redactor.$editor.on('click', '.wh-figure-controls span, .wh-figure-controls a', $.proxy(function (event) {
-        event.stopPropagation();
-        this.command($(event.currentTarget), $(event.currentTarget).closest('figure'));
-      }, this));
-    },
-    mouseenter: function (event) {
-      var $figure = $(event.currentTarget);
-      $.each(['image', 'table', 'video'], $.proxy(function (index, type) {
-        if ($figure.hasClass('wh-figure-' + type)) {
-          this.getToolbar(type).data('figure', $figure).prependTo($figure);
-        }
-      }, this));
-    },
-    mouseleave: function (event) {
-      var $figure = $(event.currentTarget);
-      $figure.find('.wh-figure-controls').appendTo(this.redactor.$box);
-    },
-    getToolbar: function (type) {
-
-      if (this.$toolbars[type]) {
-        return this.$toolbars[type];
-      }
-
-      var toolbar = $('<div class="wh-figure-controls">');
-
-      $.each(this.controlgroup[type], $.proxy(function (index, command) {
-        var control;
-        // basic command
-        if (typeof command === 'string') {
-          control = this.control[command];
-          $('<span>', {
-            'class': 'wh-figure-controls-' + control.classSuffix,
-            'text': control.text
-          }).data({
-            command: command,
-            control: control
-          }).appendTo(toolbar);
-        }
-        // dropdown
-        else if (typeof command === 'object') {
-          $.each(command, $.proxy(function (text, commands) {
-            var dropdown = $('<span>', {
-              'class': 'wh-figure-controls-table wh-dropdown',
-              'text': ' ' + text
-            }).appendTo(toolbar);
-            $('<span class="caret">').appendTo(dropdown);
-            var list = $('<dl class="wh-dropdown-menu wh-dropdown-bubble wh-dropdown-arrow wh-dropdown-arrow-left">').appendTo(dropdown);
-            $.each(commands, $.proxy(function (index, command) {
-              control = this.control[command];
-              if (command === '|') {
-                $('<dd class="divider">').appendTo(list);
-              } else {
-                $('<a>', {
-                  text: control.text
-                }).data({
-                  command: command,
-                  control: control
-                }).appendTo($('<dd>').appendTo(list));
-              }
-            }, this));
-          }, this));
-        }
-      }, this));
-
-      return this.$toolbars[type] = toolbar.appendTo(this.redactor.$editor);
-
-    },
-    command: function ($control, $figure) {
-
-      var command = $control.data('command');
+    command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
         var base_class = (dot ? '.' : '') + 'wh-figure-' + (prefix || '');
@@ -454,30 +486,21 @@
         $figure.removeClass(classString(removeArray)).addClass('wh-figure-' + addString);
       };
 
-      // move the toolbar before carrying out the command so it doesn't break when undoing/redoing
-      $figure.find('.wh-figure-controls').appendTo(this.redactor.$box);
-
-      // maintain undo buffer
-      this.redactor.bufferSet();
-
       switch (command) {
-        case 'up':
-          $figure.insertBefore($figure.prev());
-          break;
-        case 'down':
-          $figure.insertAfter($figure.next());
-          break;
-
         case 'left':
         case 'right':
-          changeSuffix(['left', 'right'], command);
-          if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
-            $figure.addClass('wh-figure-medium');
+          if (command === 'left' && $figure.hasClass('wh-figure-right')) {
+            $figure.removeClass('wh-figure-right');
+            changeSuffix(['small', 'medium', 'large'], 'large');
+          } else if (command === 'right' && $figure.hasClass('wh-figure-left')) {
+            $figure.removeClass('wh-figure-left');
+            changeSuffix(['small', 'medium', 'large'], 'large');
+          } else {
+            changeSuffix(['left', 'right'], command);
+            if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
+              $figure.addClass('wh-figure-medium');
+            }
           }
-          break;
-
-        case 'remove':
-          $figure.remove();
           break;
 
         case 'small':
@@ -489,9 +512,55 @@
           } else if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
             $figure.addClass('wh-figure-left');
           }
-          $control.addClass('on').siblings(classString(['small', 'medium', 'large'], ', ', 'controls-', true)).removeClass('on');
           break;
+      }
+    }
+  };
 
+  // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
+  window.RedactorPlugins.image = {
+    init: function () {
+      this.image = new Image(this);
+    }
+  };
+
+}(jQuery));
+
+(function ($) {
+  "use strict";
+
+  // namespacing
+  var Table = function (redactor) {
+    this.redactor = redactor;
+  };
+  Table.prototype = {
+    control: {
+      row_up     : { text: 'Add row above' },
+      row_down   : { text: 'Add row below' },
+      col_left   : { text: 'Add column left' },
+      col_right  : { text: 'Add column right' },
+      add_head   : { text: 'Add header' },
+      del_head   : { text: 'Delete header' },
+      del_col    : { text: 'Delete column' },
+      del_row    : { text: 'Delete row' },
+      del_table  : { text: 'Delete table' },
+      border     : { text: 'Bordered' },
+      stripe     : { text: 'Striped' },
+      full_border: { text: 'Full border' }
+    },
+    controlGroup: [
+      'up', 'down', '|', {
+        'Table Options': [
+          'row_up', 'row_down', 'col_left', 'col_right', '|',
+          'add_head', 'del_head', '|',
+          'del_col', 'del_row', 'del_table', '|',
+          'border', 'stripe', 'full_border'
+        ]
+      }, 'remove'],
+    command: function (command, $figure) {
+
+      switch (command) {
         case 'row_up':
         case 'row_down':
           $.proxy(function () {
@@ -569,23 +638,49 @@
         case 'full_border':
           $figure.find('table').removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
           break;
-
-        default:
-          window.console.log(command);
-          break;
       }
     }
   };
 
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.traverse = {
+  window.RedactorPlugins.table = {
     init: function () {
-      this.traverse = new Traverse(this);
+      this.table = new Table(this);
     }
   };
 
 }(jQuery));
+
+(function () {
+  "use strict";
+
+  // namespacing
+  var Video = function (redactor) {
+    this.redactor = redactor;
+  };
+
+  Video.prototype = {
+    control: {
+      resize: { classSuffix: 'resize-full' }
+    },
+    controlGroup: ['up', 'down', '|', 'resize', 'remove'],
+    command: function (command, $figure) {
+      if (command === 'resize') {
+        $figure.toggleClass('wh-figure-full');
+      }
+    }
+  };
+
+  // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
+  window.RedactorPlugins.video = {
+    init: function () {
+      this.video = new Video(this);
+    }
+  };
+
+}());
 
 (function ($) {
 
@@ -612,7 +707,7 @@
       'image', 'video', 'table', 'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'traverse']
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'table', 'video']
   };
 
 }(jQuery));
