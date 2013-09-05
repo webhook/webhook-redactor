@@ -31,7 +31,7 @@
       'image', 'video', 'table', 'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'traverse']
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'table', 'video']
   };
 
 }(jQuery));
