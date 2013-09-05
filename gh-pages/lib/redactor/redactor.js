@@ -6681,10 +6681,6 @@
 				// link
 				else if (convertLinks && html && (html.match(url1) || html.match(url2)))
 				{
-
-				window.console.log(html);
-
-
 					html = html.replace(/&/g, '&amp;')
 					.replace(/</g, '&lt;')
 					.replace(/>/g, '&gt;')

@@ -13,6 +13,7 @@
 
   // this needs a better home
   $.embedly.defaults.key = '65874c90af644c6a8f0b7072fe857811';
+  $.embedly.defaults.query = { maxwidth: 640 };
 
   // namespacing
   var AutoEmbedly = function (redactor) {

@@ -12,7 +12,6 @@
   // namespacing
   var Image = function (redactor) {
     this.redactor = redactor;
-    this.init();
   };
   Image.prototype = {
     control: {
@@ -23,9 +22,6 @@
       large : { classSuffix: 'large', text: 'L' }
     },
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'remove'],
-    init: function () {
-      $.extend({}, this.redactor.figure.control, this.control);
-    },
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
@@ -73,6 +69,9 @@
   window.RedactorPlugins.image = {
     init: function () {
       this.image = new Image(this);
+      this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
+        window.console.log('image', this);
+      }, this.image));
     }
   };
 

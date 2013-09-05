@@ -28,10 +28,11 @@
       'formatting', '|',
       'bold', 'italic', '|',
       'unorderedlist', 'orderedlist', '|',
-      'image', 'video', 'table', 'link', '|',
+      // 'image', 'video', 'table',
+      'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'table', 'video']
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote']
   };
 
 }(jQuery));

@@ -1411,7 +1411,7 @@ body .redactor_toolbar li a.redactor_btn_file:before {
   content: "\f10d";
 }
 
-.icon-quote-right:before {
+.icon-quote-right:before, body .redactor_toolbar li a.redactor_btn_quote:before {
   content: "\f10e";
 }
 

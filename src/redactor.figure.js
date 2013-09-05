@@ -58,8 +58,8 @@
         return this.toolbar[type];
       }
 
-      var controlGroup = (this.redactor[type] || this).controlGroup,
-          controls = $.extend({}, this.control, (this.redactor[type] || {}).control),
+      var controlGroup = (this.redactor[type] && this.redactor[type].controlGroup) || this.controlGroup,
+          controls = $.extend({}, this.control, (this.redactor[type] && this.redactor[type].control) || {}),
           $controls = this.buildControls(controlGroup, controls),
           $toolbar = $('<div class="wh-figure-controls">').append($controls);
 
