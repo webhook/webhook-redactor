@@ -8,6 +8,7 @@
 
   // this needs a better home
   $.embedly.defaults.key = '65874c90af644c6a8f0b7072fe857811';
+  $.embedly.defaults.query = { maxwidth: 640 };
 
   // namespacing
   var AutoEmbedly = function (redactor) {
@@ -140,8 +141,8 @@
         return this.toolbar[type];
       }
 
-      var controlGroup = (this.redactor[type] || this).controlGroup,
-          controls = $.extend({}, this.control, (this.redactor[type] || {}).control),
+      var controlGroup = (this.redactor[type] && this.redactor[type].controlGroup) || this.controlGroup,
+          controls = $.extend({}, this.control, (this.redactor[type] && this.redactor[type].control) || {}),
           $controls = this.buildControls(controlGroup, controls),
           $toolbar = $('<div class="wh-figure-controls">').append($controls);
 
@@ -461,7 +462,6 @@
   // namespacing
   var Image = function (redactor) {
     this.redactor = redactor;
-    this.init();
   };
   Image.prototype = {
     control: {
@@ -472,9 +472,6 @@
       large : { classSuffix: 'large', text: 'L' }
     },
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'remove'],
-    init: function () {
-      $.extend({}, this.redactor.figure.control, this.control);
-    },
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
@@ -522,6 +519,39 @@
   window.RedactorPlugins.image = {
     init: function () {
       this.image = new Image(this);
+      this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
+        window.console.log('image', this);
+      }, this.image));
+    }
+  };
+
+}(jQuery));
+
+(function ($) {
+  "use strict";
+
+  // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
+  window.RedactorPlugins.quote = {
+    init: function () {
+      this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(function () {
+
+        // maintain undo buffer
+        this.bufferSet();
+
+        this.formatQuote();
+
+        var $target = $(this.getBlock() || this.getCurrent());
+
+        if ($target.is('blockquote')) {
+          $('<figure data-type="quote"><figcaption>Type to add quote credit (optional)</figcaption>').insertBefore($target).prepend($target);
+        } else {
+          $target.closest('figure').before($target).remove();
+        }
+
+        this.sync();
+
+      }, this));
     }
   };
 
@@ -647,12 +677,103 @@
   window.RedactorPlugins.table = {
     init: function () {
       this.table = new Table(this);
+      this.buttonAddBefore('link', 'table', 'Table', $.proxy(function () {
+
+        var callback = $.proxy(function () {
+
+          // save cursor position
+          this.selectionSave();
+
+          $('#redactor_insert_table_btn').click($.proxy(function () {
+
+            // maintain undo buffer
+            this.bufferSet();
+
+            var rows = $('#redactor_table_rows').val(),
+                columns = $('#redactor_table_columns').val(),
+                $table_box = $('<div></div>'),
+                tableId = Math.floor(Math.random() * 99999),
+                $table = $('<table id="table' + tableId + '">').addClass('wh-table wh-table-bordered-rows full-width'),
+                $thead = $('<thead>').appendTo($table),
+                $tbody = $('<tbody>').appendTo($table),
+                i, $row, z, $column;
+
+            $row = $('<tr>').appendTo($thead);
+            for (z = 0; z < columns; z++) {
+              $('<th>Header</th>').appendTo($row);
+            }
+
+            for (i = 0; i < rows; i++) {
+              $row = $('<tr>');
+
+              for (z = 0; z < columns; z++) {
+                $column = $('<td>Data</td>');
+
+                // set the focus to the first td
+                if (i === 0 && z === 0) {
+                  $column.append('<span id="selection-marker-1">' + this.opts.invisibleSpace + '</span>');
+                }
+
+                $($row).append($column);
+              }
+
+              $tbody.append($row);
+            }
+
+            $('<figure data-type="table">').append($table).appendTo($table_box);
+            var html = $table_box.html();
+
+            this.modalClose();
+            this.selectionRestore();
+
+            var current = this.getBlock() || this.getCurrent();
+            if (current) {
+              $(current).after(html);
+            } else {
+              this.insertHtmlAdvanced(html, false);
+
+            }
+
+            this.selectionRestore();
+
+            var table = this.$editor.find('#table' + tableId);
+            this.tableObserver(table);
+            this.buttonActiveObserver();
+
+            table.find('span#selection-marker-1').remove();
+            table.removeAttr('id');
+
+            this.sync();
+
+          }, this));
+
+          setTimeout(function () {
+            $('#redactor_table_rows').focus();
+          }, 200);
+
+        }, this);
+
+        var modal = String() +
+          '<section>' +
+            '<label>' + this.opts.curLang.rows + '</label>' +
+            '<input type="text" size="5" value="2" id="redactor_table_rows">' +
+            '<label>' + this.opts.curLang.columns + '</label>' +
+            '<input type="text" size="5" value="3" id="redactor_table_columns">' +
+          '</section>' +
+          '<footer>' +
+            '<button class="redactor_modal_btn redactor_btn_modal_close">' + this.opts.curLang.cancel + '</button>' +
+            '<input type="button" name="upload" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '">' +
+          '</footer>';
+
+        this.modalInit('Insert Table', modal, 500, callback);
+
+      }, this));
     }
   };
 
 }(jQuery));
 
-(function () {
+(function ($) {
   "use strict";
 
   // namespacing
@@ -677,10 +798,84 @@
   window.RedactorPlugins.video = {
     init: function () {
       this.video = new Video(this);
+
+      var insertVideo = function (data) {
+
+        // maintain undo buffer
+        this.bufferSet();
+
+        data = '<figure data-type="video"><p>' + this.cleanStripTags(data) + '</p><figcaption>Type to add caption (optional)</figcaption></figure>';
+
+        this.selectionRestore();
+
+        var current = this.getBlock() || this.getCurrent();
+
+        if (current) {
+          $(current).after(data);
+        } else {
+          this.insertHtmlAdvanced(data, false);
+        }
+
+        this.sync();
+        this.modalClose();
+
+      };
+
+      var urlRegex = /(http|https):\/\/[\w\-]+(\.[\w\-]+)+([\w.,@?\^=%&amp;:\/~+#\-]*[\w@?\^=%&amp;\/~+#\-])?/;
+
+      this.buttonAddBefore('link', 'video', 'Video', $.proxy(function () {
+
+        // callback (optional)
+        var callback = $.proxy(function () {
+
+          // save cursor position
+          this.selectionSave();
+
+          $('#redactor_insert_video_btn').click($.proxy(function () {
+
+            var data = $.trim($('#redactor_insert_video_area').val());
+
+            if (urlRegex.test(data)) {
+
+              $.embedly.oembed(data).done($.proxy(function (results) {
+                $.each(results, $.proxy(function (index, result) {
+                  insertVideo.call(this, result.html);
+                }, this));
+              }, this));
+
+            } else {
+              insertVideo.call(this, data);
+            }
+
+          }, this));
+
+          setTimeout(function () {
+            $('#redactor_insert_video_area').focus();
+          }, 200);
+
+        }, this);
+
+        var modal = String() +
+          '<section>' +
+            '<form id="redactorInsertVideoForm">' +
+              '<label>' + this.opts.curLang.video_html_code + '</label>' +
+              '<textarea id="redactor_insert_video_area" style="width: 99%; height: 160px;"></textarea>' +
+            '</form>' +
+          '</section>' +
+          '<footer>' +
+            '<button class="redactor_modal_btn redactor_btn_modal_close">' + this.opts.curLang.cancel + '</button>' +
+            '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
+          '</footer>';
+
+        // or call a modal with a code
+        this.modalInit('Insert Video', modal, 500, callback);
+
+      }, this));
+
     }
   };
 
-}());
+}(jQuery));
 
 (function ($) {
 
@@ -704,10 +899,11 @@
       'formatting', '|',
       'bold', 'italic', '|',
       'unorderedlist', 'orderedlist', '|',
-      'image', 'video', 'table', 'link', '|',
+      // 'image', 'video', 'table',
+      'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'table', 'video']
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote']
   };
 
 }(jQuery));

@@ -67,17 +67,17 @@ module.exports = function (grunt) {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
+      },
+      src: {
+        files: '<%= jshint.src.src %>',
+        tasks: ['jshint:src']
+        // tasks: ['jshint:src', 'qunit']
+      },
+      test: {
+        files: '<%= jshint.test.src %>',
+        tasks: ['jshint:test']
+        // tasks: ['jshint:test', 'qunit']
       }
-      // ,
-      // src: {
-      //   files: '<%= jshint.src.src %>',
-      //   tasks: ['jshint:src', 'qunit']
-      // }
-      // ,
-      // test: {
-      //   files: '<%= jshint.test.src %>',
-      //   tasks: ['jshint:test', 'qunit']
-      // }
     },
     connect: {
       server: {
