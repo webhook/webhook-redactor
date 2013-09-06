@@ -135,7 +135,7 @@
 
         default:
           if (plugin && plugin.command) {
-            plugin.command(command, $figure);
+            plugin.command(command, $figure, $(this.current));
           }
           break;
       }

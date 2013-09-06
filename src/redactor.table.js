@@ -37,28 +37,26 @@
           'border', 'stripe', 'full_border'
         ]
       }, 'remove'],
-    command: function (command, $figure) {
+    command: function (command, $figure, $target) {
 
       switch (command) {
         case 'row_up':
         case 'row_down':
           $.proxy(function () {
-
-            var $row = $(this.current).closest('tr'),
+            var $row = $target.closest('tr'),
                 clone = $row.clone().find('td').text('Data').end();
             if (command === 'row_up') {
               clone.insertBefore($row);
             } else {
               clone.insertAfter($row);
             }
-
           }, this)();
           break;
 
         case 'col_left':
         case 'col_right':
           $.proxy(function () {
-            var $cell = $(this.current).closest('td'),
+            var $cell = $target.closest('td'),
                 $row = $cell.closest('tr'),
                 $table = $row.closest('table'),
                 position = $row.children().index($cell) + 1,
@@ -66,9 +64,7 @@
 
             $table.find('thead tr').children(':nth-child(' + position + ')')[insert_position]($('<th>').text('Header'));
             $table.find('tbody tr').children(':nth-child(' + position + ')')[insert_position]($('<td>').text('Data'));
-
           }, this)();
-
           break;
 
         case 'add_head':
@@ -90,16 +86,14 @@
 
         case 'del_col':
           $.proxy(function () {
-            var $cell = $(this.current).closest('td'),
+            var $cell = $target.closest('td'),
                 position = $cell.parent().children().index($cell) + 1;
-
             $cell.closest('table').find('tr').children(':nth-child(' + position + ')').remove();
-
           }, this)();
           break;
 
         case 'del_row':
-          $(this.current).closest('tr').remove();
+          $target.closest('tr').remove();
           break;
 
         case 'del_table':
