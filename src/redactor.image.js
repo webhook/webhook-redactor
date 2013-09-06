@@ -19,9 +19,9 @@
       right : { classSuffix: 'arrow-right' },
       small : { classSuffix: 'small', text: 'S' },
       medium: { classSuffix: 'medium', text: 'M' },
-      large : { classSuffix: 'large', text: 'L' }
+      resize: { classSuffix: 'resize-full' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'resize', '|', 'small', 'medium', 'remove'],
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
@@ -36,29 +36,22 @@
       switch (command) {
         case 'left':
         case 'right':
-          if (command === 'left' && $figure.hasClass('wh-figure-right')) {
-            $figure.removeClass('wh-figure-right');
-            changeSuffix(['small', 'medium', 'large'], 'large');
-          } else if (command === 'right' && $figure.hasClass('wh-figure-left')) {
-            $figure.removeClass('wh-figure-left');
-            changeSuffix(['small', 'medium', 'large'], 'large');
-          } else {
-            changeSuffix(['left', 'right'], command);
-            if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
-              $figure.addClass('wh-figure-medium');
-            }
+          changeSuffix(['left', 'right'], command);
+          if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
+            $figure.addClass('wh-figure-medium');
           }
           break;
 
         case 'small':
         case 'medium':
-        case 'large':
           changeSuffix(['small', 'medium', 'large'], command);
-          if (command === 'large') {
-            $figure.removeClass(classString(['left', 'right']));
-          } else if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
+          if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
             $figure.addClass('wh-figure-left');
           }
+          break;
+
+        case 'resize':
+          changeSuffix(['small', 'medium', 'left', 'right'], 'large');
           break;
       }
     }
