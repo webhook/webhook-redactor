@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2013-09-05
+/*! webhook-redactor - v0.0.1 - 2013-09-06
 * https://github.com/gpbmike/webhook-redactor
 * Copyright (c) 2013 Mike Horn; Licensed MIT */
 (function ($) {
@@ -35,7 +35,7 @@
 
           $.embedly.oembed(url).done(function (results) {
             $.each(results, function () {
-              shiv.replaceWith(this.html);
+              shiv.replaceWith('<figure data-type="video"><p>' + this.html + '</p><figcaption>Type to add caption (optional)</figcaption></figure>');
             });
           });
 
@@ -660,7 +660,7 @@
         var $target = $(this.getBlock() || this.getCurrent());
 
         if ($target.is('blockquote')) {
-          $('<figure data-type="quote"><figcaption>Type to add quote credit (optional)</figcaption>').insertBefore($target).prepend($target);
+          $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>Type to add quote credit (optional)</cite>');
         } else {
           $target.closest('figure').before($target).remove();
         }
