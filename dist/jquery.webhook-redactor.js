@@ -113,7 +113,10 @@
         var $figure = $(event.currentTarget),
             type = $figure.data('type'),
             $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
-        $toolbar.trigger('show');
+
+        if (this.redactor[type] && this.redactor[type].onShow) {
+          this.redactor[type].onShow($figure, $toolbar);
+        }
       }, this));
 
       // remove toolbar from figure on mouseleave
@@ -465,22 +468,61 @@
   };
   Image.prototype = {
     control: {
-      left  : { classSuffix: 'arrow-left' },
-      right : { classSuffix: 'arrow-right' },
-      small : { classSuffix: 'small', text: 'S' },
-      medium: { classSuffix: 'medium', text: 'M' },
-      resize: { classSuffix: 'resize-full' }
+      left        : { classSuffix: 'arrow-left' },
+      right       : { classSuffix: 'arrow-right' },
+      small       : { classSuffix: 'small', text: 'S' },
+      medium      : { classSuffix: 'medium', text: 'M' },
+      resize_full : { classSuffix: 'resize-full' },
+      resize_small: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'resize', '|', 'small', 'medium', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
+    onShow: function ($figure, $toolbar) {
+
+      $toolbar.children().removeClass('on');
+
+      if ($figure.hasClass('wh-figure-small')) {
+        $toolbar.find('.wh-figure-controls-small').show().addClass('on');
+        $toolbar.find('.wh-figure-controls-medium').show();
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      }
+
+      else if ($figure.hasClass('wh-figure-medium')) {
+        $toolbar.find('.wh-figure-controls-small').show();
+        $toolbar.find('.wh-figure-controls-medium').show().addClass('on');
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      }
+
+      else {
+        $toolbar.find('.wh-figure-controls-small').hide();
+        $toolbar.find('.wh-figure-controls-medium').hide();
+        $toolbar.find('.wh-figure-controls-large').hide();
+        $toolbar.find('.wh-figure-controls-resize-full').hide();
+        $toolbar.find('.wh-figure-controls-resize-small').show();
+      }
+
+      if ($figure.hasClass('wh-figure-right')) {
+        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
+      }
+
+      if ($figure.hasClass('wh-figure-left')) {
+        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
+      }
+
+    },
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
+        if (!$.isArray(suffixArray)) {
+          suffixArray = [suffixArray];
+        }
         var base_class = (dot ? '.' : '') + 'wh-figure-' + (prefix || '');
         return base_class + suffixArray.join((separator || ' ') + base_class);
       };
 
-      var changeSuffix = function (removeArray, addString) {
-        $figure.removeClass(classString(removeArray)).addClass('wh-figure-' + addString);
+      var changeSuffix = function (removeArray, addArray) {
+        $figure.removeClass(classString(removeArray)).addClass(classString(addArray));
       };
 
       switch (command) {
@@ -500,8 +542,12 @@
           }
           break;
 
-        case 'resize':
+        case 'resize_full':
           changeSuffix(['small', 'medium', 'left', 'right'], 'large');
+          break;
+
+        case 'resize_small':
+          changeSuffix(['small', 'large', 'right'], ['medium', 'left']);
           break;
       }
     }
@@ -512,9 +558,9 @@
   window.RedactorPlugins.image = {
     init: function () {
       this.image = new Image(this);
-      this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
-        window.console.log('image', this);
-      }, this.image));
+      // this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
+      //   window.console.log('image', this);
+      // }, this.image));
     }
   };
 
@@ -529,14 +575,41 @@
   };
   Quote.prototype = {
     control: {
-      left  : { classSuffix: 'arrow-left' },
-      right : { classSuffix: 'arrow-right' },
-      small : { classSuffix: 'small', text: 'S' },
-      medium: { classSuffix: 'medium', text: 'M' },
-      large : { classSuffix: 'large', text: 'L' },
-      resize: { classSuffix: 'resize-full' }
+      left        : { classSuffix: 'arrow-left' },
+      right       : { classSuffix: 'arrow-right' },
+      small       : { classSuffix: 'small', text: 'S' },
+      medium      : { classSuffix: 'medium', text: 'M' },
+      large       : { classSuffix: 'large', text: 'L' },
+      resize_full : { classSuffix: 'resize-full' },
+      resize_small: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'resize', '|', 'small', 'medium', 'large', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resize_full', 'resize_small', 'remove'],
+    onShow: function ($figure, $toolbar) {
+
+      $toolbar.children().removeClass('on');
+
+      if ($figure.hasClass('wh-figure-medium')) {
+        $toolbar.find('.wh-figure-controls-medium').addClass('on');
+      } else if ($figure.hasClass('wh-figure-large')) {
+        $toolbar.find('.wh-figure-controls-large').addClass('on');
+      } else {
+        $toolbar.find('.wh-figure-controls-small').addClass('on');
+      }
+
+      if ($figure.hasClass('wh-figure-left')) {
+        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+      } else if ($figure.hasClass('wh-figure-right')) {
+        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+      } else {
+        $toolbar.find('.wh-figure-controls-resize-small').show();
+        $toolbar.find('.wh-figure-controls-resize-full').hide();
+      }
+
+    },
     command: function (command, $figure) {
 
       switch (command) {
@@ -548,8 +621,12 @@
           $figure.removeClass('wh-figure-left').addClass('wh-figure-right');
           break;
 
-        case 'resize':
+        case 'resize_full':
           $figure.removeClass('wh-figure-left wh-figure-right');
+          break;
+
+        case 'resize_small':
+          $figure.addClass('wh-figure-left');
           break;
 
         case 'small':
@@ -816,12 +893,26 @@
 
   Video.prototype = {
     control: {
-      resize: { classSuffix: 'resize-full' }
+      resize_full : { classSuffix: 'resize-full' },
+      resize_small: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['up', 'down', '|', 'resize', 'remove'],
+    controlGroup: ['up', 'down', '|', 'resize_full', 'resize_small', 'remove'],
+    onShow: function ($figure, $toolbar) {
+
+      if ($figure.hasClass('wh-figure-full')) {
+        $toolbar.find('.wh-figure-controls-resize-full').hide();
+        $toolbar.find('.wh-figure-controls-resize-small').show();
+      } else {
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      }
+
+    },
     command: function (command, $figure) {
-      if (command === 'resize') {
-        $figure.toggleClass('wh-figure-full');
+      if (command === 'resize_full') {
+        $figure.addClass('wh-figure-full');
+      } else if (command === 'resize_small') {
+        $figure.removeClass('wh-figure-full');
       }
     }
   };
