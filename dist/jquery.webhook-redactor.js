@@ -218,7 +218,7 @@
 
         default:
           if (plugin && plugin.command) {
-            plugin.command(command, $figure);
+            plugin.command(command, $figure, $(this.current));
           }
           break;
       }
@@ -469,9 +469,9 @@
       right : { classSuffix: 'arrow-right' },
       small : { classSuffix: 'small', text: 'S' },
       medium: { classSuffix: 'medium', text: 'M' },
-      large : { classSuffix: 'large', text: 'L' }
+      resize: { classSuffix: 'resize-full' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'resize', '|', 'small', 'medium', 'remove'],
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
@@ -486,29 +486,22 @@
       switch (command) {
         case 'left':
         case 'right':
-          if (command === 'left' && $figure.hasClass('wh-figure-right')) {
-            $figure.removeClass('wh-figure-right');
-            changeSuffix(['small', 'medium', 'large'], 'large');
-          } else if (command === 'right' && $figure.hasClass('wh-figure-left')) {
-            $figure.removeClass('wh-figure-left');
-            changeSuffix(['small', 'medium', 'large'], 'large');
-          } else {
-            changeSuffix(['left', 'right'], command);
-            if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
-              $figure.addClass('wh-figure-medium');
-            }
+          changeSuffix(['left', 'right'], command);
+          if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
+            $figure.addClass('wh-figure-medium');
           }
           break;
 
         case 'small':
         case 'medium':
-        case 'large':
           changeSuffix(['small', 'medium', 'large'], command);
-          if (command === 'large') {
-            $figure.removeClass(classString(['left', 'right']));
-          } else if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
+          if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
             $figure.addClass('wh-figure-left');
           }
+          break;
+
+        case 'resize':
+          changeSuffix(['small', 'medium', 'left', 'right'], 'large');
           break;
       }
     }
@@ -530,10 +523,56 @@
 (function ($) {
   "use strict";
 
+  // namespacing
+  var Quote = function (redactor) {
+    this.redactor = redactor;
+  };
+  Quote.prototype = {
+    control: {
+      left  : { classSuffix: 'arrow-left' },
+      right : { classSuffix: 'arrow-right' },
+      small : { classSuffix: 'small', text: 'S' },
+      medium: { classSuffix: 'medium', text: 'M' },
+      large : { classSuffix: 'large', text: 'L' },
+      resize: { classSuffix: 'resize-full' }
+    },
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'resize', '|', 'small', 'medium', 'large', 'remove'],
+    command: function (command, $figure) {
+
+      switch (command) {
+        case 'left':
+          $figure.removeClass('wh-figure-right').addClass('wh-figure-left');
+          break;
+
+        case 'right':
+          $figure.removeClass('wh-figure-left').addClass('wh-figure-right');
+          break;
+
+        case 'resize':
+          $figure.removeClass('wh-figure-left wh-figure-right');
+          break;
+
+        case 'small':
+          $figure.removeClass('wh-figure-medium wh-figure-large').addClass('wh-figure-small');
+          break;
+
+        case 'medium':
+          $figure.removeClass('wh-figure-small wh-figure-large').addClass('wh-figure-medium');
+          break;
+
+        case 'large':
+          $figure.removeClass('wh-figure-small wh-figure-medium').addClass('wh-figure-large');
+          break;
+      }
+
+    }
+  };
+
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
   window.RedactorPlugins.quote = {
     init: function () {
+      this.quote = new Quote(this);
       this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(function () {
 
         // maintain undo buffer
@@ -588,28 +627,26 @@
           'border', 'stripe', 'full_border'
         ]
       }, 'remove'],
-    command: function (command, $figure) {
+    command: function (command, $figure, $target) {
 
       switch (command) {
         case 'row_up':
         case 'row_down':
           $.proxy(function () {
-
-            var $row = $(this.current).closest('tr'),
+            var $row = $target.closest('tr'),
                 clone = $row.clone().find('td').text('Data').end();
             if (command === 'row_up') {
               clone.insertBefore($row);
             } else {
               clone.insertAfter($row);
             }
-
           }, this)();
           break;
 
         case 'col_left':
         case 'col_right':
           $.proxy(function () {
-            var $cell = $(this.current).closest('td'),
+            var $cell = $target.closest('td'),
                 $row = $cell.closest('tr'),
                 $table = $row.closest('table'),
                 position = $row.children().index($cell) + 1,
@@ -617,9 +654,7 @@
 
             $table.find('thead tr').children(':nth-child(' + position + ')')[insert_position]($('<th>').text('Header'));
             $table.find('tbody tr').children(':nth-child(' + position + ')')[insert_position]($('<td>').text('Data'));
-
           }, this)();
-
           break;
 
         case 'add_head':
@@ -641,16 +676,14 @@
 
         case 'del_col':
           $.proxy(function () {
-            var $cell = $(this.current).closest('td'),
+            var $cell = $target.closest('td'),
                 position = $cell.parent().children().index($cell) + 1;
-
             $cell.closest('table').find('tr').children(':nth-child(' + position + ')').remove();
-
           }, this)();
           break;
 
         case 'del_row':
-          $(this.current).closest('tr').remove();
+          $target.closest('tr').remove();
           break;
 
         case 'del_table':
