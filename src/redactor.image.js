@@ -15,22 +15,61 @@
   };
   Image.prototype = {
     control: {
-      left  : { classSuffix: 'arrow-left' },
-      right : { classSuffix: 'arrow-right' },
-      small : { classSuffix: 'small', text: 'S' },
-      medium: { classSuffix: 'medium', text: 'M' },
-      resize: { classSuffix: 'resize-full' }
+      left        : { classSuffix: 'arrow-left' },
+      right       : { classSuffix: 'arrow-right' },
+      small       : { classSuffix: 'small', text: 'S' },
+      medium      : { classSuffix: 'medium', text: 'M' },
+      resize_full : { classSuffix: 'resize-full' },
+      resize_small: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'resize', '|', 'small', 'medium', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
+    onShow: function ($figure, $toolbar) {
+
+      $toolbar.children().removeClass('on');
+
+      if ($figure.hasClass('wh-figure-small')) {
+        $toolbar.find('.wh-figure-controls-small').show().addClass('on');
+        $toolbar.find('.wh-figure-controls-medium').show();
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      }
+
+      else if ($figure.hasClass('wh-figure-medium')) {
+        $toolbar.find('.wh-figure-controls-small').show();
+        $toolbar.find('.wh-figure-controls-medium').show().addClass('on');
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      }
+
+      else {
+        $toolbar.find('.wh-figure-controls-small').hide();
+        $toolbar.find('.wh-figure-controls-medium').hide();
+        $toolbar.find('.wh-figure-controls-large').hide();
+        $toolbar.find('.wh-figure-controls-resize-full').hide();
+        $toolbar.find('.wh-figure-controls-resize-small').show();
+      }
+
+      if ($figure.hasClass('wh-figure-right')) {
+        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
+      }
+
+      if ($figure.hasClass('wh-figure-left')) {
+        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
+      }
+
+    },
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
+        if (!$.isArray(suffixArray)) {
+          suffixArray = [suffixArray];
+        }
         var base_class = (dot ? '.' : '') + 'wh-figure-' + (prefix || '');
         return base_class + suffixArray.join((separator || ' ') + base_class);
       };
 
-      var changeSuffix = function (removeArray, addString) {
-        $figure.removeClass(classString(removeArray)).addClass('wh-figure-' + addString);
+      var changeSuffix = function (removeArray, addArray) {
+        $figure.removeClass(classString(removeArray)).addClass(classString(addArray));
       };
 
       switch (command) {
@@ -50,8 +89,12 @@
           }
           break;
 
-        case 'resize':
+        case 'resize_full':
           changeSuffix(['small', 'medium', 'left', 'right'], 'large');
+          break;
+
+        case 'resize_small':
+          changeSuffix(['small', 'large', 'right'], ['medium', 'left']);
           break;
       }
     }
@@ -62,9 +105,9 @@
   window.RedactorPlugins.image = {
     init: function () {
       this.image = new Image(this);
-      this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
-        window.console.log('image', this);
-      }, this.image));
+      // this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
+      //   window.console.log('image', this);
+      // }, this.image));
     }
   };
 

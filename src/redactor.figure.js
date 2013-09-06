@@ -30,7 +30,10 @@
         var $figure = $(event.currentTarget),
             type = $figure.data('type'),
             $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
-        $toolbar.trigger('show');
+
+        if (this.redactor[type] && this.redactor[type].onShow) {
+          this.redactor[type].onShow($figure, $toolbar);
+        }
       }, this));
 
       // remove toolbar from figure on mouseleave

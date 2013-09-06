@@ -15,14 +15,41 @@
   };
   Quote.prototype = {
     control: {
-      left  : { classSuffix: 'arrow-left' },
-      right : { classSuffix: 'arrow-right' },
-      small : { classSuffix: 'small', text: 'S' },
-      medium: { classSuffix: 'medium', text: 'M' },
-      large : { classSuffix: 'large', text: 'L' },
-      resize: { classSuffix: 'resize-full' }
+      left        : { classSuffix: 'arrow-left' },
+      right       : { classSuffix: 'arrow-right' },
+      small       : { classSuffix: 'small', text: 'S' },
+      medium      : { classSuffix: 'medium', text: 'M' },
+      large       : { classSuffix: 'large', text: 'L' },
+      resize_full : { classSuffix: 'resize-full' },
+      resize_small: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'resize', '|', 'small', 'medium', 'large', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resize_full', 'resize_small', 'remove'],
+    onShow: function ($figure, $toolbar) {
+
+      $toolbar.children().removeClass('on');
+
+      if ($figure.hasClass('wh-figure-medium')) {
+        $toolbar.find('.wh-figure-controls-medium').addClass('on');
+      } else if ($figure.hasClass('wh-figure-large')) {
+        $toolbar.find('.wh-figure-controls-large').addClass('on');
+      } else {
+        $toolbar.find('.wh-figure-controls-small').addClass('on');
+      }
+
+      if ($figure.hasClass('wh-figure-left')) {
+        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+      } else if ($figure.hasClass('wh-figure-right')) {
+        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+      } else {
+        $toolbar.find('.wh-figure-controls-resize-small').show();
+        $toolbar.find('.wh-figure-controls-resize-full').hide();
+      }
+
+    },
     command: function (command, $figure) {
 
       switch (command) {
@@ -34,8 +61,12 @@
           $figure.removeClass('wh-figure-left').addClass('wh-figure-right');
           break;
 
-        case 'resize':
+        case 'resize_full':
           $figure.removeClass('wh-figure-left wh-figure-right');
+          break;
+
+        case 'resize_small':
+          $figure.addClass('wh-figure-left');
           break;
 
         case 'small':

@@ -3875,7 +3875,7 @@ figure:hover .wh-figure-controls {
 }
 
 .wh-figure-controls {
-  background: #343131;
+  background: #27ae60;
   padding: 6px;
   position: absolute;
   display: none;
@@ -3885,10 +3885,10 @@ figure:hover .wh-figure-controls {
   top: -37px;
   margin: auto;
   font-family: "museo-sans-1", "museo-sans-2", "Helvetica Neue", "HelveticaNeue", Arial, sans-serif;
+  border-bottom: solid 3px #1e8449;
   font-style: normal;
   z-index: 5;
   text-align: center;
-  border-bottom: solid 1px white;
 }
 
 .wh-figure-controls span {
@@ -3905,17 +3905,17 @@ figure:hover .wh-figure-controls {
   cursor: pointer;
 }
 .wh-figure-controls span:hover {
-  background: #27ae60;
+  background: rgba(255, 255, 255, 0.3);
   color: white;
 }
 .wh-figure-controls span.on {
   background: white;
-  color: #343131;
+  color: #27ae60;
 }
 
 .wh-figure-controls span.wh-figure-controls-divider {
   width: 1px;
-  background: #4e4a4a;
+  background: #36d278;
   padding: 0;
   margin: 0 2px;
   cursor: normal;

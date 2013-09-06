@@ -16,12 +16,26 @@
 
   Video.prototype = {
     control: {
-      resize: { classSuffix: 'resize-full' }
+      resize_full : { classSuffix: 'resize-full' },
+      resize_small: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['up', 'down', '|', 'resize', 'remove'],
+    controlGroup: ['up', 'down', '|', 'resize_full', 'resize_small', 'remove'],
+    onShow: function ($figure, $toolbar) {
+
+      if ($figure.hasClass('wh-figure-full')) {
+        $toolbar.find('.wh-figure-controls-resize-full').hide();
+        $toolbar.find('.wh-figure-controls-resize-small').show();
+      } else {
+        $toolbar.find('.wh-figure-controls-resize-full').show();
+        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      }
+
+    },
     command: function (command, $figure) {
-      if (command === 'resize') {
-        $figure.toggleClass('wh-figure-full');
+      if (command === 'resize_full') {
+        $figure.addClass('wh-figure-full');
+      } else if (command === 'resize_small') {
+        $figure.removeClass('wh-figure-full');
       }
     }
   };
