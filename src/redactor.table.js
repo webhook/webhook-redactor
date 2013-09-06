@@ -24,9 +24,9 @@
       del_col    : { text: 'Delete column' },
       del_row    : { text: 'Delete row' },
       del_table  : { text: 'Delete table' },
-      border     : { text: 'Bordered' },
-      stripe     : { text: 'Striped' },
-      full_border: { text: 'Full border' }
+      stripe     : { text: 'Striped row' },
+      border     : { text: 'Borders on rows' },
+      full_border: { text: 'Borders everywhere' }
     },
     controlGroup: [
       'up', 'down', '|', {
