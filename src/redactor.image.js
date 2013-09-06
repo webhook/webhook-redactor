@@ -12,6 +12,7 @@
   // namespacing
   var Image = function (redactor) {
     this.redactor = redactor;
+    this.init();
   };
   Image.prototype = {
     control: {
@@ -23,6 +24,34 @@
       resize_small: { classSuffix: 'resize-small' }
     },
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
+    init: function () {
+      // find images without captions, add empty
+      this.redactor.$editor.find('figure[data-type=image]:not(:has(figcaption))').each(function () {
+        $(this).append('<figcaption>');
+      });
+
+      this.redactor.$editor.on('click', 'figcaption:empty', $.proxy(function (event) {
+        var figcaption = event.target;
+        $(figcaption).prepend('<br>');
+        this.redactor.selectionEnd(figcaption);
+        event.stopPropagation();
+      }, this));
+
+      // remove redactor generated <br> tags from otherwise empty figcaptions
+      $(window).on('click', $.proxy(function () {
+        this.redactor.$editor.find('figcaption').filter(function () { return !$(this).text(); }).empty();
+      }, this));
+
+      // prevent user from removing figcaption
+      this.redactor.$editor.on('keydown', $.proxy(function (event) {
+        var block = this.redactor.getBlock(),
+            current = this.redactor.getCurrent();
+        if (block.nodeName === 'FIGCAPTION' && !current.length && $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0) {
+          event.preventDefault();
+        }
+      }, this));
+
+    },
     onShow: function ($figure, $toolbar) {
 
       $toolbar.children().removeClass('on');

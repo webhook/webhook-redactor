@@ -1962,9 +1962,14 @@ a:hover {
 }
 
 h1, .rst-content .topic-title, .redactor_format_h1, h2, .redactor_format_h2, h3, .redactor_format_h3, h4, .redactor_format_h4, h5, .redactor_format_h5, h6, legend {
+  clear: both;
   margin-top: 0;
   font-weight: bold;
   font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Helvetica Neue", "HelveticaNeue", Arial, sans-serif;
+}
+
+h1, .rst-content .topic-title, .redactor_format_h1 {
+  clear: none;
 }
 
 p {
@@ -3791,11 +3796,20 @@ figcaption {
   line-height: 24px;
   font-size: 16px;
 }
+figcaption:empty:before {
+  opacity: 0.4;
+  content: "Type to add caption (optional)";
+}
+
+figure[data-type=table] {
+  clear: both;
+}
 
 figure[data-type=video] {
   position: relative;
   margin-bottom: 24px;
   text-align: center;
+  clear: both;
 }
 figure[data-type=video] p {
   margin: 0;
@@ -3828,6 +3842,10 @@ figure[data-type=image] img {
 figure[data-type=image]:hover img {
   opacity: 0.8;
 }
+figure[data-type=image].wh-figure-large {
+  width: 100%;
+  clear: both;
+}
 figure[data-type=image].wh-figure-medium {
   width: 50%;
 }
@@ -3843,6 +3861,10 @@ figure[data-type=quote] {
   position: relative;
   border-left: solid 5px #404040;
   padding-left: 24px;
+}
+figure[data-type=quote] figcaption {
+  font-weight: bold;
+  text-align: left;
 }
 figure[data-type=quote] .wh-figure-controls {
   margin-left: -5px;
@@ -3862,6 +3884,12 @@ figure[data-type=quote].wh-figure-left {
   width: 33%;
   border-left: none;
   border-right: solid 5px #404040;
+  padding-left: 0;
+  padding-right: 24px;
+  margin-left: 0;
+  margin-right: 24px;
+}
+figure[data-type=quote].wh-figure-left .wh-figure-controls {
   margin-left: 0;
   margin-right: -5px;
 }
@@ -3890,6 +3918,7 @@ figure:hover .wh-figure-controls {
   margin: auto;
   font-family: "museo-sans-1", "museo-sans-2", "Helvetica Neue", "HelveticaNeue", Arial, sans-serif;
   border-bottom: solid 3px #1e8449;
+  line-height: 24px;
   font-style: normal;
   z-index: 5;
   text-align: center;
@@ -3948,7 +3977,6 @@ figure:hover .wh-figure-controls {
 }
 .wh-figure-right .wh-figure-controls {
   right: 0;
-  left: auto;
 }
 
 .wh-figure-left {
@@ -4584,6 +4612,14 @@ body .redactor_box_fullscreen {
   overflow: visible;
   border: 1px solid #cccccc;
   background-color: white;
+  *zoom: 1;
+}
+.redactor_box:before, .redactor_box:after {
+  display: table;
+  content: "";
+}
+.redactor_box:after {
+  clear: both;
 }
 .redactor_box iframe {
   display: block;
