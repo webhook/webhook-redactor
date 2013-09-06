@@ -3865,9 +3865,13 @@ figure[data-type=quote].wh-figure-left {
   margin-left: 0;
   margin-right: -5px;
 }
-figure[data-type=quote] figcaption {
+figure[data-type=quote] cite {
+  display: block;
   text-align: left;
   font-weight: bold;
+}
+figure[data-type=quote] cite:before {
+  content: "\2014 ";
 }
 
 figure:hover .wh-figure-controls {
@@ -3941,6 +3945,10 @@ figure:hover .wh-figure-controls {
 .wh-figure-right {
   float: right;
   margin-left: 24px;
+}
+.wh-figure-right .wh-figure-controls {
+  right: 0;
+  left: auto;
 }
 
 .wh-figure-left {

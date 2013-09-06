@@ -100,7 +100,7 @@
         var $target = $(this.getBlock() || this.getCurrent());
 
         if ($target.is('blockquote')) {
-          $('<figure data-type="quote"><figcaption>Type to add quote credit (optional)</figcaption>').insertBefore($target).prepend($target);
+          $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>Type to add quote credit (optional)</cite>');
         } else {
           $target.closest('figure').before($target).remove();
         }
