@@ -16,7 +16,7 @@
   // Static method.
   $.webhookRedactor = function (options) {
     // Override default options with passed-in options.
-    options = $.extend({}, $.awesome.options, options);
+    options = $.extend({}, $.webhookRedactor.options, options);
     // Return something awesome.
     return options;
   };
@@ -32,7 +32,10 @@
       'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote']
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
+    initCallback: function () {
+      this.$element.closest('form').on('submit', $.proxy(this.sync, this));
+    }
   };
 
 }(jQuery));

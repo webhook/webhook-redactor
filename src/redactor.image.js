@@ -38,9 +38,7 @@
       }, this));
 
       // remove redactor generated <br> tags from otherwise empty figcaptions
-      $(window).on('click', $.proxy(function () {
-        this.redactor.$editor.find('figcaption').filter(function () { return !$(this).text(); }).empty();
-      }, this));
+      $(window).on('click', $.proxy(this.cleanCaptions, this));
 
       // prevent user from removing figcaption
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
@@ -51,6 +49,9 @@
         }
       }, this));
 
+    },
+    cleanCaptions: function () {
+      this.redactor.$editor.find('figcaption').filter(function () { return !$(this).text(); }).empty();
     },
     onShow: function ($figure, $toolbar) {
 

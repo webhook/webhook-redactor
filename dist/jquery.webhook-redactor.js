@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2013-09-06
+/*! webhook-redactor - v0.0.1 - 2013-09-09
 * https://github.com/gpbmike/webhook-redactor
 * Copyright (c) 2013 Mike Horn; Licensed MIT */
 (function ($) {
@@ -491,9 +491,7 @@
       }, this));
 
       // remove redactor generated <br> tags from otherwise empty figcaptions
-      $(window).on('click', $.proxy(function () {
-        this.redactor.$editor.find('figcaption').filter(function () { return !$(this).text(); }).empty();
-      }, this));
+      $(window).on('click', $.proxy(this.cleanCaptions, this));
 
       // prevent user from removing figcaption
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
@@ -504,6 +502,9 @@
         }
       }, this));
 
+    },
+    cleanCaptions: function () {
+      this.redactor.$editor.find('figcaption').filter(function () { return !$(this).text(); }).empty();
     },
     onShow: function ($figure, $toolbar) {
 
@@ -1040,7 +1041,7 @@
   // Static method.
   $.webhookRedactor = function (options) {
     // Override default options with passed-in options.
-    options = $.extend({}, $.awesome.options, options);
+    options = $.extend({}, $.webhookRedactor.options, options);
     // Return something awesome.
     return options;
   };
@@ -1056,7 +1057,10 @@
       'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote']
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
+    initCallback: function () {
+      this.$element.closest('form').on('submit', $.proxy(this.sync, this));
+    }
   };
 
 }(jQuery));
