@@ -1,6 +1,6 @@
 /*
  * webhook-redactor
- *
+ * Adapted from Redactor's Fullscreen plugin.
  *
  * Copyright (c) 2013 Mike Horn
  * Licensed under the MIT license.
@@ -101,13 +101,14 @@
           });
         }
 
-        if (!this.opts.iframe) {
-          this.$editor.css('height', height);
-        } else {
-          this.$frame.css('height', height);
-        }
+        // if (!this.opts.iframe) {
+        //   this.$editor.css('height', height);
+        // } else {
+        //   this.$frame.css('height', height);
+        // }
 
-        this.$editor.css('height', height);
+        // this.$editor.css('height', height);
+
         this.focus();
         this.observeStart();
       }
@@ -146,7 +147,7 @@
 
       var toolbarHeight = this.$toolbar.height();
 
-      var pad = this.$editor.css('padding-top').replace('px', '');
+      // var pad = this.$editor.css('padding-top').replace('px', '');
       var height = $(window).height() - toolbarHeight;
       this.$box.width($(window).width() - 2).height(height + toolbarHeight);
 
@@ -160,16 +161,16 @@
         this.$box.css('top', toolbarHeight + 'px');
       }
 
-      if (!this.opts.iframe) {
-        this.$editor.height(height - (pad * 2));
-      } else {
-        setTimeout($.proxy(function () {
-          this.$frame.height(height);
+      // if (!this.opts.iframe) {
+      //   this.$editor.height(height - (pad * 2));
+      // } else {
+      //   setTimeout($.proxy(function () {
+      //     this.$frame.height(height);
 
-        }, this), 1);
-      }
+      //   }, this), 1);
+      // }
 
-      this.$editor.height(height);
+      // this.$editor.height(height);
     }
   };
 
