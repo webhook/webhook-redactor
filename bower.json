@@ -1,7 +1,9 @@
 {
   "name": "webhook-redactor",
   "version": "0.0.1",
-  "dependencies": {},
+  "dependencies": {
+    "embedly-jquery": "~3.1.1"
+  },
   "devDependencies": {
     "qunit": "~1.12.0",
     "jquery": "~2.0.3"
