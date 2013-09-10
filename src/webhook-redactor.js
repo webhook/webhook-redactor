@@ -13,7 +13,13 @@
     return this.redactor(typeof options === 'string' ? options : $.extend({}, $.webhookRedactor.options, options));
   };
 
-  // Default options.
+  // Static method.
+  $.webhookRedactor = function (options) {
+    // Override default options with passed-in options.
+    return $.extend({}, $.webhookRedactor.options, options);
+  };
+
+  // Static method default options.
   $.webhookRedactor.options = {
     observeImages: false,
     buttons: [
