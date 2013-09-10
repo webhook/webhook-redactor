@@ -3899,7 +3899,11 @@ figure[data-type=quote] cite {
   font-weight: bold;
 }
 figure[data-type=quote] cite:before {
-  content: "\2014 ";
+  content: "\2014\00a0";
+}
+figure[data-type=quote] cite:empty:before {
+  opacity: 0.4;
+  content: "\2014 Type to add citation (optional)";
 }
 
 figure:hover .wh-figure-controls {

@@ -12,6 +12,7 @@
   // namespacing
   var Video = function (redactor) {
     this.redactor = redactor;
+    this.init();
   };
 
   Video.prototype = {
@@ -20,6 +21,12 @@
       resize_small: { classSuffix: 'resize-small' }
     },
     controlGroup: ['up', 'down', '|', 'resize_full', 'resize_small', 'remove'],
+    init: function () {
+      // find videos without captions, add empty figcaption
+      this.redactor.$editor.find('figure[data-type=video]:not(:has(figcaption))').each(function () {
+        $(this).append('<figcaption>');
+      });
+    },
     onShow: function ($figure, $toolbar) {
 
       if ($figure.hasClass('wh-figure-full')) {

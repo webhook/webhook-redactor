@@ -13,7 +13,7 @@
   var Figure = function (redactor) {
     this.redactor = redactor;
     this.toolbar = {};
-    this.observe();
+    this.init();
   };
   Figure.prototype = {
     control: {
@@ -23,7 +23,38 @@
       remove: { classSuffix: 'delete' }
     },
     controlGroup: ['up', 'down', 'remove'],
-    observe: function () {
+    init: function () {
+      this.observeCaptions();
+    },
+    observeCaptions: function () {
+
+      // adding a BR to empty captions and citations on click will put the cursor in the expected place
+      // (centered for centered text)
+      this.redactor.$editor.on('click', 'figcaption:empty, cite:empty', $.proxy(function (event) {
+        $(event.target).prepend('<br>');
+        this.redactor.selectionEnd(event.target);
+        event.stopPropagation();
+      }, this));
+
+      // remove redactor generated <br> tags from otherwise empty figcaptions
+      $(window).on('click', $.proxy(this.cleanCaptions, this));
+
+      // prevent user from removing captions or citations with delete/backspace keys
+      this.redactor.$editor.on('keydown', $.proxy(function (event) {
+        var current         = this.redactor.getCurrent(),
+            is_empty        = !current.length,
+            is_caption_node = !!$(current).closest('figcaption, cite').length,
+            is_delete_key   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
+
+        if (is_empty && is_delete_key && is_caption_node) {
+          event.preventDefault();
+        }
+      }, this));
+    },
+    cleanCaptions: function () {
+      this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).empty();
+    },
+    observeToolbars: function () {
 
       // move toolbar into figure on mouseenter
       this.redactor.$editor.on('mouseenter', 'figure', $.proxy(function (event) {
@@ -54,6 +85,7 @@
             plugin  = this.redactor[$figure.data('type')];
         this.command(command, $figure, plugin);
       }, this));
+
     },
     getToolbar: function (type) {
 

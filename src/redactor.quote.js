@@ -12,7 +12,9 @@
   // namespacing
   var Quote = function (redactor) {
     this.redactor = redactor;
+    this.init();
   };
+
   Quote.prototype = {
     control: {
       left        : { classSuffix: 'arrow-left' },
@@ -24,6 +26,12 @@
       resize_small: { classSuffix: 'resize-small' }
     },
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resize_full', 'resize_small', 'remove'],
+    init: function () {
+      // find quotes without citations, add empty cite
+      this.redactor.$editor.find('figure[data-type=quote]:not(:has(cite))').each(function () {
+        $(this).append('<cite>');
+      });
+    },
     onShow: function ($figure, $toolbar) {
 
       $toolbar.children().removeClass('on');
