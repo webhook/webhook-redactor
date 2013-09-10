@@ -25,6 +25,7 @@
     controlGroup: ['up', 'down', 'remove'],
     init: function () {
       this.observeCaptions();
+      this.observeToolbars();
     },
     observeCaptions: function () {
 
