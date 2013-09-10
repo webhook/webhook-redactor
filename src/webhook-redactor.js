@@ -10,25 +10,16 @@
 
   // Collection method.
   $.fn.webhookRedactor = function (options) {
-    return this.redactor($.extend({}, $.webhookRedactor.options, options));
+    return this.redactor(typeof options === 'string' ? options : $.extend({}, $.webhookRedactor.options, options));
   };
 
-  // Static method.
-  $.webhookRedactor = function (options) {
-    // Override default options with passed-in options.
-    options = $.extend({}, $.webhookRedactor.options, options);
-    // Return something awesome.
-    return options;
-  };
-
-  // Static method default options.
+  // Default options.
   $.webhookRedactor.options = {
     observeImages: false,
     buttons: [
       'formatting', '|',
       'bold', 'italic', '|',
       'unorderedlist', 'orderedlist', '|',
-      // 'image', 'video', 'table',
       'link', '|',
       'html'
     ],

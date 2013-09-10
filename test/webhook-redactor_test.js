@@ -23,7 +23,10 @@
   module('jQuery#webhookRedactor', {
     // This will run before each test in this module.
     setup: function() {
-      this.elems = $('#qunit-fixture').children();
+      this.elems = $('<textarea>').appendTo('#qunit-fixture');
+    },
+    teardown: function () {
+      $('#qunit-fixture').empty();
     }
   });
 
@@ -31,6 +34,16 @@
     expect(1);
     // Not a bad test to run on collection methods.
     strictEqual(this.elems.webhookRedactor(), this.elems, 'should be chainable');
+  });
+
+  test('works as proxy to $.fn.redactor', function () {
+    expect(2);
+
+    this.elems.webhookRedactor({ focus: true });
+
+    deepEqual(this.elems.webhookRedactor('getObject'), this.elems.redactor('getObject'), 'can get Redactor object');
+    strictEqual(this.elems.webhookRedactor('getObject').opts.focus, true, 'can set Redactor options');
+
   });
 
   // test('is awesome', function() {
