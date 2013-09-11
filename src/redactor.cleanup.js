@@ -19,12 +19,9 @@
       this.removeEmptyPs();
     },
     removeEmptyPs: function () {
-      this.redactor.$editor.find('p').each(function() {
-        var $this = $(this);
-        if (!$this.html().replace(/\s|&nbsp;/g, '').length) {
-          $this.remove();
-        }
-      });
+      this.redactor.$editor.find('p').filter(function() {
+        return ! $.trim($(this).text());
+      }).remove();
     }
   };
 
