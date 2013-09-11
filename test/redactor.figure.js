@@ -20,7 +20,7 @@
       throws(block, [expected], [message])
   */
 
-  module('jQuery#webhookRedactor', {
+  module('jQuery#webhookRedactor.cleanup', {
     // This will run before each test in this module.
     setup: function() {
       this.elems = $('<textarea>').appendTo('#qunit-fixture');
@@ -30,20 +30,17 @@
     }
   });
 
-  test('basic jQuery functionality', function() {
-    expect(2);
+  test('toolbar', function () {
 
-    ok(this.elems.webhookRedactor, 'plugin is defined');
-    strictEqual(this.elems.webhookRedactor(), this.elems, 'should be chainable');
-  });
+    this.elems.val('<figure data-type="image"><img src="/gh-pages/static/img/ryancop.png"></figure>');
 
-  test('works as proxy to $.fn.redactor', function () {
-    expect(2);
+    this.elems.webhookRedactor();
+    var $figure = this.elems.webhookRedactor('getObject').$editor.find('figure');
 
-    this.elems.webhookRedactor({ focus: true });
+    ok($figure.length, 'figure present');
+    ok($figure.trigger('mouseenter').find('.wh-figure-controls').length, 'controls on mouseenter');
+    ok(!$figure.trigger('mouseleave').find('.wh-figure-controls').length, 'no controls on mouseleave');
 
-    deepEqual(this.elems.webhookRedactor('getObject'), this.elems.redactor('getObject'), 'can get Redactor object');
-    strictEqual(this.elems.webhookRedactor('getObject').opts.focus, true, 'can set Redactor options');
   });
 
 }(jQuery));
