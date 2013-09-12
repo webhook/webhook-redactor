@@ -26,6 +26,10 @@
     },
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
     init: function () {
+      this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
+      this.addCaptions();
+    },
+    addCaptions: function () {
       // find images without captions, add empty figcaption
       this.redactor.$editor.find('figure[data-type=image]:not(:has(figcaption))').each(function () {
         $(this).append('<figcaption>');

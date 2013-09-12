@@ -23,8 +23,9 @@
   module('jQuery#webhookRedactor.figure', {
     // This will run before each test in this module.
     setup: function() {
-      this.elems = $('<textarea>').appendTo('#qunit-fixture');
-      this.elems.val('<figure data-type="image"><img src="/gh-pages/static/img/ryancop.png"></figure>');
+      this.form = $('<form>').appendTo('#qunit-fixture');
+      this.elems = $('<textarea>').appendTo(this.form);
+      this.elems.val('<figure><p>I am a figure</p><figcaption></figcaption></figure>');
       this.elems.webhookRedactor();
     },
     teardown: function () {
@@ -46,9 +47,6 @@
 
   });
 
-  // test('figcaption', function i() {
-  // });
-
   test('basic commands', function () {
     var redactor = this.elems.webhookRedactor('getObject'),
         figure = redactor.figure,
@@ -63,6 +61,30 @@
 
     figure.command('remove', $figure);
     ok(!$editor.find('figure').length, 'can remove');
+  });
+
+  test('figcaption', function () {
+    var $editor = this.elems.webhookRedactor('getObject').$editor,
+        $figcaption = $editor.find('figcaption');
+
+    $figcaption.click();
+    strictEqual($figcaption.html(), '<br>', 'add br with click in');
+
+    $editor.click();
+    strictEqual($figcaption.html(), '', 'remove br with click out');
+
+    $figcaption.click();
+    strictEqual($figcaption.html(), '<br>', 'add br with click in');
+
+    $editor.blur();
+    strictEqual($figcaption.html(), '', 'remove br on blur');
+
+    $editor.closest('form').one('submit', function (event) {
+      event.preventDefault();
+    }).trigger('submit');
+
+    ok(!$editor.find('figcaption').length, 'empty figcaption removed on submit');
+
   });
 
 }(jQuery));

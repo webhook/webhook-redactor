@@ -31,7 +31,7 @@
     ],
     plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
     initCallback: function () {
-      this.$element.closest('form').on('submit', $.proxy(this.sync, this));
+      this.$element.closest('form').one('submit', $.proxy(this.sync, this));
     }
   };
 

@@ -56,7 +56,7 @@
 
     strictEqual($editor.html(), empty_paragraphs, 'dirty appended OK');
 
-    $editor.closest('form').on('submit', function (event) {
+    $editor.closest('form').one('submit', function (event) {
       event.preventDefault();
     }).trigger('submit');
 

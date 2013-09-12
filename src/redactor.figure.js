@@ -38,7 +38,9 @@
       }, this));
 
       // remove redactor generated <br> tags from otherwise empty figcaptions
-      $(window).on('click', $.proxy(this.cleanCaptions, this));
+      $(window).one('click', $.proxy(this.cleanCaptions, this));
+      this.redactor.$editor.on('blur', $.proxy(this.cleanCaptions, this));
+      this.redactor.$editor.closest('form').one('submit', $.proxy(this.clearCaptions, this));
 
       // prevent user from removing captions or citations with delete/backspace keys
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
@@ -55,12 +57,15 @@
     cleanCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).empty();
     },
+    clearCaptions: function () {
+      this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
+    },
     observeToolbars: function () {
 
       // move toolbar into figure on mouseenter
       this.redactor.$editor.on('mouseenter', 'figure', $.proxy(function (event) {
         var $figure = $(event.currentTarget),
-            type = $figure.data('type'),
+            type = $figure.data('type') || 'default',
             $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
 
         if (this.redactor[type] && this.redactor[type].onShow) {
