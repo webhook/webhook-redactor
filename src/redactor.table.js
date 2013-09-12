@@ -75,7 +75,7 @@
       this.redactor.selectionRestore();
 
       // maintain undo buffer
-      this.redactor.bufferSet();
+      this.redactor.bufferSet(this.redactor.$editor.html());
 
       var current = this.redactor.getBlock() || this.redactor.getCurrent();
       if (current) {
@@ -100,12 +100,14 @@
         case 'row_up':
         case 'row_down':
           $.proxy(function () {
-            var $row = $target.closest('tr'),
-                clone = $row.clone().find('td').text('Data').end();
+            var $row = $target.closest('tr'), i, $clone = $('<tr>');
+            for (i = 0; i < $row.children().length; i++) {
+              $('<td>').text('Data').appendTo($clone);
+            }
             if (command === 'row_up') {
-              clone.insertBefore($row);
+              $clone.insertBefore($row);
             } else {
-              clone.insertAfter($row);
+              $clone.insertAfter($row);
             }
           }, this)();
           break;
@@ -125,16 +127,18 @@
           break;
 
         case 'add_head':
-          $.proxy(function () {
-            var num_cols = $figure.find('tr').first().children().length,
-                $table = $figure.find('table'),
-                $thead = $('<thead>').prependTo($table),
-                $row = $('<tr>').appendTo($thead);
+          if (!$figure.find('table thead').length) {
+            $.proxy(function () {
+              var num_cols = $figure.find('tr').first().children().length,
+                  $table = $figure.find('table'),
+                  $thead = $('<thead>').prependTo($table),
+                  $row = $('<tr>').appendTo($thead);
 
-            for (var i = 0; i < num_cols; i++) {
-              $('<th>').text('Header').appendTo($row);
-            }
-          }, this)();
+              for (var i = 0; i < num_cols; i++) {
+                $('<th>').text('Header').appendTo($row);
+              }
+            }, this)();
+          }
           break;
 
         case 'del_head':
