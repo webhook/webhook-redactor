@@ -153,16 +153,16 @@
       $figure.find('.wh-figure-controls').appendTo(this.redactor.$box);
 
       // maintain undo buffer
-      this.redactor.bufferSet();
+      this.redactor.bufferSet(this.redactor.$editor.html());
 
       // only handle a few commands here, everything else should be taken care of from other plugins
       switch (command) {
         case 'up':
-          $figure.insertBefore($figure.prev());
+          $figure.prev().before($figure);
           break;
 
         case 'down':
-          $figure.insertAfter($figure.next());
+          $figure.next().after($figure);
           break;
 
         case 'remove':
