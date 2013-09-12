@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2013-09-11
+/*! webhook-redactor - v0.0.1 - 2013-09-12
 * https://github.com/gpbmike/webhook-redactor
 * Copyright (c) 2013 Mike Horn; Licensed MIT */
 (function ($) {
@@ -118,7 +118,9 @@
       }, this));
 
       // remove redactor generated <br> tags from otherwise empty figcaptions
-      $(window).on('click', $.proxy(this.cleanCaptions, this));
+      $(window).one('click', $.proxy(this.cleanCaptions, this));
+      this.redactor.$editor.on('blur', $.proxy(this.cleanCaptions, this));
+      this.redactor.$editor.closest('form').one('submit', $.proxy(this.clearCaptions, this));
 
       // prevent user from removing captions or citations with delete/backspace keys
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
@@ -135,12 +137,15 @@
     cleanCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).empty();
     },
+    clearCaptions: function () {
+      this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
+    },
     observeToolbars: function () {
 
       // move toolbar into figure on mouseenter
       this.redactor.$editor.on('mouseenter', 'figure', $.proxy(function (event) {
         var $figure = $(event.currentTarget),
-            type = $figure.data('type'),
+            type = $figure.data('type') || 'default',
             $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
 
         if (this.redactor[type] && this.redactor[type].onShow) {
@@ -510,6 +515,10 @@
     },
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
     init: function () {
+      this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
+      this.addCaptions();
+    },
+    addCaptions: function () {
       // find images without captions, add empty figcaption
       this.redactor.$editor.find('figure[data-type=image]:not(:has(figcaption))').each(function () {
         $(this).append('<figcaption>');
@@ -751,18 +760,77 @@
           'border', 'stripe', 'full_border'
         ]
       }, 'remove'],
+    insertTable: function (rows, columns) {
+
+      var $table_box = $('<div></div>'),
+          tableId = Math.floor(Math.random() * 99999),
+          $table = $('<table id="table' + tableId + '">').addClass('wh-table wh-table-bordered-rows full-width'),
+          $thead = $('<thead>').appendTo($table),
+          $tbody = $('<tbody>').appendTo($table),
+          i, $row, z, $column;
+
+      $row = $('<tr>').appendTo($thead);
+      for (z = 0; z < columns; z++) {
+        $('<th>Header</th>').appendTo($row);
+      }
+
+      for (i = 0; i < rows; i++) {
+        $row = $('<tr>');
+
+        for (z = 0; z < columns; z++) {
+          $column = $('<td>Data</td>');
+
+          // set the focus to the first td
+          if (i === 0 && z === 0) {
+            $column.append('<span id="selection-marker-1">' + this.redactor.opts.invisibleSpace + '</span>');
+          }
+
+          $($row).append($column);
+        }
+
+        $tbody.append($row);
+      }
+
+      $('<figure data-type="table">').append($table).appendTo($table_box);
+      var html = $table_box.html();
+
+      this.redactor.modalClose();
+      this.redactor.selectionRestore();
+
+      // maintain undo buffer
+      this.redactor.bufferSet(this.redactor.$editor.html());
+
+      var current = this.redactor.getBlock() || this.redactor.getCurrent();
+      if (current) {
+        $(current).after(html);
+      } else {
+        this.redactor.insertHtmlAdvanced(html, false);
+      }
+
+      this.redactor.selectionRestore();
+
+      var table = this.redactor.$editor.find('#table' + tableId);
+
+      table.find('span#selection-marker-1').remove();
+      table.removeAttr('id');
+
+      this.redactor.sync();
+
+    },
     command: function (command, $figure, $target) {
 
       switch (command) {
         case 'row_up':
         case 'row_down':
           $.proxy(function () {
-            var $row = $target.closest('tr'),
-                clone = $row.clone().find('td').text('Data').end();
+            var $row = $target.closest('tr'), i, $clone = $('<tr>');
+            for (i = 0; i < $row.children().length; i++) {
+              $('<td>').text('Data').appendTo($clone);
+            }
             if (command === 'row_up') {
-              clone.insertBefore($row);
+              $clone.insertBefore($row);
             } else {
-              clone.insertAfter($row);
+              $clone.insertAfter($row);
             }
           }, this)();
           break;
@@ -782,16 +850,18 @@
           break;
 
         case 'add_head':
-          $.proxy(function () {
-            var num_cols = $figure.find('tr').first().children().length,
-                $table = $figure.find('table'),
-                $thead = $('<thead>').prependTo($table),
-                $row = $('<tr>').appendTo($thead);
+          if (!$figure.find('table thead').length) {
+            $.proxy(function () {
+              var num_cols = $figure.find('tr').first().children().length,
+                  $table = $figure.find('table'),
+                  $thead = $('<thead>').prependTo($table),
+                  $row = $('<tr>').appendTo($thead);
 
-            for (var i = 0; i < num_cols; i++) {
-              $('<th>').text('Header').appendTo($row);
-            }
-          }, this)();
+              for (var i = 0; i < num_cols; i++) {
+                $('<th>').text('Header').appendTo($row);
+              }
+            }, this)();
+          }
           break;
 
         case 'del_head':
@@ -836,76 +906,17 @@
       this.table = new Table(this);
       this.buttonAddBefore('link', 'table', 'Table', $.proxy(function () {
 
+        // save cursor position
+        this.selectionSave();
+
         var callback = $.proxy(function () {
 
-          // save cursor position
-          this.selectionSave();
-
-          $('#redactor_insert_table_btn').click($.proxy(function () {
-
-            // maintain undo buffer
-            this.bufferSet();
-
-            var rows = $('#redactor_table_rows').val(),
-                columns = $('#redactor_table_columns').val(),
-                $table_box = $('<div></div>'),
-                tableId = Math.floor(Math.random() * 99999),
-                $table = $('<table id="table' + tableId + '">').addClass('wh-table wh-table-bordered-rows full-width'),
-                $thead = $('<thead>').appendTo($table),
-                $tbody = $('<tbody>').appendTo($table),
-                i, $row, z, $column;
-
-            $row = $('<tr>').appendTo($thead);
-            for (z = 0; z < columns; z++) {
-              $('<th>Header</th>').appendTo($row);
-            }
-
-            for (i = 0; i < rows; i++) {
-              $row = $('<tr>');
-
-              for (z = 0; z < columns; z++) {
-                $column = $('<td>Data</td>');
-
-                // set the focus to the first td
-                if (i === 0 && z === 0) {
-                  $column.append('<span id="selection-marker-1">' + this.opts.invisibleSpace + '</span>');
-                }
-
-                $($row).append($column);
-              }
-
-              $tbody.append($row);
-            }
-
-            $('<figure data-type="table">').append($table).appendTo($table_box);
-            var html = $table_box.html();
-
-            this.modalClose();
-            this.selectionRestore();
-
-            var current = this.getBlock() || this.getCurrent();
-            if (current) {
-              $(current).after(html);
-            } else {
-              this.insertHtmlAdvanced(html, false);
-
-            }
-
-            this.selectionRestore();
-
-            var table = this.$editor.find('#table' + tableId);
-            this.tableObserver(table);
-            this.buttonActiveObserver();
-
-            table.find('span#selection-marker-1').remove();
-            table.removeAttr('id');
-
-            this.sync();
-
+          $('#redactor_insert_table_btn').on('click', $.proxy(function () {
+            this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
           }, this));
 
           setTimeout(function () {
-            $('#redactor_table_rows').focus();
+            $('#redactor_table_rows').trigger('focus');
           }, 200);
 
         }, this);
@@ -1080,7 +1091,7 @@
     ],
     plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
     initCallback: function () {
-      this.$element.closest('form').on('submit', $.proxy(this.sync, this));
+      this.$element.closest('form').one('submit', $.proxy(this.sync, this));
     }
   };
 
