@@ -44,8 +44,7 @@
   });
 
   test('controls - default', function () {
-    var $figure = this.$editor.find('figure').trigger('mouseenter'),
-        $controls = $figure.find('.wh-figure-controls');
+    var $controls = this.$figure.trigger('mouseenter').find('.wh-figure-controls');
     ok($controls.length, 'controls on mouseenter');
     ok(!$controls.find('.on').length, 'none of the controls are on');
     strictEqual($controls.find('.wh-figure-controls-small').css('display'), 'none', 'hide small control');
@@ -54,18 +53,44 @@
     strictEqual($controls.find('.wh-figure-controls-resize-small').css('display'), 'inline', 'show resize-small control');
   });
 
-  test('commands', function () {
+  test('commands - left', function () {
+
     this.redactor.figure.command('left', this.$figure, this.redactor.image);
     ok(this.$figure.hasClass('wh-figure-left'), 'has left class after left command');
+
+    this.$figure.trigger('mouseenter');
+    var $controls = this.$figure.find('.wh-figure-controls');
+    ok($controls.find('.wh-figure-controls-arrow-left').hasClass('on'), 'left control active after left command');
+    ok(!$controls.find('.wh-figure-controls-arrow-right').hasClass('on'), 'right control inactive after left command');
+  });
+
+  test('commands - right', function () {
 
     this.redactor.figure.command('right', this.$figure, this.redactor.image);
     ok(this.$figure.hasClass('wh-figure-right'), 'has right class after right command');
 
+    this.$figure.trigger('mouseenter');
+    var $controls = this.$figure.find('.wh-figure-controls');
+    ok($controls.find('.wh-figure-controls-arrow-right').hasClass('on'), 'right control active after right command');
+    ok(!$controls.find('.wh-figure-controls-arrow-left').hasClass('on'), 'left control inactive after right command');
+  });
+
+  test('commands - sizes', function () {
+    var $controls;
+
     this.redactor.figure.command('small', this.$figure, this.redactor.image);
     ok(this.$figure.hasClass('wh-figure-small'), 'has small class after small command');
 
+    this.$figure.trigger('mouseenter');
+    $controls = this.$figure.find('.wh-figure-controls');
+    ok($controls.find('.wh-figure-controls-small').hasClass('on'), 'small control active after small command');
+
     this.redactor.figure.command('medium', this.$figure, this.redactor.image);
     ok(this.$figure.hasClass('wh-figure-medium'), 'has medium class after medium command');
+
+    this.$figure.trigger('mouseenter');
+    $controls = this.$figure.find('.wh-figure-controls');
+    ok($controls.find('.wh-figure-controls-medium').hasClass('on'), 'medium control active after small command');
 
     this.redactor.figure.command('resize_full', this.$figure, this.redactor.image);
     ok(!this.$figure.hasClass('wh-figure-left'), 'remove left class after full command');
