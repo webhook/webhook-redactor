@@ -98,7 +98,7 @@
         var $target = $(this.redactor.getBlock() || this.redactor.getCurrent());
 
         if ($target.is('blockquote')) {
-          $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>Type to add quote credit (optional)</cite>');
+          $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>');
         } else {
           $target.closest('figure').before($target).remove();
         }
