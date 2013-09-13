@@ -90,22 +90,12 @@
           break;
       }
 
-    }
-  };
+    },
+    toggle: function () {
 
-  // Hook up plugin to Redactor.
-  window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.quote = {
-    init: function () {
-      this.quote = new Quote(this);
-      this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(function () {
+        this.redactor.formatQuote();
 
-        // maintain undo buffer
-        this.bufferSet();
-
-        this.formatQuote();
-
-        var $target = $(this.getBlock() || this.getCurrent());
+        var $target = $(this.redactor.getBlock() || this.redactor.getCurrent());
 
         if ($target.is('blockquote')) {
           $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>Type to add quote credit (optional)</cite>');
@@ -113,9 +103,17 @@
           $target.closest('figure').before($target).remove();
         }
 
-        this.sync();
+        this.redactor.sync();
 
-      }, this));
+      }
+  };
+
+  // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
+  window.RedactorPlugins.quote = {
+    init: function () {
+      this.quote = new Quote(this);
+      this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(this.quote.toggle, this.quote));
     }
   };
 
