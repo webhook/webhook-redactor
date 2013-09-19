@@ -41,7 +41,7 @@
 
       var $table_box = $('<div></div>'),
           tableId = Math.floor(Math.random() * 99999),
-          $table = $('<table id="table' + tableId + '">').addClass('wh-table wh-table-bordered-rows full-width'),
+          $table = $('<table id="table' + tableId + '">'),
           $thead = $('<thead>').appendTo($table),
           $tbody = $('<tbody>').appendTo($table),
           i, $row, z, $column;
@@ -68,7 +68,7 @@
         $tbody.append($row);
       }
 
-      $('<figure data-type="table">').append($table).appendTo($table_box);
+      $('<figure data-type="table">').addClass('wh-table wh-table-bordered-rows').append($table).appendTo($table_box);
       var html = $table_box.html();
 
       this.redactor.modalClose();
@@ -162,15 +162,15 @@
           break;
 
         case 'border':
-          $figure.find('table').removeClass('wh-table-bordered-all').toggleClass('wh-table-bordered-rows');
+          $figure.removeClass('wh-table-bordered-all').toggleClass('wh-table-bordered-rows');
           break;
 
         case 'stripe':
-          $figure.find('table').toggleClass('wh-table-striped');
+          $figure.toggleClass('wh-table-striped');
           break;
 
         case 'full_border':
-          $figure.find('table').removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
+          $figure.removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
           break;
       }
     }

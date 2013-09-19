@@ -10,6 +10,7 @@
 
   // Collection method.
   $.fn.webhookRedactor = function (options) {
+    // Act as proxy to redactor.
     return this.redactor(typeof options === 'string' ? options : $.extend({}, $.webhookRedactor.options, options));
   };
 
@@ -21,6 +22,7 @@
 
   // Static method default options.
   $.webhookRedactor.options = {
+    // We roll our own image plugin.
     observeImages: false,
     buttons: [
       'formatting', '|',
@@ -29,9 +31,15 @@
       'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
+    // Custom plugins.
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote', 'markdown'],
+    // Sync textarea with editor before submission.
     initCallback: function () {
       this.$element.closest('form').one('submit', $.proxy(this.sync, this));
+    },
+    // Expose change event.
+    changeCallback: function () {
+      this.$editor.trigger('mutate');
     }
   };
 

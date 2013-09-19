@@ -1962,14 +1962,9 @@ a:hover {
 }
 
 h1, .rst-content .topic-title, .redactor_format_h1, h2, .redactor_format_h2, h3, .redactor_format_h3, h4, .redactor_format_h4, h5, .redactor_format_h5, h6, legend {
-  clear: both;
   margin-top: 0;
   font-weight: bold;
   font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Helvetica Neue", "HelveticaNeue", Arial, sans-serif;
-}
-
-h1, .rst-content .topic-title, .redactor_format_h1 {
-  clear: none;
 }
 
 p {
@@ -2258,7 +2253,8 @@ a.wh-text-neutral:hover {
 }
 
 .wh-body-for-nav {
-  background: url("/static/img/body_bg_1x1.png") left repeat-y #fcfcfc;
+  background: left repeat-y #fcfcfc;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxOERBMTRGRDBFMUUxMUUzODUwMkJCOThDMEVFNURFMCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxOERBMTRGRTBFMUUxMUUzODUwMkJCOThDMEVFNURFMCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjE4REExNEZCMEUxRTExRTM4NTAyQkI5OEMwRUU1REUwIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjE4REExNEZDMEUxRTExRTM4NTAyQkI5OEMwRUU1REUwIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+EwrlwAAAAA5JREFUeNpiMDU0BAgwAAE2AJgB9BnaAAAAAElFTkSuQmCC);
   background-size: 300px 1px;
 }
 
@@ -2462,39 +2458,40 @@ a.wh-text-neutral:hover {
   left: 11px;
 }
 
-.wh-table {
+.wh-table table {
+  width: 100%;
   /* Remove spacing between table cells (from Normalize.css) */
   border-collapse: collapse;
   border-spacing: 0;
   empty-cells: show;
   margin-bottom: 24px;
 }
-.wh-table caption {
+.wh-table table caption {
   color: black;
   font: italic 85%/1 arial, sans-serif;
   padding: 1em 0;
   text-align: center;
 }
-.wh-table td, .wh-table th {
+.wh-table table td, .wh-table table th {
   font-size: 90%;
   margin: 0;
   overflow: visible;
   padding: 8px 16px;
 }
-.wh-table td:first-child, .wh-table th:first-child {
+.wh-table table td:first-child, .wh-table table th:first-child {
   border-left-width: 0;
 }
-.wh-table thead {
+.wh-table table thead {
   background: #e2e5e1;
   color: black;
   text-align: left;
   vertical-align: bottom;
   white-space: nowrap;
 }
-.wh-table thead th {
+.wh-table table thead th {
   font-weight: 500;
 }
-.wh-table td {
+.wh-table table td {
   background-color: transparent;
   vertical-align: middle;
 }
@@ -2535,18 +2532,18 @@ a.wh-text-neutral:hover {
 
 /* nth-child selector for modern browsers */
 /* BORDERED TABLES */
-.wh-table-bordered-all {
+.wh-table-bordered-all table {
   border: 1px solid #e2e5e1;
 }
-.wh-table-bordered-all td {
+.wh-table-bordered-all table td {
   border-bottom: 1px solid #e2e5e1;
   border-left: 1px solid #e2e5e1;
 }
-.wh-table-bordered-all tbody > tr:last-child td {
+.wh-table-bordered-all table tbody > tr:last-child td {
   border-bottom-width: 0;
 }
 
-.wh-table-bordered {
+.wh-table-bordered table {
   border: 1px solid #e2e5e1;
 }
 
@@ -2767,7 +2764,7 @@ input[type="button"], input[type="reset"], input[type="submit"] {
 }
 input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="date"], input[type="month"], input[type="time"], input[type="datetime"], input[type="datetime-local"], input[type="week"], input[type="number"], input[type="search"], input[type="tel"], input[type="color"] {
   -webkit-appearance: none;
-  padding: 0.5em 0.625em;
+  padding: 6px;
   display: inline-block;
   border: 1px solid #cccccc;
   font-size: 80%;
@@ -3387,6 +3384,10 @@ li.wh-form-gallery-edit .arrow {
   border: 0;
 }
 
+.btn-small {
+  font-size: 80%;
+}
+
 .btn-info {
   background-color: #2980b9 !important;
 }
@@ -3415,6 +3416,13 @@ li.wh-form-gallery-edit .arrow {
 }
 .btn-warning:hover {
   background-color: #e98b39 !important;
+}
+
+.btn-invert {
+  background-color: #343131;
+}
+.btn-invert:hover {
+  background-color: #413d3d !important;
 }
 
 .btn-link {
