@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2013-09-12
+/*! webhook-redactor - v0.0.1 - 2013-09-19
 * https://github.com/gpbmike/webhook-redactor
 * Copyright (c) 2013 Mike Horn; Licensed MIT */
 (function ($) {
@@ -517,11 +517,20 @@
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
       this.addCaptions();
+      this.observe();
     },
     addCaptions: function () {
       // find images without captions, add empty figcaption
       this.redactor.$editor.find('figure[data-type=image]:not(:has(figcaption))').each(function () {
         $(this).append('<figcaption>');
+      });
+    },
+    observe: function () {
+      this.redactor.$editor.on('mutate', $.proxy(this.orphanCheck, this));
+    },
+    orphanCheck: function () {
+      this.redactor.$editor.find('*:not(figure) img').each(function () {
+        $('<figure data-type="image"><figcaption></figcaption></figure>').insertAfter(this).prepend(this);
       });
     },
     onShow: function ($figure, $toolbar) {
@@ -618,6 +627,77 @@
   "use strict";
 
   // namespacing
+  var Markdown = function (redactor) {
+    this.redactor = redactor;
+  };
+  Markdown.prototype = {
+    insert: function (markdown_string) {
+
+      var html = marked(markdown_string);
+
+      this.redactor.modalClose();
+      this.redactor.selectionRestore();
+
+      // maintain undo buffer
+      this.redactor.bufferSet(this.redactor.$editor.html());
+
+      var current = this.redactor.getBlock() || this.redactor.getCurrent();
+      if (current) {
+        $(current).after(html);
+      } else {
+        this.redactor.insertHtmlAdvanced(html, false);
+      }
+
+      this.redactor.selectionRestore();
+
+      this.redactor.sync();
+
+    }
+  };
+
+  // Hook up plugin to Redactor.
+  window.RedactorPlugins = window.RedactorPlugins || {};
+  window.RedactorPlugins.markdown = {
+    init: function () {
+      this.markdown = new Markdown(this);
+      this.buttonAddAfter('html', 'html', 'Markdown', $.proxy(function () {
+
+        // save cursor position
+        this.selectionSave();
+
+        var callback = $.proxy(function () {
+
+          $('#redactor_insert_table_btn').on('click', $.proxy(function () {
+            this.markdown.insert($('#redactor_markdown_text').val());
+          }, this));
+
+          setTimeout(function () {
+            $('#redactor_markdown_text').trigger('focus');
+          }, 200);
+
+        }, this);
+
+        var modal = String() +
+          '<section>' +
+            '<label>Markdown Text</label>' +
+            '<textarea rows="5" id="redactor_markdown_text"></textarea>' +
+          '</section>' +
+          '<footer>' +
+            '<button class="redactor_modal_btn redactor_btn_modal_close">' + this.opts.curLang.cancel + '</button>' +
+            '<input type="button" name="upload" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '">' +
+          '</footer>';
+
+        this.modalInit('Insert Markdown', modal, 500, callback);
+      }, this));
+    }
+  };
+
+}(jQuery));
+
+(function ($) {
+  "use strict";
+
+  // namespacing
   var Quote = function (redactor) {
     this.redactor = redactor;
     this.init();
@@ -698,7 +778,22 @@
           break;
       }
 
-    }
+    },
+    toggle: function () {
+
+        this.redactor.formatQuote();
+
+        var $target = $(this.redactor.getBlock() || this.redactor.getCurrent());
+
+        if ($target.is('blockquote')) {
+          $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>');
+        } else {
+          $target.closest('figure').before($target).remove();
+        }
+
+        this.redactor.sync();
+
+      }
   };
 
   // Hook up plugin to Redactor.
@@ -706,24 +801,7 @@
   window.RedactorPlugins.quote = {
     init: function () {
       this.quote = new Quote(this);
-      this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(function () {
-
-        // maintain undo buffer
-        this.bufferSet();
-
-        this.formatQuote();
-
-        var $target = $(this.getBlock() || this.getCurrent());
-
-        if ($target.is('blockquote')) {
-          $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>Type to add quote credit (optional)</cite>');
-        } else {
-          $target.closest('figure').before($target).remove();
-        }
-
-        this.sync();
-
-      }, this));
+      this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(this.quote.toggle, this.quote));
     }
   };
 
@@ -764,7 +842,7 @@
 
       var $table_box = $('<div></div>'),
           tableId = Math.floor(Math.random() * 99999),
-          $table = $('<table id="table' + tableId + '">').addClass('wh-table wh-table-bordered-rows full-width'),
+          $table = $('<table id="table' + tableId + '">'),
           $thead = $('<thead>').appendTo($table),
           $tbody = $('<tbody>').appendTo($table),
           i, $row, z, $column;
@@ -791,7 +869,7 @@
         $tbody.append($row);
       }
 
-      $('<figure data-type="table">').append($table).appendTo($table_box);
+      $('<figure data-type="table">').addClass('wh-table wh-table-bordered-rows').append($table).appendTo($table_box);
       var html = $table_box.html();
 
       this.redactor.modalClose();
@@ -885,15 +963,15 @@
           break;
 
         case 'border':
-          $figure.find('table').removeClass('wh-table-bordered-all').toggleClass('wh-table-bordered-rows');
+          $figure.removeClass('wh-table-bordered-all').toggleClass('wh-table-bordered-rows');
           break;
 
         case 'stripe':
-          $figure.find('table').toggleClass('wh-table-striped');
+          $figure.toggleClass('wh-table-striped');
           break;
 
         case 'full_border':
-          $figure.find('table').removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
+          $figure.removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
           break;
       }
     }
@@ -1070,6 +1148,7 @@
 
   // Collection method.
   $.fn.webhookRedactor = function (options) {
+    // Act as proxy to redactor.
     return this.redactor(typeof options === 'string' ? options : $.extend({}, $.webhookRedactor.options, options));
   };
 
@@ -1081,6 +1160,7 @@
 
   // Static method default options.
   $.webhookRedactor.options = {
+    // We roll our own image plugin.
     observeImages: false,
     buttons: [
       'formatting', '|',
@@ -1089,9 +1169,15 @@
       'link', '|',
       'html'
     ],
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
+    // Custom plugins.
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote', 'markdown'],
+    // Sync textarea with editor before submission.
     initCallback: function () {
       this.$element.closest('form').one('submit', $.proxy(this.sync, this));
+    },
+    // Expose change event.
+    changeCallback: function () {
+      this.$editor.trigger('mutate');
     }
   };
 
