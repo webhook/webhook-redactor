@@ -118,7 +118,7 @@
       }, this));
 
       // remove redactor generated <br> tags from otherwise empty figcaptions
-      $(window).one('click', $.proxy(this.cleanCaptions, this));
+      $(window).on('click', $.proxy(this.cleanCaptions, this));
       this.redactor.$editor.on('blur', $.proxy(this.cleanCaptions, this));
       this.redactor.$editor.closest('form').one('submit', $.proxy(this.clearCaptions, this));
 
@@ -715,9 +715,24 @@
     },
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resize_full', 'resize_small', 'remove'],
     init: function () {
+      this.redactor.$editor.on('focus', $.proxy(this.addCites, this));
+      this.addCites();
+      this.observe();
+    },
+    addCites: function () {
       // find quotes without citations, add empty cite
-      this.redactor.$editor.find('figure[data-type=quote]:not(:has(cite))').each(function () {
+      this.redactor.$editor.find('figure[data-type=quote] blockquote:not(:has(cite))').each(function () {
         $(this).append('<cite>');
+      });
+    },
+    observe: function () {
+      this.redactor.$editor.on('mutate', $.proxy(this.orphanCheck, this));
+    },
+    orphanCheck: function () {
+      this.redactor.$editor.find('blockquote').filter(function () {
+        return !$(this).parents('figure').length;
+      }).each(function () {
+        $('<figure data-type="quote">').insertBefore(this).prepend($(this).append('<cite>'));
       });
     },
     onShow: function ($figure, $toolbar) {
@@ -789,6 +804,7 @@
           $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>');
         } else {
           $target.closest('figure').before($target).remove();
+          $target.find('cite').remove();
         }
 
         this.redactor.sync();
