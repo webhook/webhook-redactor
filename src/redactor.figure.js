@@ -38,7 +38,7 @@
       }, this));
 
       // remove redactor generated <br> tags from otherwise empty figcaptions
-      $(window).one('click', $.proxy(this.cleanCaptions, this));
+      $(window).on('click', $.proxy(this.cleanCaptions, this));
       this.redactor.$editor.on('blur', $.proxy(this.cleanCaptions, this));
       this.redactor.$editor.closest('form').one('submit', $.proxy(this.clearCaptions, this));
 
