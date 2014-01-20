@@ -1,6 +1,6 @@
-/*! webhook-redactor - v0.0.1 - 2013-09-19
+/*! webhook-redactor - v0.0.1 - 2014-01-20
 * https://github.com/gpbmike/webhook-redactor
-* Copyright (c) 2013 Mike Horn; Licensed MIT */
+* Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
   "use strict";
 
@@ -155,15 +155,15 @@
 
       // remove toolbar from figure on mouseleave
       this.redactor.$editor.on('mouseleave', 'figure', $.proxy(function (event) {
-        $(event.currentTarget).find('.wh-figure-controls').appendTo(this.redactor.$box);
+        $(event.currentTarget).find('.wy-figure-controls').appendTo(this.redactor.$box);
       }, this));
 
       // before clicking a command, make sure we save the current node within the editor
-      this.redactor.$editor.on('mousedown', '.wh-figure-controls', $.proxy(function () {
+      this.redactor.$editor.on('mousedown', '.wy-figure-controls', $.proxy(function () {
         this.current = this.redactor.getCurrent();
       }, this));
 
-      this.redactor.$editor.on('click', '.wh-figure-controls span, .wh-figure-controls a', $.proxy(function (event) {
+      this.redactor.$editor.on('click', '.wy-figure-controls span, .wy-figure-controls a', $.proxy(function (event) {
         event.stopPropagation();
         var $target = $(event.currentTarget),
             command = $target.data('command'),
@@ -182,7 +182,7 @@
       var controlGroup = (this.redactor[type] && this.redactor[type].controlGroup) || this.controlGroup,
           controls = $.extend({}, this.control, (this.redactor[type] && this.redactor[type].control) || {}),
           $controls = this.buildControls(controlGroup, controls),
-          $toolbar = $('<div class="wh-figure-controls">').append($controls);
+          $toolbar = $('<div class="wy-figure-controls">').append($controls);
 
       return this.toolbar[type] = $toolbar;
     },
@@ -196,7 +196,7 @@
         if (typeof command === 'string') {
           control = controls[command];
           $controls = $controls.add($('<span>', {
-            'class': 'wh-figure-controls-' + control.classSuffix,
+            'class': 'wy-figure-controls-' + control.classSuffix,
             'text': control.text
           }).data({
             command: command,
@@ -207,11 +207,11 @@
         else if (typeof command === 'object') {
           $.each(command, $.proxy(function (text, commands) {
             var dropdown = $('<span>', {
-              'class': 'wh-figure-controls-table wh-dropdown',
+              'class': 'wy-figure-controls-table wy-dropdown',
               'text': ' ' + text
             });
             $('<span class="caret">').appendTo(dropdown);
-            var list = $('<dl class="wh-dropdown-menu wh-dropdown-bubble wh-dropdown-arrow wh-dropdown-arrow-left">').appendTo(dropdown);
+            var list = $('<dl class="wy-dropdown-menu wy-dropdown-bubble wy-dropdown-arrow wy-dropdown-arrow-left">').appendTo(dropdown);
             $.each(commands, $.proxy(function (index, command) {
               control = controls[command];
               if (command === '|') {
@@ -235,7 +235,7 @@
     command: function (command, $figure, plugin) {
 
       // move the toolbar before carrying out the command so it doesn't break when undoing/redoing
-      $figure.find('.wh-figure-controls').appendTo(this.redactor.$box);
+      $figure.find('.wy-figure-controls').appendTo(this.redactor.$box);
 
       // maintain undo buffer
       this.redactor.bufferSet(this.redactor.$editor.html());
@@ -537,34 +537,34 @@
 
       $toolbar.children().removeClass('on');
 
-      if ($figure.hasClass('wh-figure-small')) {
-        $toolbar.find('.wh-figure-controls-small').show().addClass('on');
-        $toolbar.find('.wh-figure-controls-medium').show();
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      if ($figure.hasClass('wy-figure-small')) {
+        $toolbar.find('.wy-figure-controls-small').show().addClass('on');
+        $toolbar.find('.wy-figure-controls-medium').show();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
 
-      else if ($figure.hasClass('wh-figure-medium')) {
-        $toolbar.find('.wh-figure-controls-small').show();
-        $toolbar.find('.wh-figure-controls-medium').show().addClass('on');
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      else if ($figure.hasClass('wy-figure-medium')) {
+        $toolbar.find('.wy-figure-controls-small').show();
+        $toolbar.find('.wy-figure-controls-medium').show().addClass('on');
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
 
       else {
-        $toolbar.find('.wh-figure-controls-small').hide();
-        $toolbar.find('.wh-figure-controls-medium').hide();
-        $toolbar.find('.wh-figure-controls-large').hide();
-        $toolbar.find('.wh-figure-controls-resize-full').hide();
-        $toolbar.find('.wh-figure-controls-resize-small').show();
+        $toolbar.find('.wy-figure-controls-small').hide();
+        $toolbar.find('.wy-figure-controls-medium').hide();
+        $toolbar.find('.wy-figure-controls-large').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').hide();
+        $toolbar.find('.wy-figure-controls-resize-small').show();
       }
 
-      if ($figure.hasClass('wh-figure-right')) {
-        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
+      if ($figure.hasClass('wy-figure-right')) {
+        $toolbar.find('.wy-figure-controls-arrow-right').addClass('on');
       }
 
-      if ($figure.hasClass('wh-figure-left')) {
-        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
+      if ($figure.hasClass('wy-figure-left')) {
+        $toolbar.find('.wy-figure-controls-arrow-left').addClass('on');
       }
 
     },
@@ -574,7 +574,7 @@
         if (!$.isArray(suffixArray)) {
           suffixArray = [suffixArray];
         }
-        var base_class = (dot ? '.' : '') + 'wh-figure-' + (prefix || '');
+        var base_class = (dot ? '.' : '') + 'wy-figure-' + (prefix || '');
         return base_class + suffixArray.join((separator || ' ') + base_class);
       };
 
@@ -586,16 +586,16 @@
         case 'left':
         case 'right':
           changeSuffix(['left', 'right'], command);
-          if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
-            $figure.addClass('wh-figure-medium');
+          if (!$figure.hasClass('wy-figure-medium') && !$figure.hasClass('wy-figure-small')) {
+            $figure.addClass('wy-figure-medium');
           }
           break;
 
         case 'small':
         case 'medium':
           changeSuffix(['small', 'medium', 'large'], command);
-          if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
-            $figure.addClass('wh-figure-left');
+          if (!$figure.hasClass('wy-figure-left') && !$figure.hasClass('wy-figure-right')) {
+            $figure.addClass('wy-figure-left');
           }
           break;
 
@@ -739,25 +739,25 @@
 
       $toolbar.children().removeClass('on');
 
-      if ($figure.hasClass('wh-figure-medium')) {
-        $toolbar.find('.wh-figure-controls-medium').addClass('on');
-      } else if ($figure.hasClass('wh-figure-large')) {
-        $toolbar.find('.wh-figure-controls-large').addClass('on');
+      if ($figure.hasClass('wy-figure-medium')) {
+        $toolbar.find('.wy-figure-controls-medium').addClass('on');
+      } else if ($figure.hasClass('wy-figure-large')) {
+        $toolbar.find('.wy-figure-controls-large').addClass('on');
       } else {
-        $toolbar.find('.wh-figure-controls-small').addClass('on');
+        $toolbar.find('.wy-figure-controls-small').addClass('on');
       }
 
-      if ($figure.hasClass('wh-figure-left')) {
-        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-      } else if ($figure.hasClass('wh-figure-right')) {
-        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
-        $toolbar.find('.wh-figure-controls-resize-full').show();
+      if ($figure.hasClass('wy-figure-left')) {
+        $toolbar.find('.wy-figure-controls-arrow-left').addClass('on');
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+      } else if ($figure.hasClass('wy-figure-right')) {
+        $toolbar.find('.wy-figure-controls-arrow-right').addClass('on');
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
       } else {
-        $toolbar.find('.wh-figure-controls-resize-small').show();
-        $toolbar.find('.wh-figure-controls-resize-full').hide();
+        $toolbar.find('.wy-figure-controls-resize-small').show();
+        $toolbar.find('.wy-figure-controls-resize-full').hide();
       }
 
     },
@@ -765,31 +765,31 @@
 
       switch (command) {
         case 'left':
-          $figure.removeClass('wh-figure-right').addClass('wh-figure-left');
+          $figure.removeClass('wy-figure-right').addClass('wy-figure-left');
           break;
 
         case 'right':
-          $figure.removeClass('wh-figure-left').addClass('wh-figure-right');
+          $figure.removeClass('wy-figure-left').addClass('wy-figure-right');
           break;
 
         case 'resize_full':
-          $figure.removeClass('wh-figure-left wh-figure-right');
+          $figure.removeClass('wy-figure-left wy-figure-right');
           break;
 
         case 'resize_small':
-          $figure.addClass('wh-figure-left');
+          $figure.addClass('wy-figure-left');
           break;
 
         case 'small':
-          $figure.removeClass('wh-figure-medium wh-figure-large').addClass('wh-figure-small');
+          $figure.removeClass('wy-figure-medium wy-figure-large').addClass('wy-figure-small');
           break;
 
         case 'medium':
-          $figure.removeClass('wh-figure-small wh-figure-large').addClass('wh-figure-medium');
+          $figure.removeClass('wy-figure-small wy-figure-large').addClass('wy-figure-medium');
           break;
 
         case 'large':
-          $figure.removeClass('wh-figure-small wh-figure-medium').addClass('wh-figure-large');
+          $figure.removeClass('wy-figure-small wy-figure-medium').addClass('wy-figure-large');
           break;
       }
 
@@ -885,7 +885,7 @@
         $tbody.append($row);
       }
 
-      $('<figure data-type="table">').addClass('wh-table wh-table-bordered-rows').append($table).appendTo($table_box);
+      $('<figure data-type="table">').addClass('wy-table wy-table-bordered-rows').append($table).appendTo($table_box);
       var html = $table_box.html();
 
       this.redactor.modalClose();
@@ -979,15 +979,15 @@
           break;
 
         case 'border':
-          $figure.removeClass('wh-table-bordered-all').toggleClass('wh-table-bordered-rows');
+          $figure.removeClass('wy-table-bordered-all').toggleClass('wy-table-bordered-rows');
           break;
 
         case 'stripe':
-          $figure.toggleClass('wh-table-striped');
+          $figure.toggleClass('wy-table-striped');
           break;
 
         case 'full_border':
-          $figure.removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
+          $figure.removeClass('wy-table-bordered-rows').toggleClass('wy-table-bordered-all');
           break;
       }
     }
@@ -1058,20 +1058,20 @@
     },
     onShow: function ($figure, $toolbar) {
 
-      if ($figure.hasClass('wh-figure-full')) {
-        $toolbar.find('.wh-figure-controls-resize-full').hide();
-        $toolbar.find('.wh-figure-controls-resize-small').show();
+      if ($figure.hasClass('wy-figure-full')) {
+        $toolbar.find('.wy-figure-controls-resize-full').hide();
+        $toolbar.find('.wy-figure-controls-resize-small').show();
       } else {
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
 
     },
     command: function (command, $figure) {
       if (command === 'resize_full') {
-        $figure.addClass('wh-figure-full');
+        $figure.addClass('wy-figure-full');
       } else if (command === 'resize_small') {
-        $figure.removeClass('wh-figure-full');
+        $figure.removeClass('wy-figure-full');
       }
     }
   };
