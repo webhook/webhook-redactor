@@ -51,25 +51,25 @@
 
       $toolbar.children().removeClass('on');
 
-      if ($figure.hasClass('wh-figure-medium')) {
-        $toolbar.find('.wh-figure-controls-medium').addClass('on');
-      } else if ($figure.hasClass('wh-figure-large')) {
-        $toolbar.find('.wh-figure-controls-large').addClass('on');
+      if ($figure.hasClass('wy-figure-medium')) {
+        $toolbar.find('.wy-figure-controls-medium').addClass('on');
+      } else if ($figure.hasClass('wy-figure-large')) {
+        $toolbar.find('.wy-figure-controls-large').addClass('on');
       } else {
-        $toolbar.find('.wh-figure-controls-small').addClass('on');
+        $toolbar.find('.wy-figure-controls-small').addClass('on');
       }
 
-      if ($figure.hasClass('wh-figure-left')) {
-        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-      } else if ($figure.hasClass('wh-figure-right')) {
-        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
-        $toolbar.find('.wh-figure-controls-resize-full').show();
+      if ($figure.hasClass('wy-figure-left')) {
+        $toolbar.find('.wy-figure-controls-arrow-left').addClass('on');
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+      } else if ($figure.hasClass('wy-figure-right')) {
+        $toolbar.find('.wy-figure-controls-arrow-right').addClass('on');
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
       } else {
-        $toolbar.find('.wh-figure-controls-resize-small').show();
-        $toolbar.find('.wh-figure-controls-resize-full').hide();
+        $toolbar.find('.wy-figure-controls-resize-small').show();
+        $toolbar.find('.wy-figure-controls-resize-full').hide();
       }
 
     },
@@ -77,31 +77,31 @@
 
       switch (command) {
         case 'left':
-          $figure.removeClass('wh-figure-right').addClass('wh-figure-left');
+          $figure.removeClass('wy-figure-right').addClass('wy-figure-left');
           break;
 
         case 'right':
-          $figure.removeClass('wh-figure-left').addClass('wh-figure-right');
+          $figure.removeClass('wy-figure-left').addClass('wy-figure-right');
           break;
 
         case 'resize_full':
-          $figure.removeClass('wh-figure-left wh-figure-right');
+          $figure.removeClass('wy-figure-left wy-figure-right');
           break;
 
         case 'resize_small':
-          $figure.addClass('wh-figure-left');
+          $figure.addClass('wy-figure-left');
           break;
 
         case 'small':
-          $figure.removeClass('wh-figure-medium wh-figure-large').addClass('wh-figure-small');
+          $figure.removeClass('wy-figure-medium wy-figure-large').addClass('wy-figure-small');
           break;
 
         case 'medium':
-          $figure.removeClass('wh-figure-small wh-figure-large').addClass('wh-figure-medium');
+          $figure.removeClass('wy-figure-small wy-figure-large').addClass('wy-figure-medium');
           break;
 
         case 'large':
-          $figure.removeClass('wh-figure-small wh-figure-medium').addClass('wh-figure-large');
+          $figure.removeClass('wy-figure-small wy-figure-medium').addClass('wy-figure-large');
           break;
       }
 

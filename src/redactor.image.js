@@ -48,34 +48,34 @@
 
       $toolbar.children().removeClass('on');
 
-      if ($figure.hasClass('wh-figure-small')) {
-        $toolbar.find('.wh-figure-controls-small').show().addClass('on');
-        $toolbar.find('.wh-figure-controls-medium').show();
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      if ($figure.hasClass('wy-figure-small')) {
+        $toolbar.find('.wy-figure-controls-small').show().addClass('on');
+        $toolbar.find('.wy-figure-controls-medium').show();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
 
-      else if ($figure.hasClass('wh-figure-medium')) {
-        $toolbar.find('.wh-figure-controls-small').show();
-        $toolbar.find('.wh-figure-controls-medium').show().addClass('on');
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
+      else if ($figure.hasClass('wy-figure-medium')) {
+        $toolbar.find('.wy-figure-controls-small').show();
+        $toolbar.find('.wy-figure-controls-medium').show().addClass('on');
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
 
       else {
-        $toolbar.find('.wh-figure-controls-small').hide();
-        $toolbar.find('.wh-figure-controls-medium').hide();
-        $toolbar.find('.wh-figure-controls-large').hide();
-        $toolbar.find('.wh-figure-controls-resize-full').hide();
-        $toolbar.find('.wh-figure-controls-resize-small').show();
+        $toolbar.find('.wy-figure-controls-small').hide();
+        $toolbar.find('.wy-figure-controls-medium').hide();
+        $toolbar.find('.wy-figure-controls-large').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').hide();
+        $toolbar.find('.wy-figure-controls-resize-small').show();
       }
 
-      if ($figure.hasClass('wh-figure-right')) {
-        $toolbar.find('.wh-figure-controls-arrow-right').addClass('on');
+      if ($figure.hasClass('wy-figure-right')) {
+        $toolbar.find('.wy-figure-controls-arrow-right').addClass('on');
       }
 
-      if ($figure.hasClass('wh-figure-left')) {
-        $toolbar.find('.wh-figure-controls-arrow-left').addClass('on');
+      if ($figure.hasClass('wy-figure-left')) {
+        $toolbar.find('.wy-figure-controls-arrow-left').addClass('on');
       }
 
     },
@@ -85,7 +85,7 @@
         if (!$.isArray(suffixArray)) {
           suffixArray = [suffixArray];
         }
-        var base_class = (dot ? '.' : '') + 'wh-figure-' + (prefix || '');
+        var base_class = (dot ? '.' : '') + 'wy-figure-' + (prefix || '');
         return base_class + suffixArray.join((separator || ' ') + base_class);
       };
 
@@ -97,16 +97,16 @@
         case 'left':
         case 'right':
           changeSuffix(['left', 'right'], command);
-          if (!$figure.hasClass('wh-figure-medium') && !$figure.hasClass('wh-figure-small')) {
-            $figure.addClass('wh-figure-medium');
+          if (!$figure.hasClass('wy-figure-medium') && !$figure.hasClass('wy-figure-small')) {
+            $figure.addClass('wy-figure-medium');
           }
           break;
 
         case 'small':
         case 'medium':
           changeSuffix(['small', 'medium', 'large'], command);
-          if (!$figure.hasClass('wh-figure-left') && !$figure.hasClass('wh-figure-right')) {
-            $figure.addClass('wh-figure-left');
+          if (!$figure.hasClass('wy-figure-left') && !$figure.hasClass('wy-figure-right')) {
+            $figure.addClass('wy-figure-left');
           }
           break;
 

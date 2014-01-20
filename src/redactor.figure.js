@@ -75,15 +75,15 @@
 
       // remove toolbar from figure on mouseleave
       this.redactor.$editor.on('mouseleave', 'figure', $.proxy(function (event) {
-        $(event.currentTarget).find('.wh-figure-controls').appendTo(this.redactor.$box);
+        $(event.currentTarget).find('.wy-figure-controls').appendTo(this.redactor.$box);
       }, this));
 
       // before clicking a command, make sure we save the current node within the editor
-      this.redactor.$editor.on('mousedown', '.wh-figure-controls', $.proxy(function () {
+      this.redactor.$editor.on('mousedown', '.wy-figure-controls', $.proxy(function () {
         this.current = this.redactor.getCurrent();
       }, this));
 
-      this.redactor.$editor.on('click', '.wh-figure-controls span, .wh-figure-controls a', $.proxy(function (event) {
+      this.redactor.$editor.on('click', '.wy-figure-controls span, .wy-figure-controls a', $.proxy(function (event) {
         event.stopPropagation();
         var $target = $(event.currentTarget),
             command = $target.data('command'),
@@ -102,7 +102,7 @@
       var controlGroup = (this.redactor[type] && this.redactor[type].controlGroup) || this.controlGroup,
           controls = $.extend({}, this.control, (this.redactor[type] && this.redactor[type].control) || {}),
           $controls = this.buildControls(controlGroup, controls),
-          $toolbar = $('<div class="wh-figure-controls">').append($controls);
+          $toolbar = $('<div class="wy-figure-controls">').append($controls);
 
       return this.toolbar[type] = $toolbar;
     },
@@ -116,7 +116,7 @@
         if (typeof command === 'string') {
           control = controls[command];
           $controls = $controls.add($('<span>', {
-            'class': 'wh-figure-controls-' + control.classSuffix,
+            'class': 'wy-figure-controls-' + control.classSuffix,
             'text': control.text
           }).data({
             command: command,
@@ -127,11 +127,11 @@
         else if (typeof command === 'object') {
           $.each(command, $.proxy(function (text, commands) {
             var dropdown = $('<span>', {
-              'class': 'wh-figure-controls-table wh-dropdown',
+              'class': 'wy-figure-controls-table wy-dropdown',
               'text': ' ' + text
             });
             $('<span class="caret">').appendTo(dropdown);
-            var list = $('<dl class="wh-dropdown-menu wh-dropdown-bubble wh-dropdown-arrow wh-dropdown-arrow-left">').appendTo(dropdown);
+            var list = $('<dl class="wy-dropdown-menu wy-dropdown-bubble wy-dropdown-arrow wy-dropdown-arrow-left">').appendTo(dropdown);
             $.each(commands, $.proxy(function (index, command) {
               control = controls[command];
               if (command === '|') {
@@ -155,7 +155,7 @@
     command: function (command, $figure, plugin) {
 
       // move the toolbar before carrying out the command so it doesn't break when undoing/redoing
-      $figure.find('.wh-figure-controls').appendTo(this.redactor.$box);
+      $figure.find('.wy-figure-controls').appendTo(this.redactor.$box);
 
       // maintain undo buffer
       this.redactor.bufferSet(this.redactor.$editor.html());

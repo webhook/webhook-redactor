@@ -29,20 +29,20 @@
     },
     onShow: function ($figure, $toolbar) {
 
-      if ($figure.hasClass('wh-figure-full')) {
-        $toolbar.find('.wh-figure-controls-resize-full').hide();
-        $toolbar.find('.wh-figure-controls-resize-small').show();
+      if ($figure.hasClass('wy-figure-full')) {
+        $toolbar.find('.wy-figure-controls-resize-full').hide();
+        $toolbar.find('.wy-figure-controls-resize-small').show();
       } else {
-        $toolbar.find('.wh-figure-controls-resize-full').show();
-        $toolbar.find('.wh-figure-controls-resize-small').hide();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
 
     },
     command: function (command, $figure) {
       if (command === 'resize_full') {
-        $figure.addClass('wh-figure-full');
+        $figure.addClass('wy-figure-full');
       } else if (command === 'resize_small') {
-        $figure.removeClass('wh-figure-full');
+        $figure.removeClass('wy-figure-full');
       }
     }
   };

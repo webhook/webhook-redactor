@@ -68,7 +68,7 @@
         $tbody.append($row);
       }
 
-      $('<figure data-type="table">').addClass('wh-table wh-table-bordered-rows').append($table).appendTo($table_box);
+      $('<figure data-type="table">').addClass('wy-table wy-table-bordered-rows').append($table).appendTo($table_box);
       var html = $table_box.html();
 
       this.redactor.modalClose();
@@ -162,15 +162,15 @@
           break;
 
         case 'border':
-          $figure.removeClass('wh-table-bordered-all').toggleClass('wh-table-bordered-rows');
+          $figure.removeClass('wy-table-bordered-all').toggleClass('wy-table-bordered-rows');
           break;
 
         case 'stripe':
-          $figure.toggleClass('wh-table-striped');
+          $figure.toggleClass('wy-table-striped');
           break;
 
         case 'full_border':
-          $figure.removeClass('wh-table-bordered-rows').toggleClass('wh-table-bordered-all');
+          $figure.removeClass('wy-table-bordered-rows').toggleClass('wy-table-bordered-all');
           break;
       }
     }
