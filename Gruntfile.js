@@ -77,7 +77,25 @@ module.exports = function (grunt) {
         files: '<%= jshint.test.src %>',
         // tasks: ['jshint:test']
         tasks: ['jshint:test', 'qunit']
+      },
+      sass: {
+        files: ['gh-pages/**/*.sass'],
+        tasks: ['compass:compile']
       }
+    },
+    compass: {
+      options: {
+        sassDir: 'gh-pages/sass',
+        cssDir: 'gh-pages/static/css',
+        importPath: [
+          'bower_components/bourbon/app/assets/stylesheets',
+          'bower_components/neat/app/assets/stylesheets',
+          'bower_components/wyrm/sass'
+        ],
+        relativeAssets: false,
+        debugInfo: true
+      },
+      compile: {}
     },
     connect: {
       server: {
@@ -97,6 +115,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-compass');
 
   // Default task.
   grunt.registerTask('default', ['test', 'clean', 'concat', 'uglify']);

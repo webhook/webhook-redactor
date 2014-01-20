@@ -89,19 +89,19 @@
 
     // border is on by default
     this.table.command('border', $figure);
-    ok(!$figure.hasClass('wh-table-bordered-rows'), 'remove border class');
+    ok(!$figure.hasClass('wy-table-bordered-rows'), 'remove border class');
     this.table.command('border', $figure);
-    ok($figure.hasClass('wh-table-bordered-rows'), 'add border class');
+    ok($figure.hasClass('wy-table-bordered-rows'), 'add border class');
 
     this.table.command('stripe', $figure);
-    ok($figure.hasClass('wh-table-striped'), 'add stripe class');
+    ok($figure.hasClass('wy-table-striped'), 'add stripe class');
     this.table.command('stripe', $figure);
-    ok(!$figure.hasClass('wh-table-striped'), 'remove stripe class');
+    ok(!$figure.hasClass('wy-table-striped'), 'remove stripe class');
 
     this.table.command('full_border', $figure);
-    ok($figure.hasClass('wh-table-bordered-all'), 'add full border class');
+    ok($figure.hasClass('wy-table-bordered-all'), 'add full border class');
     this.table.command('full_border', $figure);
-    ok(!$figure.hasClass('wh-table-bordered-all'), 'remove full border class');
+    ok(!$figure.hasClass('wy-table-bordered-all'), 'remove full border class');
 
     this.table.command('del_table', $figure);
     strictEqual(this.$editor.find('figure').length, 0, 'remove table');

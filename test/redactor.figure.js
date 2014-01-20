@@ -42,8 +42,8 @@
     var $figure = this.elems.webhookRedactor('getObject').$editor.find('figure');
 
     ok($figure.length, 'figure present');
-    ok($figure.trigger('mouseenter').find('.wh-figure-controls').length, 'controls on mouseenter');
-    ok(!$figure.trigger('mouseleave').find('.wh-figure-controls').length, 'no controls on mouseleave');
+    ok($figure.trigger('mouseenter').find('.wy-figure-controls').length, 'controls on mouseenter');
+    ok(!$figure.trigger('mouseleave').find('.wy-figure-controls').length, 'no controls on mouseleave');
 
   });
 

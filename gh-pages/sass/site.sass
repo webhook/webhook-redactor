@@ -1,27 +1,50 @@
-@import wh_variables
-@import site_variables
-@import wh_core
-@import pygments
-@import pygments_light
-@import rst
-@import redactor
+// ------------------------------------------------------------
+// WEBHOOK SASS
+// ------------------------------------------------------------
+// This file imports lots of stuff from wyrm, which is loaded
+// into this project through bower in the vendor/wyrm dir.
+// ------------------------------------------------------------
 
-.wh-body-two-col.wh-body-max .wh-grid-two-col section
-  max-width: 100%
+// Variable defaults set by Wyrm
+@import wyrm_core/wy_variables
 
-.doc-tree-btn
-  background: $menu-top-background-color
-  z-index: $z-index-popover
-  padding: 5px
-  cursor: pointer
-  margin: auto
-  width: 40px
-  height: 40px
-  &.fixed
-    position: fixed
-    top: $gutter
-    left: $gutter
-    border-radius: 100%
+// Variable overrides that change coloring and fonts for this app.
+@import app_variables
 
-[data-toggle="wh-cms-nav-desktop"]
-  left: -$nav-desktop-width
+// bourbon.io framework
+@import bourbon
+
+// Bourbon.io/neat framework, with some default media queries
+@import wyrm_core/grid_settings
+@import neat
+
+// Custom reset
+@import wyrm_core/reset
+
+// Some compass libs that bourbon doesn't have
+@import compass/typography/vertical_rhythm
+@import compass/typography/text/ellipsis
+
+// Wyrm mixins
+@import wyrm_core/mixin
+
+// Small hack for my custom font awesome stuff
+@import wyrm_core/font_awesome
++font-face(fontawesome-webfont, '#{$font-awesome-dir}fontawesome-webfont')
+
+// Wyrm core styles used in this theme
+@import wyrm_core/alert
+@import wyrm_core/button
+@import wyrm_core/dropdown
+@import wyrm_core/form
+@import wyrm_core/autocomplete
+@import wyrm_core/generic
+@import wyrm_core/grid_layout
+@import wyrm_core/table
+@import wyrm_core/type
+@import wyrm_core/spinner
+
+@import wyrm_addons/elements/modal
+
+@import wyrm_addons/redactor/figures
+@import wyrm_addons/redactor/redactor
