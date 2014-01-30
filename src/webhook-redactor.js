@@ -32,7 +32,7 @@
       'html'
     ],
     // Custom plugins.
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote', 'markdown'],
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
     // Sync textarea with editor before submission.
     initCallback: function () {
       this.$element.closest('form').one('submit', $.proxy(this.sync, this));
