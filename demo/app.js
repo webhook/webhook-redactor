@@ -1,6 +1,10 @@
-$(function () {
+/* global $ */
+(function () {
+  'use strict';
+
   $('#redactor').webhookRedactor();
-  $('form').submit(function (event) {
+  $('form').submit(function () {
     return false;
   });
-});
+
+})();
