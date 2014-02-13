@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function (grunt) {
+  // Load all grunt tasks
+  require('load-grunt-tasks')(grunt);
   // Show elapsed time at the end
   require('time-grunt')(grunt);
 
@@ -44,6 +46,9 @@ module.exports = function (grunt) {
       }
     },
     jshint: {
+      options: {
+        reporter: require('jshint-stylish')
+      },
       gruntfile: {
         options: {
           jshintrc: '.jshintrc'
@@ -56,6 +61,12 @@ module.exports = function (grunt) {
         },
         src: ['src/**/*.js']
       },
+      demo: {
+        options: {
+          jshintrc: 'src/.jshintrc'
+        },
+        src: ['demo/*.js']
+      },
       test: {
         options: {
           jshintrc: 'test/.jshintrc'
@@ -63,39 +74,44 @@ module.exports = function (grunt) {
         src: ['test/**/*.js']
       }
     },
+    sass: {
+      options: {
+        loadPath: [
+          'bower_components/bourbon/app/assets/stylesheets/',
+          'bower_components/neat/app/assets/stylesheets/',
+          'bower_components/wyrm/sass/',
+          'bower_components/font-awesome/scss/'
+        ]
+      },
+      demo: {
+        src: ['demo/*.sass'],
+        dest: 'demo/style.css'
+      }
+    },
     watch: {
+      options: {
+        livereload: true,
+      },
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
       src: {
         files: '<%= jshint.src.src %>',
-        // tasks: ['jshint:src']
         tasks: ['jshint:src', 'qunit']
+      },
+      demo: {
+        files: '<%= jshint.demo.src %>',
+        tasks: ['jshint:demo']
       },
       test: {
         files: '<%= jshint.test.src %>',
-        // tasks: ['jshint:test']
         tasks: ['jshint:test', 'qunit']
       },
       sass: {
-        files: ['gh-pages/**/*.sass'],
-        tasks: ['compass:compile']
+        files: '<%= sass.demo.src %>',
+        tasks: ['sass']
       }
-    },
-    compass: {
-      options: {
-        sassDir: 'gh-pages/sass',
-        cssDir: 'gh-pages/static/css',
-        importPath: [
-          'bower_components/bourbon/app/assets/stylesheets',
-          'bower_components/neat/app/assets/stylesheets',
-          'bower_components/wyrm/sass'
-        ],
-        relativeAssets: false,
-        debugInfo: true
-      },
-      compile: {}
     },
     connect: {
       server: {
@@ -104,21 +120,36 @@ module.exports = function (grunt) {
           port: 9000
         }
       }
+    },
+    useminPrepare: {
+      html: 'demo/index.html',
+      options: {
+        dest: 'gh-pages/'
+      }
+    },
+    usemin: {
+      html: ['gh-pages/index.html']
+    },
+    copy: {
+      files: {
+        expand: true,
+        cwd: 'demo/',
+        src: ['*.html', 'data/*', 'fonts/*'],
+        dest: 'gh-pages/'
+      }
+    },
+    'gh-pages': {
+      options: {
+        base: 'gh-pages'
+      },
+      src: ['**']
     }
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-compass');
-
   // Default task.
   grunt.registerTask('default', ['test', 'clean', 'concat', 'uglify']);
+  grunt.registerTask('build', ['clean:gh-pages', 'useminPrepare', 'concat', 'uglify', 'cssmin', 'copy', 'usemin']);
+  grunt.registerTask('deploy', ['build', 'gh-pages']);
   grunt.registerTask('server', ['connect', 'watch']);
   grunt.registerTask('test', ['jshint', 'connect', 'qunit']);
 };
