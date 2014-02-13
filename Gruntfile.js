@@ -135,7 +135,7 @@ module.exports = function (grunt) {
       files: {
         expand: true,
         cwd: 'demo/',
-        src: ['*.html', 'data/*', 'fonts/*'],
+        src: ['*.html', 'fonts/*', 'redactor/*', '*.png'],
         dest: 'gh-pages/'
       }
     },
@@ -148,7 +148,7 @@ module.exports = function (grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', ['test', 'clean', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'connect', 'qunit', 'clean:dist', 'concat', 'uglify']);
   grunt.registerTask('build', ['clean:gh-pages', 'useminPrepare', 'concat', 'uglify', 'cssmin', 'copy', 'usemin']);
   grunt.registerTask('deploy', ['build', 'gh-pages']);
   grunt.registerTask('server', ['connect', 'watch']);
