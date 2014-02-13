@@ -1,5 +1,5 @@
-/*! webhook-redactor - v0.0.1 - 2014-01-30
-* https://github.com/gpbmike/webhook-redactor
+/*! webhook-redactor - v0.0.1 - 2014-02-13
+* https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
   "use strict";
