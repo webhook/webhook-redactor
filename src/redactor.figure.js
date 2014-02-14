@@ -80,6 +80,7 @@
 
       // before clicking a command, make sure we save the current node within the editor
       this.redactor.$editor.on('mousedown', '.wy-figure-controls', $.proxy(function () {
+        event.preventDefault();
         this.current = this.redactor.getCurrent();
       }, this));
 
@@ -91,6 +92,10 @@
             plugin  = this.redactor[$figure.data('type')];
         this.command(command, $figure, plugin);
       }, this));
+
+      this.redactor.$editor.on('keydown', function () {
+        $(this).find('figure').trigger('mouseleave');
+      });
 
     },
     getToolbar: function (type) {

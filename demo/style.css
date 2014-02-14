@@ -271,7 +271,7 @@ big, small {
 
   h2, .redactor_format_h2, h3, .redactor_format_h3 {
     page-break-after: avoid; } }
-.font-smooth, .fa, .wy-dropdown .caret, .wy-inline-validate.wy-inline-validate-success .wy-input-context, .wy-inline-validate.wy-inline-validate-danger .wy-input-context, .wy-inline-validate.wy-inline-validate-warning .wy-input-context, .wy-inline-validate.wy-inline-validate-info .wy-input-context, .wy-tag-input-group .wy-tag .wy-tag-remove, .wy-modal-close, .redactor_toolbar li a, .wy-figure-controls span.wy-figure-controls-arrow-left, .wy-figure-controls span.wy-figure-controls-arrow-right, .wy-figure-controls span.wy-figure-controls-arrow-up, .wy-figure-controls span.wy-figure-controls-arrow-down, .wy-figure-controls span.wy-figure-controls-resize-full, .wy-figure-controls span.wy-figure-controls-resize-small, .wy-figure-controls span.wy-figure-controls-delete, .wy-figure-controls span.wy-figure-controls-table, .wy-alert, .btn, .redactor_modal_btn, input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="date"], input[type="month"], input[type="time"], input[type="datetime"], input[type="datetime-local"], input[type="week"], input[type="number"], input[type="search"], input[type="tel"], input[type="color"], select, textarea, .wy-tag-input-group, .wy-menu-vertical a.active {
+.fa:before, .wy-dropdown .caret:before, .wy-inline-validate.wy-inline-validate-success .wy-input-context:before, .wy-inline-validate.wy-inline-validate-danger .wy-input-context:before, .wy-inline-validate.wy-inline-validate-warning .wy-input-context:before, .wy-inline-validate.wy-inline-validate-info .wy-input-context:before, .wy-tag-input-group .wy-tag .wy-tag-remove:before, .wy-modal-close:before, .redactor_toolbar li a:before, .wy-figure-controls span.wy-figure-controls-arrow-left:before, .wy-figure-controls span.wy-figure-controls-arrow-right:before, .wy-figure-controls span.wy-figure-controls-arrow-up:before, .wy-figure-controls span.wy-figure-controls-arrow-down:before, .wy-figure-controls span.wy-figure-controls-resize-full:before, .wy-figure-controls span.wy-figure-controls-resize-small:before, .wy-figure-controls span.wy-figure-controls-delete:before, .wy-figure-controls span.wy-figure-controls-table:before, .wy-alert, .btn, .redactor_modal_btn, input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="date"], input[type="month"], input[type="time"], input[type="datetime"], input[type="datetime-local"], input[type="week"], input[type="number"], input[type="search"], input[type="tel"], input[type="color"], select, textarea, .wy-tag-input-group, .wy-menu-vertical a.active {
   -webkit-font-smoothing: antialiased; }
 
 .clearfix {
@@ -295,7 +295,7 @@ big, small {
   font-weight: normal;
   font-style: normal; }
 
-.fa, .wy-dropdown .caret, .wy-inline-validate.wy-inline-validate-success .wy-input-context, .wy-inline-validate.wy-inline-validate-danger .wy-input-context, .wy-inline-validate.wy-inline-validate-warning .wy-input-context, .wy-inline-validate.wy-inline-validate-info .wy-input-context, .wy-tag-input-group .wy-tag .wy-tag-remove, .wy-modal-close, .redactor_toolbar li a, .wy-figure-controls span.wy-figure-controls-arrow-left, .wy-figure-controls span.wy-figure-controls-arrow-right, .wy-figure-controls span.wy-figure-controls-arrow-up, .wy-figure-controls span.wy-figure-controls-arrow-down, .wy-figure-controls span.wy-figure-controls-resize-full, .wy-figure-controls span.wy-figure-controls-resize-small, .wy-figure-controls span.wy-figure-controls-delete, .wy-figure-controls span.wy-figure-controls-table {
+.fa {
   display: inline-block;
   font-family: FontAwesome;
   font-style: normal;
@@ -353,9 +353,9 @@ big, small {
 .pull-left {
   float: left; }
 
-.fa.pull-left, .wy-dropdown .pull-left.caret, .wy-inline-validate.wy-inline-validate-success .pull-left.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .pull-left.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .pull-left.wy-input-context, .wy-inline-validate.wy-inline-validate-info .pull-left.wy-input-context, .wy-tag-input-group .wy-tag .pull-left.wy-tag-remove, .pull-left.wy-modal-close, .redactor_toolbar li a.pull-left, .wy-figure-controls span.pull-left.wy-figure-controls-arrow-left, .wy-figure-controls span.pull-left.wy-figure-controls-arrow-right, .wy-figure-controls span.pull-left.wy-figure-controls-arrow-up, .wy-figure-controls span.pull-left.wy-figure-controls-arrow-down, .wy-figure-controls span.pull-left.wy-figure-controls-resize-full, .wy-figure-controls span.pull-left.wy-figure-controls-resize-small, .wy-figure-controls span.pull-left.wy-figure-controls-delete, .wy-figure-controls span.pull-left.wy-figure-controls-table {
+.fa.pull-left {
   margin-right: .3em; }
-.fa.pull-right, .wy-dropdown .pull-right.caret, .wy-inline-validate.wy-inline-validate-success .pull-right.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .pull-right.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .pull-right.wy-input-context, .wy-inline-validate.wy-inline-validate-info .pull-right.wy-input-context, .wy-tag-input-group .wy-tag .pull-right.wy-tag-remove, .pull-right.wy-modal-close, .redactor_toolbar li a.pull-right, .wy-figure-controls span.pull-right.wy-figure-controls-arrow-left, .wy-figure-controls span.pull-right.wy-figure-controls-arrow-right, .wy-figure-controls span.pull-right.wy-figure-controls-arrow-up, .wy-figure-controls span.pull-right.wy-figure-controls-arrow-down, .wy-figure-controls span.pull-right.wy-figure-controls-resize-full, .wy-figure-controls span.pull-right.wy-figure-controls-resize-small, .wy-figure-controls span.pull-right.wy-figure-controls-delete, .wy-figure-controls span.pull-right.wy-figure-controls-table {
+.fa.pull-right {
   margin-left: .3em; }
 
 .fa-spin {
@@ -1614,32 +1614,36 @@ body .redactor_toolbar li a.redactor_btn_link:before {
   content: "\f196"; }
 
 .fa, .wy-dropdown .caret, .wy-inline-validate.wy-inline-validate-success .wy-input-context, .wy-inline-validate.wy-inline-validate-danger .wy-input-context, .wy-inline-validate.wy-inline-validate-warning .wy-input-context, .wy-inline-validate.wy-inline-validate-info .wy-input-context, .wy-tag-input-group .wy-tag .wy-tag-remove, .wy-modal-close, .redactor_toolbar li a, .wy-figure-controls span.wy-figure-controls-arrow-left, .wy-figure-controls span.wy-figure-controls-arrow-right, .wy-figure-controls span.wy-figure-controls-arrow-up, .wy-figure-controls span.wy-figure-controls-arrow-down, .wy-figure-controls span.wy-figure-controls-resize-full, .wy-figure-controls span.wy-figure-controls-resize-small, .wy-figure-controls span.wy-figure-controls-delete, .wy-figure-controls span.wy-figure-controls-table {
-  display: inline-block;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
   font-family: inherit; }
+  .fa:before, .wy-dropdown .caret:before, .wy-inline-validate.wy-inline-validate-success .wy-input-context:before, .wy-inline-validate.wy-inline-validate-danger .wy-input-context:before, .wy-inline-validate.wy-inline-validate-warning .wy-input-context:before, .wy-inline-validate.wy-inline-validate-info .wy-input-context:before, .wy-tag-input-group .wy-tag .wy-tag-remove:before, .wy-modal-close:before, .redactor_toolbar li a:before, .wy-figure-controls span.wy-figure-controls-arrow-left:before, .wy-figure-controls span.wy-figure-controls-arrow-right:before, .wy-figure-controls span.wy-figure-controls-arrow-up:before, .wy-figure-controls span.wy-figure-controls-arrow-down:before, .wy-figure-controls span.wy-figure-controls-resize-full:before, .wy-figure-controls span.wy-figure-controls-resize-small:before, .wy-figure-controls span.wy-figure-controls-delete:before, .wy-figure-controls span.wy-figure-controls-table:before {
+    font-family: "FontAwesome";
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-decoration: inherit; }
 
-.fa:before, .wy-dropdown .caret:before, .wy-inline-validate.wy-inline-validate-success .wy-input-context:before, .wy-inline-validate.wy-inline-validate-danger .wy-input-context:before, .wy-inline-validate.wy-inline-validate-warning .wy-input-context:before, .wy-inline-validate.wy-inline-validate-info .wy-input-context:before, .wy-tag-input-group .wy-tag .wy-tag-remove:before, .wy-modal-close:before, .redactor_toolbar li a:before, .wy-figure-controls span.wy-figure-controls-arrow-left:before, .wy-figure-controls span.wy-figure-controls-arrow-right:before, .wy-figure-controls span.wy-figure-controls-arrow-up:before, .wy-figure-controls span.wy-figure-controls-arrow-down:before, .wy-figure-controls span.wy-figure-controls-resize-full:before, .wy-figure-controls span.wy-figure-controls-resize-small:before, .wy-figure-controls span.wy-figure-controls-delete:before, .wy-figure-controls span.wy-figure-controls-table:before {
-  font-family: "FontAwesome"; }
+a .fa {
+  display: inline-block;
+  text-decoration: inherit; }
 
-.btn .fa, .redactor_modal_btn .fa, .btn .wy-dropdown .caret, .wy-dropdown .btn .caret, .redactor_modal_btn .wy-dropdown .caret, .wy-dropdown .redactor_modal_btn .caret, .btn .wy-inline-validate.wy-inline-validate-success .wy-input-context, .wy-inline-validate.wy-inline-validate-success .btn .wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-success .wy-input-context, .wy-inline-validate.wy-inline-validate-success .redactor_modal_btn .wy-input-context, .btn .wy-inline-validate.wy-inline-validate-danger .wy-input-context, .wy-inline-validate.wy-inline-validate-danger .btn .wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-danger .wy-input-context, .wy-inline-validate.wy-inline-validate-danger .redactor_modal_btn .wy-input-context, .btn .wy-inline-validate.wy-inline-validate-warning .wy-input-context, .wy-inline-validate.wy-inline-validate-warning .btn .wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-warning .wy-input-context, .wy-inline-validate.wy-inline-validate-warning .redactor_modal_btn .wy-input-context, .btn .wy-inline-validate.wy-inline-validate-info .wy-input-context, .wy-inline-validate.wy-inline-validate-info .btn .wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-info .wy-input-context, .wy-inline-validate.wy-inline-validate-info .redactor_modal_btn .wy-input-context, .btn .wy-tag-input-group .wy-tag .wy-tag-remove, .wy-tag-input-group .wy-tag .btn .wy-tag-remove, .redactor_modal_btn .wy-tag-input-group .wy-tag .wy-tag-remove, .wy-tag-input-group .wy-tag .redactor_modal_btn .wy-tag-remove, .btn .wy-modal-close, .redactor_modal_btn .wy-modal-close, .btn .redactor_toolbar li a, .redactor_toolbar li .btn a, .redactor_modal_btn .redactor_toolbar li a, .redactor_toolbar li .redactor_modal_btn a, .btn .wy-figure-controls span.wy-figure-controls-arrow-left, .wy-figure-controls .btn span.wy-figure-controls-arrow-left, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-arrow-left, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-arrow-left, .btn .wy-figure-controls span.wy-figure-controls-arrow-right, .wy-figure-controls .btn span.wy-figure-controls-arrow-right, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-arrow-right, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-arrow-right, .btn .wy-figure-controls span.wy-figure-controls-arrow-up, .wy-figure-controls .btn span.wy-figure-controls-arrow-up, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-arrow-up, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-arrow-up, .btn .wy-figure-controls span.wy-figure-controls-arrow-down, .wy-figure-controls .btn span.wy-figure-controls-arrow-down, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-arrow-down, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-arrow-down, .btn .wy-figure-controls span.wy-figure-controls-resize-full, .wy-figure-controls .btn span.wy-figure-controls-resize-full, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-resize-full, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-resize-full, .btn .wy-figure-controls span.wy-figure-controls-resize-small, .wy-figure-controls .btn span.wy-figure-controls-resize-small, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-resize-small, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-resize-small, .btn .wy-figure-controls span.wy-figure-controls-delete, .wy-figure-controls .btn span.wy-figure-controls-delete, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-delete, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-delete, .btn .wy-figure-controls span.wy-figure-controls-table, .wy-figure-controls .btn span.wy-figure-controls-table, .redactor_modal_btn .wy-figure-controls span.wy-figure-controls-table, .wy-figure-controls .redactor_modal_btn span.wy-figure-controls-table, .nav .fa, .nav .wy-dropdown .caret, .wy-dropdown .nav .caret, .nav .wy-inline-validate.wy-inline-validate-success .wy-input-context, .wy-inline-validate.wy-inline-validate-success .nav .wy-input-context, .nav .wy-inline-validate.wy-inline-validate-danger .wy-input-context, .wy-inline-validate.wy-inline-validate-danger .nav .wy-input-context, .nav .wy-inline-validate.wy-inline-validate-warning .wy-input-context, .wy-inline-validate.wy-inline-validate-warning .nav .wy-input-context, .nav .wy-inline-validate.wy-inline-validate-info .wy-input-context, .wy-inline-validate.wy-inline-validate-info .nav .wy-input-context, .nav .wy-tag-input-group .wy-tag .wy-tag-remove, .wy-tag-input-group .wy-tag .nav .wy-tag-remove, .nav .wy-modal-close, .nav .redactor_toolbar li a, .redactor_toolbar li .nav a, .nav .wy-figure-controls span.wy-figure-controls-arrow-left, .wy-figure-controls .nav span.wy-figure-controls-arrow-left, .nav .wy-figure-controls span.wy-figure-controls-arrow-right, .wy-figure-controls .nav span.wy-figure-controls-arrow-right, .nav .wy-figure-controls span.wy-figure-controls-arrow-up, .wy-figure-controls .nav span.wy-figure-controls-arrow-up, .nav .wy-figure-controls span.wy-figure-controls-arrow-down, .wy-figure-controls .nav span.wy-figure-controls-arrow-down, .nav .wy-figure-controls span.wy-figure-controls-resize-full, .wy-figure-controls .nav span.wy-figure-controls-resize-full, .nav .wy-figure-controls span.wy-figure-controls-resize-small, .wy-figure-controls .nav span.wy-figure-controls-resize-small, .nav .wy-figure-controls span.wy-figure-controls-delete, .wy-figure-controls .nav span.wy-figure-controls-delete, .nav .wy-figure-controls span.wy-figure-controls-table, .wy-figure-controls .nav span.wy-figure-controls-table {
+.btn .fa, .redactor_modal_btn .fa, .nav .fa {
   display: inline; }
-  .btn .fa.fa-large, .redactor_modal_btn .fa.fa-large, .btn .wy-dropdown .fa-large.caret, .wy-dropdown .btn .fa-large.caret, .redactor_modal_btn .wy-dropdown .fa-large.caret, .wy-dropdown .redactor_modal_btn .fa-large.caret, .btn .wy-inline-validate.wy-inline-validate-success .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-success .btn .fa-large.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-success .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-success .redactor_modal_btn .fa-large.wy-input-context, .btn .wy-inline-validate.wy-inline-validate-danger .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .btn .fa-large.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-danger .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .redactor_modal_btn .fa-large.wy-input-context, .btn .wy-inline-validate.wy-inline-validate-warning .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .btn .fa-large.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-warning .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .redactor_modal_btn .fa-large.wy-input-context, .btn .wy-inline-validate.wy-inline-validate-info .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-info .btn .fa-large.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-info .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-info .redactor_modal_btn .fa-large.wy-input-context, .btn .wy-tag-input-group .wy-tag .fa-large.wy-tag-remove, .wy-tag-input-group .wy-tag .btn .fa-large.wy-tag-remove, .redactor_modal_btn .wy-tag-input-group .wy-tag .fa-large.wy-tag-remove, .wy-tag-input-group .wy-tag .redactor_modal_btn .fa-large.wy-tag-remove, .btn .fa-large.wy-modal-close, .redactor_modal_btn .fa-large.wy-modal-close, .btn .redactor_toolbar li a.fa-large, .redactor_toolbar li .btn a.fa-large, .redactor_modal_btn .redactor_toolbar li a.fa-large, .redactor_toolbar li .redactor_modal_btn a.fa-large, .btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-left, .wy-figure-controls .btn span.fa-large.wy-figure-controls-arrow-left, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-left, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-arrow-left, .btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-right, .wy-figure-controls .btn span.fa-large.wy-figure-controls-arrow-right, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-right, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-arrow-right, .btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-up, .wy-figure-controls .btn span.fa-large.wy-figure-controls-arrow-up, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-up, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-arrow-up, .btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-down, .wy-figure-controls .btn span.fa-large.wy-figure-controls-arrow-down, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-arrow-down, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-arrow-down, .btn .wy-figure-controls span.fa-large.wy-figure-controls-resize-full, .wy-figure-controls .btn span.fa-large.wy-figure-controls-resize-full, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-resize-full, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-resize-full, .btn .wy-figure-controls span.fa-large.wy-figure-controls-resize-small, .wy-figure-controls .btn span.fa-large.wy-figure-controls-resize-small, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-resize-small, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-resize-small, .btn .wy-figure-controls span.fa-large.wy-figure-controls-delete, .wy-figure-controls .btn span.fa-large.wy-figure-controls-delete, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-delete, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-delete, .btn .wy-figure-controls span.fa-large.wy-figure-controls-table, .wy-figure-controls .btn span.fa-large.wy-figure-controls-table, .redactor_modal_btn .wy-figure-controls span.fa-large.wy-figure-controls-table, .wy-figure-controls .redactor_modal_btn span.fa-large.wy-figure-controls-table, .nav .fa.fa-large, .nav .wy-dropdown .fa-large.caret, .wy-dropdown .nav .fa-large.caret, .nav .wy-inline-validate.wy-inline-validate-success .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-success .nav .fa-large.wy-input-context, .nav .wy-inline-validate.wy-inline-validate-danger .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .nav .fa-large.wy-input-context, .nav .wy-inline-validate.wy-inline-validate-warning .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .nav .fa-large.wy-input-context, .nav .wy-inline-validate.wy-inline-validate-info .fa-large.wy-input-context, .wy-inline-validate.wy-inline-validate-info .nav .fa-large.wy-input-context, .nav .wy-tag-input-group .wy-tag .fa-large.wy-tag-remove, .wy-tag-input-group .wy-tag .nav .fa-large.wy-tag-remove, .nav .fa-large.wy-modal-close, .nav .redactor_toolbar li a.fa-large, .redactor_toolbar li .nav a.fa-large, .nav .wy-figure-controls span.fa-large.wy-figure-controls-arrow-left, .wy-figure-controls .nav span.fa-large.wy-figure-controls-arrow-left, .nav .wy-figure-controls span.fa-large.wy-figure-controls-arrow-right, .wy-figure-controls .nav span.fa-large.wy-figure-controls-arrow-right, .nav .wy-figure-controls span.fa-large.wy-figure-controls-arrow-up, .wy-figure-controls .nav span.fa-large.wy-figure-controls-arrow-up, .nav .wy-figure-controls span.fa-large.wy-figure-controls-arrow-down, .wy-figure-controls .nav span.fa-large.wy-figure-controls-arrow-down, .nav .wy-figure-controls span.fa-large.wy-figure-controls-resize-full, .wy-figure-controls .nav span.fa-large.wy-figure-controls-resize-full, .nav .wy-figure-controls span.fa-large.wy-figure-controls-resize-small, .wy-figure-controls .nav span.fa-large.wy-figure-controls-resize-small, .nav .wy-figure-controls span.fa-large.wy-figure-controls-delete, .wy-figure-controls .nav span.fa-large.wy-figure-controls-delete, .nav .wy-figure-controls span.fa-large.wy-figure-controls-table, .wy-figure-controls .nav span.fa-large.wy-figure-controls-table {
+  .btn .fa.fa-large, .redactor_modal_btn .fa.fa-large, .nav .fa.fa-large {
     line-height: 0.9em; }
-  .btn .fa.fa-spin, .redactor_modal_btn .fa.fa-spin, .btn .wy-dropdown .fa-spin.caret, .wy-dropdown .btn .fa-spin.caret, .redactor_modal_btn .wy-dropdown .fa-spin.caret, .wy-dropdown .redactor_modal_btn .fa-spin.caret, .btn .wy-inline-validate.wy-inline-validate-success .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-success .btn .fa-spin.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-success .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-success .redactor_modal_btn .fa-spin.wy-input-context, .btn .wy-inline-validate.wy-inline-validate-danger .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .btn .fa-spin.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-danger .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .redactor_modal_btn .fa-spin.wy-input-context, .btn .wy-inline-validate.wy-inline-validate-warning .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .btn .fa-spin.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-warning .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .redactor_modal_btn .fa-spin.wy-input-context, .btn .wy-inline-validate.wy-inline-validate-info .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-info .btn .fa-spin.wy-input-context, .redactor_modal_btn .wy-inline-validate.wy-inline-validate-info .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-info .redactor_modal_btn .fa-spin.wy-input-context, .btn .wy-tag-input-group .wy-tag .fa-spin.wy-tag-remove, .wy-tag-input-group .wy-tag .btn .fa-spin.wy-tag-remove, .redactor_modal_btn .wy-tag-input-group .wy-tag .fa-spin.wy-tag-remove, .wy-tag-input-group .wy-tag .redactor_modal_btn .fa-spin.wy-tag-remove, .btn .fa-spin.wy-modal-close, .redactor_modal_btn .fa-spin.wy-modal-close, .btn .redactor_toolbar li a.fa-spin, .redactor_toolbar li .btn a.fa-spin, .redactor_modal_btn .redactor_toolbar li a.fa-spin, .redactor_toolbar li .redactor_modal_btn a.fa-spin, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-left, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-arrow-left, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-left, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-arrow-left, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-right, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-arrow-right, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-right, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-arrow-right, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-up, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-arrow-up, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-up, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-arrow-up, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-down, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-arrow-down, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-down, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-arrow-down, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-resize-full, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-resize-full, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-resize-full, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-resize-full, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-resize-small, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-resize-small, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-resize-small, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-resize-small, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-delete, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-delete, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-delete, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-delete, .btn .wy-figure-controls span.fa-spin.wy-figure-controls-table, .wy-figure-controls .btn span.fa-spin.wy-figure-controls-table, .redactor_modal_btn .wy-figure-controls span.fa-spin.wy-figure-controls-table, .wy-figure-controls .redactor_modal_btn span.fa-spin.wy-figure-controls-table, .nav .fa.fa-spin, .nav .wy-dropdown .fa-spin.caret, .wy-dropdown .nav .fa-spin.caret, .nav .wy-inline-validate.wy-inline-validate-success .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-success .nav .fa-spin.wy-input-context, .nav .wy-inline-validate.wy-inline-validate-danger .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-danger .nav .fa-spin.wy-input-context, .nav .wy-inline-validate.wy-inline-validate-warning .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-warning .nav .fa-spin.wy-input-context, .nav .wy-inline-validate.wy-inline-validate-info .fa-spin.wy-input-context, .wy-inline-validate.wy-inline-validate-info .nav .fa-spin.wy-input-context, .nav .wy-tag-input-group .wy-tag .fa-spin.wy-tag-remove, .wy-tag-input-group .wy-tag .nav .fa-spin.wy-tag-remove, .nav .fa-spin.wy-modal-close, .nav .redactor_toolbar li a.fa-spin, .redactor_toolbar li .nav a.fa-spin, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-left, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-arrow-left, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-right, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-arrow-right, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-up, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-arrow-up, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-arrow-down, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-arrow-down, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-resize-full, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-resize-full, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-resize-small, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-resize-small, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-delete, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-delete, .nav .wy-figure-controls span.fa-spin.wy-figure-controls-table, .wy-figure-controls .nav span.fa-spin.wy-figure-controls-table {
+  .btn .fa.fa-spin, .redactor_modal_btn .fa.fa-spin, .nav .fa.fa-spin {
     display: inline-block; }
 
-.btn.fa:before, .wy-dropdown .btn.caret:before, .wy-dropdown .caret.redactor_modal_btn:before, .wy-inline-validate.wy-inline-validate-success .btn.wy-input-context:before, .wy-inline-validate.wy-inline-validate-success .wy-input-context.redactor_modal_btn:before, .wy-inline-validate.wy-inline-validate-danger .btn.wy-input-context:before, .wy-inline-validate.wy-inline-validate-danger .wy-input-context.redactor_modal_btn:before, .wy-inline-validate.wy-inline-validate-warning .btn.wy-input-context:before, .wy-inline-validate.wy-inline-validate-warning .wy-input-context.redactor_modal_btn:before, .wy-inline-validate.wy-inline-validate-info .btn.wy-input-context:before, .wy-inline-validate.wy-inline-validate-info .wy-input-context.redactor_modal_btn:before, .wy-tag-input-group .wy-tag .btn.wy-tag-remove:before, .wy-tag-input-group .wy-tag .wy-tag-remove.redactor_modal_btn:before, .btn.wy-modal-close:before, .wy-modal-close.redactor_modal_btn:before, .redactor_toolbar li a.btn:before, .redactor_toolbar li a.redactor_modal_btn:before, .fa.redactor_modal_btn:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-left:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-right:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-up:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-down:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-resize-full:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-resize-small:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-delete:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-table:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-left:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-right:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-up:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-down:before, .wy-figure-controls span.btn.wy-figure-controls-resize-full:before, .wy-figure-controls span.btn.wy-figure-controls-resize-small:before, .wy-figure-controls span.btn.wy-figure-controls-delete:before, .wy-figure-controls span.btn.wy-figure-controls-table:before {
+.btn.fa:before, .fa.redactor_modal_btn:before {
   opacity: 0.5;
   -webkit-transition: opacity 0.05s ease-in;
   -moz-transition: opacity 0.05s ease-in;
   transition: opacity 0.05s ease-in; }
 
-.btn.fa:hover:before, .wy-dropdown .btn.caret:hover:before, .wy-dropdown .caret.redactor_modal_btn:hover:before, .wy-inline-validate.wy-inline-validate-success .btn.wy-input-context:hover:before, .wy-inline-validate.wy-inline-validate-success .wy-input-context.redactor_modal_btn:hover:before, .wy-inline-validate.wy-inline-validate-danger .btn.wy-input-context:hover:before, .wy-inline-validate.wy-inline-validate-danger .wy-input-context.redactor_modal_btn:hover:before, .wy-inline-validate.wy-inline-validate-warning .btn.wy-input-context:hover:before, .wy-inline-validate.wy-inline-validate-warning .wy-input-context.redactor_modal_btn:hover:before, .wy-inline-validate.wy-inline-validate-info .btn.wy-input-context:hover:before, .wy-inline-validate.wy-inline-validate-info .wy-input-context.redactor_modal_btn:hover:before, .wy-tag-input-group .wy-tag .btn.wy-tag-remove:hover:before, .wy-tag-input-group .wy-tag .wy-tag-remove.redactor_modal_btn:hover:before, .btn.wy-modal-close:hover:before, .wy-modal-close.redactor_modal_btn:hover:before, .redactor_toolbar li a.btn:hover:before, .redactor_toolbar li a.redactor_modal_btn:hover:before, .fa.redactor_modal_btn:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-left:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-right:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-up:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-arrow-down:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-resize-full:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-resize-small:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-delete:hover:before, .wy-figure-controls span.redactor_modal_btn.wy-figure-controls-table:hover:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-left:hover:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-right:hover:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-up:hover:before, .wy-figure-controls span.btn.wy-figure-controls-arrow-down:hover:before, .wy-figure-controls span.btn.wy-figure-controls-resize-full:hover:before, .wy-figure-controls span.btn.wy-figure-controls-resize-small:hover:before, .wy-figure-controls span.btn.wy-figure-controls-delete:hover:before, .wy-figure-controls span.btn.wy-figure-controls-table:hover:before {
+.btn.fa:hover:before, .fa.redactor_modal_btn:hover:before {
   opacity: 1; }
 
-.btn-mini .fa:before, .btn-mini .wy-dropdown .caret:before, .wy-dropdown .btn-mini .caret:before, .btn-mini .wy-inline-validate.wy-inline-validate-success .wy-input-context:before, .wy-inline-validate.wy-inline-validate-success .btn-mini .wy-input-context:before, .btn-mini .wy-inline-validate.wy-inline-validate-danger .wy-input-context:before, .wy-inline-validate.wy-inline-validate-danger .btn-mini .wy-input-context:before, .btn-mini .wy-inline-validate.wy-inline-validate-warning .wy-input-context:before, .wy-inline-validate.wy-inline-validate-warning .btn-mini .wy-input-context:before, .btn-mini .wy-inline-validate.wy-inline-validate-info .wy-input-context:before, .wy-inline-validate.wy-inline-validate-info .btn-mini .wy-input-context:before, .btn-mini .wy-tag-input-group .wy-tag .wy-tag-remove:before, .wy-tag-input-group .wy-tag .btn-mini .wy-tag-remove:before, .btn-mini .wy-modal-close:before, .btn-mini .redactor_toolbar li a:before, .redactor_toolbar li .btn-mini a:before, .btn-mini .wy-figure-controls span.wy-figure-controls-arrow-left:before, .wy-figure-controls .btn-mini span.wy-figure-controls-arrow-left:before, .btn-mini .wy-figure-controls span.wy-figure-controls-arrow-right:before, .wy-figure-controls .btn-mini span.wy-figure-controls-arrow-right:before, .btn-mini .wy-figure-controls span.wy-figure-controls-arrow-up:before, .wy-figure-controls .btn-mini span.wy-figure-controls-arrow-up:before, .btn-mini .wy-figure-controls span.wy-figure-controls-arrow-down:before, .wy-figure-controls .btn-mini span.wy-figure-controls-arrow-down:before, .btn-mini .wy-figure-controls span.wy-figure-controls-resize-full:before, .wy-figure-controls .btn-mini span.wy-figure-controls-resize-full:before, .btn-mini .wy-figure-controls span.wy-figure-controls-resize-small:before, .wy-figure-controls .btn-mini span.wy-figure-controls-resize-small:before, .btn-mini .wy-figure-controls span.wy-figure-controls-delete:before, .wy-figure-controls .btn-mini span.wy-figure-controls-delete:before, .btn-mini .wy-figure-controls span.wy-figure-controls-table:before, .wy-figure-controls .btn-mini span.wy-figure-controls-table:before {
+.btn-mini .fa:before {
   font-size: 14px;
   vertical-align: -15%; }
 
@@ -1780,12 +1784,10 @@ button[disabled] {
   color: white; }
 .btn:focus, .redactor_modal_btn:focus {
   background: #2cc36b;
-  color: white;
   outline: 0; }
 .btn:active, .redactor_modal_btn:active {
   box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.05) inset, 0px 2px 0px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 8px 12px 6px 12px;
-  color: white; }
+  padding: 8px 12px 6px 12px; }
 .btn:disabled, .redactor_modal_btn:disabled {
   background-image: none;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -1793,8 +1795,6 @@ button[disabled] {
   opacity: 0.4;
   cursor: not-allowed;
   box-shadow: none; }
-.btn:visited, .redactor_modal_btn:visited {
-  color: white; }
 
 .btn-disabled {
   background-image: none;
@@ -2299,12 +2299,10 @@ select[disabled], textarea[disabled], input[readonly], select[readonly], textare
   .wy-form-aligned .wy-control {
     margin: 1.5em 0 0 0; }
 
-  /* NOTE: wy-help-inline is deprecated. Use .wy-form-message-inline instead. */
   .wy-form .wy-help-inline, .wy-form-message-inline, .wy-form-message {
     display: block;
     font-size: 80%;
-    /* Increased bottom padding to make it group with its related input element. */
-    padding: 0.2em 0 0.8em; } }
+    padding: 6px 0; } }
 @media screen and (max-width: 768px) {
   .tablet-hide {
     display: none; } }
@@ -2523,25 +2521,25 @@ code {
   code.code-large {
     font-size: 90%; }
 
-.wy-plain-list-disc, .redactor_editor ul, .markdown ul, article ul {
+.wy-plain-list-disc, article ul, .redactor_editor ul, .markdown ul {
   list-style: disc;
   line-height: 24px;
   margin-bottom: 24px; }
-  .wy-plain-list-disc li, .redactor_editor ul li, .markdown ul li, article ul li {
+  .wy-plain-list-disc li, article ul li, .redactor_editor ul li, .markdown ul li {
     list-style: disc;
     margin-left: 24px; }
-    .wy-plain-list-disc li ul, .redactor_editor ul li ul, .markdown ul li ul, article ul li ul {
+    .wy-plain-list-disc li ul, article ul li ul, .redactor_editor ul li ul, .markdown ul li ul {
       margin-bottom: 0; }
-    .wy-plain-list-disc li li, .redactor_editor ul li li, .markdown ul li li, article ul li li {
+    .wy-plain-list-disc li li, article ul li li, .redactor_editor ul li li, .markdown ul li li {
       list-style: circle; }
-      .wy-plain-list-disc li li li, .redactor_editor ul li li li, .markdown ul li li li, article ul li li li {
+      .wy-plain-list-disc li li li, article ul li li li, .redactor_editor ul li li li, .markdown ul li li li {
         list-style: square; }
 
-.wy-plain-list-decimal, .redactor_editor ol, .markdown ol, article ol {
+.wy-plain-list-decimal, article ol, .redactor_editor ol, .markdown ol {
   list-style: decimal;
   line-height: 24px;
   margin-bottom: 24px; }
-  .wy-plain-list-decimal li, .redactor_editor ol li, .markdown ol li, article ol li {
+  .wy-plain-list-decimal li, article ol li, .redactor_editor ol li, .markdown ol li {
     list-style: decimal;
     margin-left: 24px; }
 
@@ -3409,40 +3407,42 @@ body .redactor_box_fullscreen {
 
 /*	BUTTONS
  *	step 25px */
-body .redactor_toolbar li a.redactor_btn_fontcolor {
-  background-position: -325px; }
-body .redactor_toolbar li a.redactor_btn_backcolor {
-  background-position: -350px; }
-body .redactor_toolbar li a.redactor_btn_horizontalrule {
-  background-position: -475px; }
-body .redactor_toolbar li a.redactor_btn_underline {
-  background-position: -525px; }
-body .redactor_toolbar li a.redactor_btn_normalscreen {
-  background-position: -575px; }
-body .redactor_toolbar li a.redactor_btn_clips {
-  background-position: -600px; }
-body .redactor_toolbar li a.redactor_btn_alignment {
-  background-position: -625px; }
-body .redactor_toolbar li a.redactor_btn_fontfamily {
-  background-position: -650px; }
-body .redactor_toolbar li a.redactor_btn_fontsize {
-  background-position: -675px; }
-body .redactor_toolbar li a.redactor_btn_direction {
-  background-position: -700px; }
-body .redactor_toolbar li a.redactor_btn_lists {
-  background-position: -725px; }
-body .redactor_toolbar li a.redactor_btn_font {
-  background-position: -750px; }
-body .redactor_toolbar li a.redactor_btn_h1 {
-  background-position: -775px; }
-body .redactor_toolbar li a.redactor_btn_h2 {
-  background-position: -800px; }
-body .redactor_toolbar li a.redactor_btn_h3 {
-  background-position: -825px; }
-body .redactor_toolbar li a.redactor_btn_quote {
-  background-position: -850px; }
-body .redactor_toolbar li a.redactor_btn_pre {
-  background-position: -875px; }
+body .redactor_toolbar li a {
+  display: inline-block; }
+  body .redactor_toolbar li a.redactor_btn_fontcolor {
+    background-position: -325px; }
+  body .redactor_toolbar li a.redactor_btn_backcolor {
+    background-position: -350px; }
+  body .redactor_toolbar li a.redactor_btn_horizontalrule {
+    background-position: -475px; }
+  body .redactor_toolbar li a.redactor_btn_underline {
+    background-position: -525px; }
+  body .redactor_toolbar li a.redactor_btn_normalscreen {
+    background-position: -575px; }
+  body .redactor_toolbar li a.redactor_btn_clips {
+    background-position: -600px; }
+  body .redactor_toolbar li a.redactor_btn_alignment {
+    background-position: -625px; }
+  body .redactor_toolbar li a.redactor_btn_fontfamily {
+    background-position: -650px; }
+  body .redactor_toolbar li a.redactor_btn_fontsize {
+    background-position: -675px; }
+  body .redactor_toolbar li a.redactor_btn_direction {
+    background-position: -700px; }
+  body .redactor_toolbar li a.redactor_btn_lists {
+    background-position: -725px; }
+  body .redactor_toolbar li a.redactor_btn_font {
+    background-position: -750px; }
+  body .redactor_toolbar li a.redactor_btn_h1 {
+    background-position: -775px; }
+  body .redactor_toolbar li a.redactor_btn_h2 {
+    background-position: -800px; }
+  body .redactor_toolbar li a.redactor_btn_h3 {
+    background-position: -825px; }
+  body .redactor_toolbar li a.redactor_btn_quote {
+    background-position: -850px; }
+  body .redactor_toolbar li a.redactor_btn_pre {
+    background-position: -875px; }
 
 /*	Toolbar classes */
 .redactor_format_h1, .redactor_format_h2, .redactor_format_h3, .redactor_format_h4, .redactor_format_h5 {
@@ -3734,13 +3734,15 @@ figure:hover .wy-figure-controls {
   border: none;
   background: none;
   color: white;
-  vertical-align: bottom;
+  vertical-align: top;
   font-size: 14px;
   width: 24px;
   height: 24px;
   line-height: 24px;
   text-align: center;
   cursor: pointer; }
+  .wy-figure-controls span.fa, .wy-figure-controls span:before {
+    line-height: 24px; }
   .wy-figure-controls span:hover {
     background: rgba(255, 255, 255, 0.3);
     color: white; }
