@@ -126,9 +126,6 @@
   window.RedactorPlugins.image = {
     init: function () {
       this.image = new Image(this);
-      // this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
-      //   window.console.log('image', this);
-      // }, this.image));
     }
   };
 
