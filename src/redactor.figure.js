@@ -59,6 +59,7 @@
     },
     clearCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
+      this.redactor.sync();
     },
     observeToolbars: function () {
 

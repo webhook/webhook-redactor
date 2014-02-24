@@ -139,6 +139,7 @@
     },
     clearCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
+      this.redactor.sync();
     },
     observeToolbars: function () {
 
@@ -1196,6 +1197,10 @@
     // Expose change event.
     changeCallback: function () {
       this.$editor.trigger('mutate');
+    },
+    // Make sure the DOM knows we changed the textarea.
+    syncAfterCallback: function () {
+      this.$element.trigger('change');
     }
   };
 
