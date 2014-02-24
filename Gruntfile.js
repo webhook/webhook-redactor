@@ -17,7 +17,7 @@ module.exports = function (grunt) {
       ' Licensed MIT */\n',
     // Task configuration.
     clean: {
-      files: ['dist'],
+      dist: ['dist'],
       'gh-pages': ['gh-pages']
     },
     concat: {

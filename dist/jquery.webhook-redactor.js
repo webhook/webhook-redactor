@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2014-02-13
+/*! webhook-redactor - v0.0.1 - 2014-02-24
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
@@ -35,7 +35,7 @@
 
           $.embedly.oembed(url).done(function (results) {
             $.each(results, function () {
-              shiv.replaceWith('<figure data-type="video"><p>' + this.html + '</p><figcaption>Type to add caption (optional)</figcaption></figure>');
+              shiv.replaceWith('<figure data-type="video"><p>' + this.html + '</p><figcaption></figcaption></figure>');
             });
           });
 
@@ -160,6 +160,7 @@
 
       // before clicking a command, make sure we save the current node within the editor
       this.redactor.$editor.on('mousedown', '.wy-figure-controls', $.proxy(function () {
+        event.preventDefault();
         this.current = this.redactor.getCurrent();
       }, this));
 
@@ -171,6 +172,10 @@
             plugin  = this.redactor[$figure.data('type')];
         this.command(command, $figure, plugin);
       }, this));
+
+      this.redactor.$editor.on('keydown', function () {
+        $(this).find('figure').trigger('mouseleave');
+      });
 
     },
     getToolbar: function (type) {
@@ -615,9 +620,6 @@
   window.RedactorPlugins.image = {
     init: function () {
       this.image = new Image(this);
-      // this.buttonAddBefore('link', 'image', 'Image', $.proxy(function () {
-      //   window.console.log('image', this);
-      // }, this.image));
     }
   };
 
@@ -1087,7 +1089,7 @@
         // maintain undo buffer
         this.bufferSet();
 
-        data = '<figure data-type="video"><p>' + this.cleanStripTags(data) + '</p><figcaption>Type to add caption (optional)</figcaption></figure>';
+        data = '<figure data-type="video"><p>' + this.cleanStripTags(data) + '</p><figcaption></figcaption></figure>';
 
         this.selectionRestore();
 
