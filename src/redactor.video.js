@@ -58,7 +58,7 @@
         // maintain undo buffer
         this.bufferSet();
 
-        data = '<figure data-type="video"><p>' + this.cleanStripTags(data) + '</p><figcaption>Type to add caption (optional)</figcaption></figure>';
+        data = '<figure data-type="video"><p>' + this.cleanStripTags(data) + '</p><figcaption></figcaption></figure>';
 
         this.selectionRestore();
 

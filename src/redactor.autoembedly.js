@@ -40,7 +40,7 @@
 
           $.embedly.oembed(url).done(function (results) {
             $.each(results, function () {
-              shiv.replaceWith('<figure data-type="video"><p>' + this.html + '</p><figcaption>Type to add caption (optional)</figcaption></figure>');
+              shiv.replaceWith('<figure data-type="video"><p>' + this.html + '</p><figcaption></figcaption></figure>');
             });
           });
 
