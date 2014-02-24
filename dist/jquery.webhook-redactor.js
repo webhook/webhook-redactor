@@ -1193,14 +1193,12 @@
     // Sync textarea with editor before submission.
     initCallback: function () {
       this.$element.closest('form').one('submit', $.proxy(this.sync, this));
+      this.$element.trigger('init.webhookRedactor', this.getObject());
     },
     // Expose change event.
     changeCallback: function () {
       this.$editor.trigger('mutate');
-    },
-    // Make sure the DOM knows we changed the textarea.
-    syncAfterCallback: function () {
-      this.$element.trigger('change');
+      this.$element.trigger('mutate.webhookRedactor', this.getObject());
     }
   };
 
