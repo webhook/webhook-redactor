@@ -73,36 +73,38 @@
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
-        if (!$.isArray(suffixArray)) {
-          suffixArray = [suffixArray];
-        }
         var base_class = (dot ? '.' : '') + 'wy-figure-' + (prefix || '');
         return base_class + suffixArray.join((separator || ' ') + base_class);
       };
 
       var changeSuffix = function (removeArray, addArray) {
         $figure.removeClass(classString(removeArray)).addClass(classString(addArray));
+        $.each(addArray, function (index, command) {
+          $figure.trigger('imageCommand', command);
+        });
       };
 
       switch (command) {
         case 'left':
         case 'right':
-          changeSuffix(['left', 'right'], command);
+          changeSuffix(['left', 'right'], [command]);
           if (!$figure.hasClass('wy-figure-medium') && !$figure.hasClass('wy-figure-small')) {
             $figure.addClass('wy-figure-medium');
+            $figure.trigger('medium');
           }
           break;
 
         case 'small':
         case 'medium':
-          changeSuffix(['small', 'medium', 'large'], command);
+          changeSuffix(['small', 'medium', 'large'], [command]);
           if (!$figure.hasClass('wy-figure-left') && !$figure.hasClass('wy-figure-right')) {
             $figure.addClass('wy-figure-left');
+            $figure.trigger('left');
           }
           break;
 
         case 'resize_full':
-          changeSuffix(['small', 'medium', 'left', 'right'], 'large');
+          changeSuffix(['small', 'medium', 'left', 'right'], ['large']);
           break;
 
         case 'resize_small':
