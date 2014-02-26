@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2014-02-24
+/*! webhook-redactor - v0.0.1 - 2014-02-26
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
@@ -523,20 +523,11 @@
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
       this.addCaptions();
-      this.observe();
     },
     addCaptions: function () {
       // find images without captions, add empty figcaption
       this.redactor.$editor.find('figure[data-type=image]:not(:has(figcaption))').each(function () {
         $(this).append('<figcaption>');
-      });
-    },
-    observe: function () {
-      this.redactor.$editor.on('mutate', $.proxy(this.orphanCheck, this));
-    },
-    orphanCheck: function () {
-      this.redactor.$editor.find('*:not(figure) img').each(function () {
-        $('<figure data-type="image"><figcaption></figcaption></figure>').insertAfter(this).prepend(this);
       });
     },
     onShow: function ($figure, $toolbar) {
