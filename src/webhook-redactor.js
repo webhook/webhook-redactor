@@ -35,7 +35,12 @@
     plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
     // Sync textarea with editor before submission.
     initCallback: function () {
-      this.$element.closest('form').one('submit', $.proxy(this.sync, this));
+      this.$element.closest('form').one('submit', $.proxy(function () {
+        // only sync if we're in visual mode
+        if (this.opts.visual) {
+          this.sync();
+        }
+      }, this));
       this.$element.trigger('init.webhookRedactor', this.getObject());
     },
     // Expose change event.
