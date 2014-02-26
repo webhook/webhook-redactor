@@ -59,7 +59,9 @@
     },
     clearCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
-      this.redactor.sync();
+      if (this.redactor.opts.visual) {
+        this.redactor.sync();
+      }
     },
     observeToolbars: function () {
 
