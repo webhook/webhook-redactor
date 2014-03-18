@@ -189,6 +189,8 @@
           break;
       }
 
+      this.redactor.sync();
+
     }
   };
 

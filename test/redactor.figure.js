@@ -48,16 +48,17 @@
   });
 
   test('basic commands', function () {
-    var redactor = this.elems.webhookRedactor('getObject'),
-        figure = redactor.figure,
-        $editor = redactor.$editor.append('<p>bottom</p>'),
-        $figure = $editor.find('figure');
+    var redactor  = this.elems.webhookRedactor('getObject'),
+        figure    = redactor.figure,
+        $editor   = redactor.$editor,
+        $figure   = $editor.find('figure'),
+        $relative = $('<p>bottom</p>').insertAfter($figure);
 
     figure.command('up', $figure);
-    ok($figure.is(':first-child'), 'can move up');
+    deepEqual($relative.prev().get(0), $figure.get(0), 'can move up');
 
     figure.command('down', $figure);
-    ok($figure.is(':last-child'), 'can move down');
+    deepEqual($relative.next().get(0), $figure.get(0), 'can move down');
 
     figure.command('remove', $figure);
     ok(!$editor.find('figure').length, 'can remove');

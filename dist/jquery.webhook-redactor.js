@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2014-02-26
+/*! webhook-redactor - v0.0.1 - 2014-03-18
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
@@ -268,6 +268,8 @@
           }
           break;
       }
+
+      this.redactor.sync();
 
     }
   };
