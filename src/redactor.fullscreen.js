@@ -16,7 +16,8 @@
       this.fullscreen = false;
 
       this.buttonAdd('fullscreen', 'Fullscreen', $.proxy(this.toggleFullscreen, this));
-      this.buttonSetRight('fullscreen');
+      this.buttonGet('fullscreen').addClass('redactor_btn_fullscreen');
+      this.buttonGet('fullscreen').parent().addClass('redactor_btn_right');
 
       if (this.opts.fullscreen) {
         this.toggleFullscreen();

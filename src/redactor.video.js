@@ -126,6 +126,8 @@
 
       }, this));
 
+      this.buttonGet('video').addClass('redactor_btn_video');
+
     }
   };
 

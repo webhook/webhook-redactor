@@ -213,6 +213,7 @@
         this.modalInit('Insert Table', modal, 500, callback);
 
       }, this));
+      this.buttonGet('table').addClass('redactor_btn_table');
     }
   };
 

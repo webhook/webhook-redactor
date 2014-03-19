@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2014-03-18
+/*! webhook-redactor - v0.0.1 - 2014-03-19
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
@@ -214,12 +214,21 @@
         // dropdown
         else if (typeof command === 'object') {
           $.each(command, $.proxy(function (text, commands) {
-            var dropdown = $('<span>', {
-              'class': 'wy-figure-controls-table wy-dropdown',
-              'text': ' ' + text
-            });
+
+            var dropdown = $('<span>').text(' ' + text).addClass('wy-figure-controls-table wy-dropdown');
+
             $('<span class="caret">').appendTo(dropdown);
+
             var list = $('<dl class="wy-dropdown-menu wy-dropdown-bubble wy-dropdown-arrow wy-dropdown-arrow-left">').appendTo(dropdown);
+
+            dropdown.on('mouseover', function () {
+              list.show();
+            });
+
+            dropdown.on('mouseout', function () {
+              list.hide();
+            });
+
             $.each(commands, $.proxy(function (index, command) {
               control = controls[command];
               if (command === '|') {
@@ -233,7 +242,9 @@
                 }).appendTo($('<dd>').appendTo(list));
               }
             }, this));
+
             $controls = $controls.add(dropdown);
+
           }, this));
         }
       }, this));
@@ -345,7 +356,8 @@
       this.fullscreen = false;
 
       this.buttonAdd('fullscreen', 'Fullscreen', $.proxy(this.toggleFullscreen, this));
-      this.buttonSetRight('fullscreen');
+      this.buttonGet('fullscreen').addClass('redactor_btn_fullscreen');
+      this.buttonGet('fullscreen').parent().addClass('redactor_btn_right');
 
       if (this.opts.fullscreen) {
         this.toggleFullscreen();
@@ -627,77 +639,6 @@
   "use strict";
 
   // namespacing
-  var Markdown = function (redactor) {
-    this.redactor = redactor;
-  };
-  Markdown.prototype = {
-    insert: function (markdown_string) {
-
-      var html = marked(markdown_string);
-
-      this.redactor.modalClose();
-      this.redactor.selectionRestore();
-
-      // maintain undo buffer
-      this.redactor.bufferSet(this.redactor.$editor.html());
-
-      var current = this.redactor.getBlock() || this.redactor.getCurrent();
-      if (current) {
-        $(current).after(html);
-      } else {
-        this.redactor.insertHtmlAdvanced(html, false);
-      }
-
-      this.redactor.selectionRestore();
-
-      this.redactor.sync();
-
-    }
-  };
-
-  // Hook up plugin to Redactor.
-  window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.markdown = {
-    init: function () {
-      this.markdown = new Markdown(this);
-      this.buttonAddAfter('html', 'html', 'Markdown', $.proxy(function () {
-
-        // save cursor position
-        this.selectionSave();
-
-        var callback = $.proxy(function () {
-
-          $('#redactor_insert_table_btn').on('click', $.proxy(function () {
-            this.markdown.insert($('#redactor_markdown_text').val());
-          }, this));
-
-          setTimeout(function () {
-            $('#redactor_markdown_text').trigger('focus');
-          }, 200);
-
-        }, this);
-
-        var modal = String() +
-          '<section>' +
-            '<label>Markdown Text</label>' +
-            '<textarea rows="5" id="redactor_markdown_text"></textarea>' +
-          '</section>' +
-          '<footer>' +
-            '<button class="redactor_modal_btn redactor_btn_modal_close">' + this.opts.curLang.cancel + '</button>' +
-            '<input type="button" name="upload" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '">' +
-          '</footer>';
-
-        this.modalInit('Insert Markdown', modal, 500, callback);
-      }, this));
-    }
-  };
-
-}(jQuery));
-
-(function ($) {
-  "use strict";
-
-  // namespacing
   var Quote = function (redactor) {
     this.redactor = redactor;
     this.init();
@@ -818,6 +759,7 @@
     init: function () {
       this.quote = new Quote(this);
       this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(this.quote.toggle, this.quote));
+      this.buttonGet('quote').addClass('redactor_btn_quote');
     }
   };
 
@@ -1030,6 +972,7 @@
         this.modalInit('Insert Table', modal, 500, callback);
 
       }, this));
+      this.buttonGet('table').addClass('redactor_btn_table');
     }
   };
 
@@ -1155,6 +1098,8 @@
 
       }, this));
 
+      this.buttonGet('video').addClass('redactor_btn_video');
+
     }
   };
 
@@ -1178,17 +1123,16 @@
   $.webhookRedactor.options = {
     // We roll our own image plugin.
     observeImages: false,
-    buttons: [
-      'formatting', '|',
-      'bold', 'italic', '|',
-      'unorderedlist', 'orderedlist', '|',
-      'link', '|',
-      'html'
-    ],
+    buttons: ['formatting', 'bold', 'italic', 'unorderedlist', 'orderedlist', 'link', 'html'],
     // Custom plugins.
     plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
     // Sync textarea with editor before submission.
     initCallback: function () {
+
+      $.each(this.opts.buttons, $.proxy(function (index, button) {
+        this.buttonGet(button).addClass('redactor_btn_' + button);
+      }, this));
+
       this.$element.closest('form').one('submit', $.proxy(function () {
         // only sync if we're in visual mode
         if (this.opts.visual) {
@@ -1202,9 +1146,11 @@
 
       // Ensure first and last elements are always P
       var borderSelector = 'p, h1, h2, h3, h4, h5';
+
       if (!this.$editor.children(":first-child").is(borderSelector)) {
         this.$editor.prepend('<p><br></p>');
       }
+
       if (!this.$editor.children(":last-child").is(borderSelector)) {
         this.$editor.append('<p><br></p>');
       }

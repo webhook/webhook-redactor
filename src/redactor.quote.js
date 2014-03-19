@@ -130,6 +130,7 @@
     init: function () {
       this.quote = new Quote(this);
       this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(this.quote.toggle, this.quote));
+      this.buttonGet('quote').addClass('redactor_btn_quote');
     }
   };
 

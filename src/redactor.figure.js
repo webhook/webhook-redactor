@@ -134,12 +134,21 @@
         // dropdown
         else if (typeof command === 'object') {
           $.each(command, $.proxy(function (text, commands) {
-            var dropdown = $('<span>', {
-              'class': 'wy-figure-controls-table wy-dropdown',
-              'text': ' ' + text
-            });
+
+            var dropdown = $('<span>').text(' ' + text).addClass('wy-figure-controls-table wy-dropdown');
+
             $('<span class="caret">').appendTo(dropdown);
+
             var list = $('<dl class="wy-dropdown-menu wy-dropdown-bubble wy-dropdown-arrow wy-dropdown-arrow-left">').appendTo(dropdown);
+
+            dropdown.on('mouseover', function () {
+              list.show();
+            });
+
+            dropdown.on('mouseout', function () {
+              list.hide();
+            });
+
             $.each(commands, $.proxy(function (index, command) {
               control = controls[command];
               if (command === '|') {
@@ -153,7 +162,9 @@
                 }).appendTo($('<dd>').appendTo(list));
               }
             }, this));
+
             $controls = $controls.add(dropdown);
+
           }, this));
         }
       }, this));
