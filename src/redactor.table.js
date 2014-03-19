@@ -190,6 +190,11 @@
 
           $('#redactor_insert_table_btn').on('click', $.proxy(function () {
             this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
+            this.buttonInactive('table');
+          }, this));
+
+          $('.redactor_btn_modal_close').on('click', $.proxy(function () {
+            this.buttonInactive('table');
           }, this));
 
           setTimeout(function () {
@@ -207,7 +212,7 @@
           '</section>' +
           '<footer>' +
             '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
-            '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
+            '<input type="button" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '" />' +
           '</footer>';
 
         this.modalInit('Insert Table', modal, 500, callback);
