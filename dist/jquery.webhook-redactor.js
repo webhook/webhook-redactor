@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2014-03-19
+/*! webhook-redactor - v0.0.1 - 2014-03-26
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
@@ -307,7 +307,13 @@
   };
   Fixedtoolbar.prototype = {
     checkOffset: function () {
-      if (this.redactor.$box.offset().top - this.$window.scrollTop() <= 0) {
+
+      var boxOffset = this.redactor.$box.offset();
+
+      var isBelowBoxTop = boxOffset.top - this.$window.scrollTop() <= 0;
+      var isAboveBoxBottom = boxOffset.top + this.redactor.$box.outerHeight() - this.redactor.$toolbar.outerHeight() - this.$window.scrollTop() >= 0;
+
+      if (isBelowBoxTop && isAboveBoxBottom) {
         this.fix();
       } else {
         this.unfix();

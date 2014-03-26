@@ -18,7 +18,13 @@
   };
   Fixedtoolbar.prototype = {
     checkOffset: function () {
-      if (this.redactor.$box.offset().top - this.$window.scrollTop() <= 0) {
+
+      var boxOffset = this.redactor.$box.offset();
+
+      var isBelowBoxTop = boxOffset.top - this.$window.scrollTop() <= 0;
+      var isAboveBoxBottom = boxOffset.top + this.redactor.$box.outerHeight() - this.redactor.$toolbar.outerHeight() - this.$window.scrollTop() >= 0;
+
+      if (isBelowBoxTop && isAboveBoxBottom) {
         this.fix();
       } else {
         this.unfix();

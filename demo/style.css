@@ -3280,7 +3280,7 @@ body .redactor_box_fullscreen {
   overflow: hidden;
   width: 100%; }
 
-/*	Fullscreen */
+/*  Fullscreen */
 .redactor-fake {
   background: white;
   border: solid 1px #cccccc;
@@ -3355,7 +3355,7 @@ body .redactor_box_fullscreen {
     padding: 10px 7px 0 7px !important;
     background: #f6f6f6 !important; }
 
-/*	TOOLBAR */
+/*  TOOLBAR */
 .redactor_toolbar {
   position: relative;
   top: 0;
@@ -3414,8 +3414,8 @@ body .redactor_box_fullscreen {
   .redactor_button_disabled:hover {
     cursor: default; }
 
-/*	BUTTONS
- *	step 25px */
+/*  BUTTONS
+ *  step 25px */
 body .redactor_toolbar li a {
   display: inline-block; }
   body .redactor_toolbar li a.redactor_btn_fontcolor {
@@ -3453,11 +3453,11 @@ body .redactor_toolbar li a {
   body .redactor_toolbar li a.redactor_btn_pre {
     background-position: -875px; }
 
-/*	Toolbar classes */
+/*  Toolbar classes */
 .redactor_format_h1, .redactor_format_h2, .redactor_format_h3, .redactor_format_h4, .redactor_format_h5 {
   font-weight: bold; }
 
-/*	DROPDOWN */
+/*  DROPDOWN */
 .redactor_dropdown {
   position: absolute;
   top: 28px;
@@ -4087,7 +4087,8 @@ section {
   *zoom: 1;
   max-width: 68em;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  margin-bottom: 1000px; }
   section:before, section:after {
     display: table;
     content: ""; }
