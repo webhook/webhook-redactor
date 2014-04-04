@@ -14,7 +14,7 @@
     this.redactor = redactor;
     this.$window = $(redactor.window);
     this.$window.on('scroll', $.proxy(this.checkOffset, this));
-
+    redactor.$box.on('scroll', $.proxy(this.checkOffset, this));
   };
   Fixedtoolbar.prototype = {
     checkOffset: function () {
