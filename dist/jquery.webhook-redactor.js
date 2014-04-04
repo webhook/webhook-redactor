@@ -316,7 +316,7 @@
     this.redactor = redactor;
     this.$window = $(redactor.window);
     this.$window.on('scroll', $.proxy(this.checkOffset, this));
-
+    redactor.$box.on('scroll', $.proxy(this.checkOffset, this));
   };
   Fixedtoolbar.prototype = {
     checkOffset: function () {
@@ -368,10 +368,11 @@
 (function ($) {
   "use strict";
 
-  window.RedactorPlugins = window.RedactorPlugins || {};
+  var RedactorPlugins = window.RedactorPlugins = window.RedactorPlugins || {};
 
-  window.RedactorPlugins.fullscreen = {
-    init: function () {
+  RedactorPlugins.fullscreen = {
+    init: function()
+    {
       this.fullscreen = false;
 
       this.buttonAdd('fullscreen', 'Fullscreen', $.proxy(this.toggleFullscreen, this));
@@ -382,16 +383,18 @@
         this.toggleFullscreen();
       }
     },
-
-    toggleFullscreen: function () {
+    toggleFullscreen: function()
+    {
       var html;
 
-      if (!this.fullscreen) {
+      if (!this.fullscreen)
+      {
         this.buttonChangeIcon('fullscreen', 'normalscreen');
         this.buttonActive('fullscreen');
         this.fullscreen = true;
 
-        if (this.opts.toolbarExternal) {
+        if (this.opts.toolbarExternal)
+        {
           this.toolcss = {};
           this.boxcss = {};
           this.toolcss.width = this.$toolbar.css('width');
@@ -402,15 +405,15 @@
 
         this.fsheight = this.$editor.height();
 
+        if (this.opts.maxHeight) {
+          this.$editor.css('max-height', '');
+        }
         if (this.opts.iframe) {
           html = this.get();
         }
 
-        this.tmpspan = $('<span></span>');
-        this.$box.addClass('redactor_box_fullscreen').after(this.tmpspan);
-
+        this.$box.addClass('redactor_box_fullscreen');
         $('body, html').css('overflow', 'hidden');
-        $('body').prepend(this.$box);
 
         if (this.opts.iframe) {
           this.fullscreenIframe(html);
@@ -423,7 +426,9 @@
         this.focus();
         this.observeStart();
 
-      } else {
+      }
+      else
+      {
         this.buttonRemoveIcon('fullscreen', 'normalscreen');
         this.buttonInactive('fullscreen');
         this.fullscreen = false;
@@ -431,19 +436,16 @@
         $(window).off('resize', $.proxy(this.fullScreenResize, this));
         $('body, html').css('overflow', '');
 
-        this.$box.removeClass('redactor_box_fullscreen').css({
-          width: 'auto',
-          height: 'auto'
-        });
+        this.$box.removeClass('redactor_box_fullscreen').css({ width: 'auto', height: 'auto' });
 
         if (this.opts.iframe) {
           html = this.$editor.html();
         }
-        this.tmpspan.after(this.$box).remove();
 
         if (this.opts.iframe) {
           this.fullscreenIframe(html);
-        } else {
+        }
+        else {
           this.sync();
         }
 
@@ -451,8 +453,12 @@
         if (this.opts.autoresize) {
           height = 'auto';
         }
+        if (this.opts.maxHeight) {
+          this.$editor.css('max-height', this.opts.maxHeight);
+        }
 
-        if (this.opts.toolbarExternal) {
+        if (this.opts.toolbarExternal)
+        {
           this.$box.css('top', this.boxcss.top);
           this.$toolbar.css({
             'width': this.toolcss.width,
@@ -461,27 +467,29 @@
           });
         }
 
-        // if (!this.opts.iframe) {
-        //   this.$editor.css('height', height);
-        // } else {
-        //   this.$frame.css('height', height);
-        // }
+        if (!this.opts.iframe) {
+          this.$editor.css('height', height);
+        }
+        else {
+          this.$frame.css('height', height);
+        }
 
-        // this.$editor.css('height', height);
-
+        this.$editor.css('height', height);
         this.focus();
         this.observeStart();
       }
-    },
 
-    fullscreenIframe: function (html) {
-      this.$editor = this.$frame.contents().find('body').attr({
-        'contenteditable': true,
-        'dir': this.opts.direction
-      });
+      $(window).trigger('scroll');
+
+    },
+    fullscreenIframe: function(html)
+    {
+      this.$editor = this.$frame.contents().find('body');
+      this.$editor.attr({ 'contenteditable': true, 'dir': this.opts.direction });
 
       // set document & window
-      if (this.$editor[0]) {
+      if (this.$editor[0])
+      {
         this.document = this.$editor[0].ownerDocument;
         this.window = this.document.defaultView || window;
       }
@@ -491,7 +499,8 @@
 
       if (this.opts.fullpage) {
         this.setFullpageOnInit(html);
-      } else {
+      }
+      else {
         this.set(html);
       }
 
@@ -499,8 +508,8 @@
         this.$editor.addClass('redactor_editor_wym');
       }
     },
-
-    fullScreenResize: function () {
+    fullScreenResize: function()
+    {
       if (!this.fullscreen) {
         return false;
       }
@@ -511,7 +520,8 @@
       var height = $(window).height() - toolbarHeight;
       this.$box.width($(window).width() - 2).height(height + toolbarHeight);
 
-      if (this.opts.toolbarExternal) {
+      if (this.opts.toolbarExternal)
+      {
         this.$toolbar.css({
           'top': '0px',
           'position': 'absolute',
@@ -523,8 +533,11 @@
 
       // if (!this.opts.iframe) {
       //   this.$editor.height(height - (pad * 2));
-      // } else {
-      //   setTimeout($.proxy(function () {
+      // }
+      // else
+      // {
+      //   setTimeout($.proxy(function()
+      //   {
       //     this.$frame.height(height);
 
       //   }, this), 1);
