@@ -29,7 +29,6 @@
     plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
     // Sync textarea with editor before submission.
     initCallback: function () {
-
       $.each(this.opts.buttons, $.proxy(function (index, button) {
         this.buttonGet(button).addClass('redactor_btn_' + button);
       }, this));
