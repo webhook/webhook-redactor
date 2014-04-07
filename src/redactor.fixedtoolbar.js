@@ -15,8 +15,19 @@
     this.$window = $(redactor.window);
     this.$window.on('scroll', $.proxy(this.checkOffset, this));
     redactor.$box.on('scroll', $.proxy(this.checkOffset, this));
+
+    this.redactor.$editor.on('focus', $.proxy(function () {
+      this.isFocused = true;
+    }, this));
+
+    this.redactor.$editor.on('blur', $.proxy(function () {
+      this.isFocused = false;
+    }, this));
   };
   Fixedtoolbar.prototype = {
+    isFixed: false,
+    isFocused: false,
+
     checkOffset: function () {
 
       var boxOffset = this.redactor.$box.offset();
@@ -30,26 +41,53 @@
         this.unfix();
       }
     },
+
     fix: function () {
+
+      if (this.isFixed) {
+
+        // webkit does not recalc top: 0 when focused on contenteditable
+        if (this.redactor.isMobile() && this.isFocused) {
+          this.redactor.$toolbar.css({
+            position: 'absolute',
+            top     : this.$window.scrollTop() - this.redactor.$box.offset().top,
+            left    : this.redactor.$box.offset().left
+          });
+        }
+
+        return;
+      }
 
       var border_left = parseInt(this.redactor.$box.css('border-left-width').replace('px', ''), 10);
 
       this.redactor.$toolbar.css({
         position: 'fixed',
-        left: this.redactor.$box.offset().left + border_left,
-        width: this.redactor.$box.width(),
-        zIndex: 1
+        left    : this.redactor.$box.offset().left + border_left,
+        width   : this.redactor.$box.width(),
+        zIndex  : 1
       });
 
       this.redactor.$editor.css('padding-top', this.redactor.$toolbar.height() + 10);
+
+      this.isFixed = true;
+
     },
+
     unfix: function () {
+      if (!this.isFixed) {
+        return;
+      }
+
       this.redactor.$toolbar.css({
         position: 'relative',
-        left: 'auto',
-        width: 'auto'
+        left    : '',
+        width   : '',
+        top     : ''
       });
+
       this.redactor.$editor.css('padding-top', 10);
+
+      this.isFixed = false;
     }
   };
 

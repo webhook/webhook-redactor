@@ -4088,6 +4088,7 @@ section {
   max-width: 68em;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 100px;
   margin-bottom: 1000px; }
   section:before, section:after {
     display: table;
