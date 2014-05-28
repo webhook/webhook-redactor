@@ -2,12 +2,12 @@
  * webhook-redactor
  *
  *
- * Copyright (c) 2013 Mike Horn
+ * Copyright (c) 2014 Webhook
  * Licensed under the MIT license.
  */
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Figure = function (redactor) {
@@ -22,11 +22,15 @@
       '|'   : { classSuffix: 'divider' },
       remove: { classSuffix: 'delete' }
     },
+
     controlGroup: ['up', 'down', 'remove'],
+
     init: function () {
       this.observeCaptions();
       this.observeToolbars();
+      this.observeKeyboard();
     },
+
     observeCaptions: function () {
 
       // adding a BR to empty captions and citations on click will put the cursor in the expected place
@@ -45,41 +49,43 @@
       // prevent user from removing captions or citations with delete/backspace keys
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
         var current         = this.redactor.getCurrent(),
-            is_empty        = !current.length,
-            is_caption_node = !!$(current).closest('figcaption, cite').length,
-            is_delete_key   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
+            isEmpty        = !current.length,
+            isCaptionNode = !!$(current).closest('figcaption, cite').length,
+            isDeleteKey   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
 
-        if (is_empty && is_delete_key && is_caption_node) {
+        if (isEmpty && isDeleteKey && isCaptionNode) {
           event.preventDefault();
         }
       }, this));
+
     },
+
     cleanCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).empty();
     },
+
     clearCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
       if (this.redactor.opts.visual) {
         this.redactor.sync();
       }
     },
+
+    showToolbar: function (event) {
+      var $figure = $(event.currentTarget),
+          type = $figure.data('type') || 'default',
+          $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
+
+      if (this.redactor[type] && this.redactor[type].onShow) {
+        this.redactor[type].onShow($figure, $toolbar);
+      }
+    },
+
+    hideToolbar: function (event) {
+      $(event.currentTarget).find('.wy-figure-controls').appendTo(this.redactor.$box);
+    },
+
     observeToolbars: function () {
-
-      // move toolbar into figure on mouseenter
-      this.redactor.$editor.on('mouseenter', 'figure', $.proxy(function (event) {
-        var $figure = $(event.currentTarget),
-            type = $figure.data('type') || 'default',
-            $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
-
-        if (this.redactor[type] && this.redactor[type].onShow) {
-          this.redactor[type].onShow($figure, $toolbar);
-        }
-      }, this));
-
-      // remove toolbar from figure on mouseleave
-      this.redactor.$editor.on('mouseleave', 'figure', $.proxy(function (event) {
-        $(event.currentTarget).find('.wy-figure-controls').appendTo(this.redactor.$box);
-      }, this));
 
       // before clicking a command, make sure we save the current node within the editor
       this.redactor.$editor.on('mousedown', '.wy-figure-controls', $.proxy(function () {
@@ -88,11 +94,13 @@
       }, this));
 
       this.redactor.$editor.on('click', '.wy-figure-controls span, .wy-figure-controls a', $.proxy(function (event) {
+
         event.stopPropagation();
         var $target = $(event.currentTarget),
             command = $target.data('command'),
             $figure = $target.closest('figure'),
             plugin  = this.redactor[$figure.data('type')];
+
         this.command(command, $figure, plugin);
       }, this));
 
@@ -100,7 +108,31 @@
         $(this).find('figure').trigger('mouseleave');
       });
 
+      if (this.redactor.isMobile()) {
+
+        // if $editor is focused, click doesn't seem to fire
+        this.redactor.$editor.on('touchstart', 'figure', function (event) {
+          if (event.target.nodeName !== 'FIGCAPTION' && $(event.target).parents('.wy-figure-controls').length) {
+            $(this).trigger('click', event);
+          }
+        });
+
+        this.redactor.$editor.on('click', 'figure', $.proxy(function (event) {
+          if (event.target.nodeName !== 'FIGCAPTION') {
+            this.redactor.$editor.trigger('blur');
+          }
+          this.showToolbar(event);
+        }, this));
+      } else {
+        // move toolbar into figure on mouseenter
+        this.redactor.$editor.on('mouseenter', 'figure', $.proxy(this.showToolbar, this));
+
+        // remove toolbar from figure on mouseleave
+        this.redactor.$editor.on('mouseleave', 'figure', $.proxy(this.hideToolbar, this));
+      }
+
     },
+
     getToolbar: function (type) {
 
       if (this.toolbar[type]) {
@@ -112,8 +144,11 @@
           $controls = this.buildControls(controlGroup, controls),
           $toolbar = $('<div class="wy-figure-controls">').append($controls);
 
-      return this.toolbar[type] = $toolbar;
+      this.toolbar[type] = $toolbar;
+
+      return $toolbar;
     },
+
     buildControls: function (controlGroup, controls) {
 
       var $controls = $();
@@ -171,6 +206,7 @@
 
       return $controls;
     },
+
     command: function (command, $figure, plugin) {
 
       // move the toolbar before carrying out the command so it doesn't break when undoing/redoing
@@ -202,6 +238,17 @@
 
       this.redactor.sync();
 
+    },
+
+    observeKeyboard: function () {
+      var redactor = this.redactor;
+      redactor.$editor.on('keydown', function (event) {
+        // delete key
+        var currentNode = redactor.getBlock();
+        if (event.keyCode === 8 && !redactor.getCaretOffset(currentNode) && currentNode.previousSibling && currentNode.previousSibling.nodeName === 'FIGURE') {
+          event.preventDefault();
+        }
+      });
     }
   };
 

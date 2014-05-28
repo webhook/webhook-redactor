@@ -2,12 +2,12 @@
  * webhook-redactor
  *
  *
- * Copyright (c) 2013 Mike Horn
+ * Copyright (c) 2014 Webhook
  * Licensed under the MIT license.
  */
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Quote = function (redactor) {
@@ -22,10 +22,10 @@
       small       : { classSuffix: 'small', text: 'S' },
       medium      : { classSuffix: 'medium', text: 'M' },
       large       : { classSuffix: 'large', text: 'L' },
-      resize_full : { classSuffix: 'resize-full' },
-      resize_small: { classSuffix: 'resize-small' }
+      resizeFull : { classSuffix: 'resize-full' },
+      resizeSmall: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resize_full', 'resize_small', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resizeFull', 'resizeSmall', 'remove'],
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCites, this));
       this.addCites();

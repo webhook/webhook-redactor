@@ -2,12 +2,12 @@
  * webhook-redactor
  *
  *
- * Copyright (c) 2013 Mike Horn
+ * Copyright (c) 2014 Webhook
  * Licensed under the MIT license.
  */
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Video = function (redactor) {
@@ -17,10 +17,10 @@
 
   Video.prototype = {
     control: {
-      resize_full : { classSuffix: 'resize-full' },
-      resize_small: { classSuffix: 'resize-small' }
+      resizeFull : { classSuffix: 'resize-full' },
+      resizeSmall: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['up', 'down', '|', 'resize_full', 'resize_small', 'remove'],
+    controlGroup: ['up', 'down', '|', 'resizeFull', 'resizeSmall', 'remove'],
     init: function () {
       // find videos without captions, add empty figcaption
       this.redactor.$editor.find('figure[data-type=video]:not(:has(figcaption))').each(function () {

@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  $('#redactor').webhookRedactor();
+  $('.redactor').webhookRedactor();
 
   $('form').submit(function () {
     return false;

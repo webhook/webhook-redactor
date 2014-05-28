@@ -2,12 +2,12 @@
  * webhook-redactor
  *
  *
- * Copyright (c) 2013 Mike Horn
+ * Copyright (c) 2014 Webhook
  * Licensed under the MIT license.
  */
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Table = function (redactor) {
@@ -15,31 +15,30 @@
   };
   Table.prototype = {
     control: {
-      row_up     : { text: 'Add row above' },
-      row_down   : { text: 'Add row below' },
-      col_left   : { text: 'Add column left' },
-      col_right  : { text: 'Add column right' },
-      add_head   : { text: 'Add header' },
-      del_head   : { text: 'Delete header' },
-      del_col    : { text: 'Delete column' },
-      del_row    : { text: 'Delete row' },
-      del_table  : { text: 'Delete table' },
-      stripe     : { text: 'Striped row' },
-      border     : { text: 'Borders on rows' },
-      full_border: { text: 'Borders everywhere' }
+      rowUp     : { text: 'Add row above' },
+      rowDown   : { text: 'Add row below' },
+      colLeft   : { text: 'Add column left' },
+      colRight  : { text: 'Add column right' },
+      addHead   : { text: 'Add header' },
+      delHead   : { text: 'Delete header' },
+      delCol    : { text: 'Delete column' },
+      delRow    : { text: 'Delete row' },
+      delTable  : { text: 'Delete table' },
+      stripe    : { text: 'Striped row' },
+      border    : { text: 'Borders on rows' },
+      fullBorder: { text: 'Borders everywhere' }
     },
-    controlGroup: [
-      'up', 'down', '|', {
-        'Table Options': [
-          'row_up', 'row_down', 'col_left', 'col_right', '|',
-          'add_head', 'del_head', '|',
-          'del_col', 'del_row', 'del_table', '|',
-          'border', 'stripe', 'full_border'
-        ]
-      }, 'remove'],
+    controlGroup: [ 'up', 'down', '|', {
+      'Table Options': [
+        'rowUp', 'rowDown', 'colLeft', 'colRight', '|',
+        'addHead', 'delHead', '|',
+        'delCol', 'delRow', 'delTable', '|',
+        'border', 'stripe', 'fullBorder'
+      ]
+    }, 'remove'],
     insertTable: function (rows, columns) {
 
-      var $table_box = $('<div></div>'),
+      var $tableBox = $('<div></div>'),
           tableId = Math.floor(Math.random() * 99999),
           $table = $('<table id="table' + tableId + '">'),
           $thead = $('<thead>').appendTo($table),
@@ -68,8 +67,8 @@
         $tbody.append($row);
       }
 
-      $('<figure data-type="table">').addClass('wy-table wy-table-bordered-rows').append($table).appendTo($table_box);
-      var html = $table_box.html();
+      $('<figure data-type="table">').addClass('wy-table wy-table-bordered-rows').append($table).appendTo($tableBox);
+      var html = $tableBox.html();
 
       this.redactor.modalClose();
       this.redactor.selectionRestore();
@@ -97,81 +96,81 @@
     command: function (command, $figure, $target) {
 
       switch (command) {
-        case 'row_up':
-        case 'row_down':
-          $.proxy(function () {
-            var $row = $target.closest('tr'), i, $clone = $('<tr>');
-            for (i = 0; i < $row.children().length; i++) {
-              $('<td>').text('Data').appendTo($clone);
-            }
-            if (command === 'row_up') {
-              $clone.insertBefore($row);
-            } else {
-              $clone.insertAfter($row);
-            }
-          }, this)();
-          break;
-
-        case 'col_left':
-        case 'col_right':
-          $.proxy(function () {
-            var $cell = $target.closest('td'),
-                $row = $cell.closest('tr'),
-                $table = $row.closest('table'),
-                position = $row.children().index($cell) + 1,
-                insert_position = command === 'col_left' ? 'before' : 'after';
-
-            $table.find('thead tr').children(':nth-child(' + position + ')')[insert_position]($('<th>').text('Header'));
-            $table.find('tbody tr').children(':nth-child(' + position + ')')[insert_position]($('<td>').text('Data'));
-          }, this)();
-          break;
-
-        case 'add_head':
-          if (!$figure.find('table thead').length) {
-            $.proxy(function () {
-              var num_cols = $figure.find('tr').first().children().length,
-                  $table = $figure.find('table'),
-                  $thead = $('<thead>').prependTo($table),
-                  $row = $('<tr>').appendTo($thead);
-
-              for (var i = 0; i < num_cols; i++) {
-                $('<th>').text('Header').appendTo($row);
-              }
-            }, this)();
+      case 'rowUp':
+      case 'rowDown':
+        $.proxy(function () {
+          var $row = $target.closest('tr'), i, $clone = $('<tr>');
+          for (i = 0; i < $row.children().length; i++) {
+            $('<td>').text('Data').appendTo($clone);
           }
-          break;
+          if (command === 'rowUp') {
+            $clone.insertBefore($row);
+          } else {
+            $clone.insertAfter($row);
+          }
+        }, this)();
+        break;
 
-        case 'del_head':
-          $figure.find('thead').remove();
-          break;
+      case 'colLeft':
+      case 'colRight':
+        $.proxy(function () {
+          var $cell = $target.closest('td'),
+              $row = $cell.closest('tr'),
+              $table = $row.closest('table'),
+              position = $row.children().index($cell) + 1,
+              insertPosition = command === 'colLeft' ? 'before' : 'after';
 
-        case 'del_col':
+          $table.find('thead tr').children(':nth-child(' + position + ')')[insertPosition]($('<th>').text('Header'));
+          $table.find('tbody tr').children(':nth-child(' + position + ')')[insertPosition]($('<td>').text('Data'));
+        }, this)();
+        break;
+
+      case 'addHead':
+        if (!$figure.find('table thead').length) {
           $.proxy(function () {
-            var $cell = $target.closest('td'),
-                position = $cell.parent().children().index($cell) + 1;
-            $cell.closest('table').find('tr').children(':nth-child(' + position + ')').remove();
+            var numCols = $figure.find('tr').first().children().length,
+                $table = $figure.find('table'),
+                $thead = $('<thead>').prependTo($table),
+                $row = $('<tr>').appendTo($thead);
+
+            for (var i = 0; i < numCols; i++) {
+              $('<th>').text('Header').appendTo($row);
+            }
           }, this)();
-          break;
+        }
+        break;
 
-        case 'del_row':
-          $target.closest('tr').remove();
-          break;
+      case 'delHead':
+        $figure.find('thead').remove();
+        break;
 
-        case 'del_table':
-          $figure.remove();
-          break;
+      case 'delCol':
+        $.proxy(function () {
+          var $cell = $target.closest('td'),
+              position = $cell.parent().children().index($cell) + 1;
+          $cell.closest('table').find('tr').children(':nth-child(' + position + ')').remove();
+        }, this)();
+        break;
 
-        case 'border':
-          $figure.removeClass('wy-table-bordered-all').toggleClass('wy-table-bordered-rows');
-          break;
+      case 'delRow':
+        $target.closest('tr').remove();
+        break;
 
-        case 'stripe':
-          $figure.toggleClass('wy-table-striped');
-          break;
+      case 'delTable':
+        $figure.remove();
+        break;
 
-        case 'full_border':
-          $figure.removeClass('wy-table-bordered-rows').toggleClass('wy-table-bordered-all');
-          break;
+      case 'border':
+        $figure.removeClass('wy-table-bordered-all').toggleClass('wy-table-bordered-rows');
+        break;
+
+      case 'stripe':
+        $figure.toggleClass('wy-table-striped');
+        break;
+
+      case 'fullBorder':
+        $figure.removeClass('wy-table-bordered-rows').toggleClass('wy-table-bordered-all');
+        break;
       }
     }
   };

@@ -2,12 +2,12 @@
  * webhook-redactor
  *
  *
- * Copyright (c) 2013 Mike Horn
+ * Copyright (c) 2014 Webhook
  * Licensed under the MIT license.
  */
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Image = function (redactor) {
@@ -28,6 +28,22 @@
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
       this.addCaptions();
+
+      // this.redactor.$editor.on('mousedown', 'figure[data-type=image] img', function () {
+      //   var range = document.createRange();
+      //   range.selectNodeContents($(this).siblings('figcaption').get(0));
+      //   var sel = window.getSelection();
+      //   sel.removeAllRanges();
+      //   sel.addRange(range);
+      // });
+
+      // this.redactor.$editor.on('touchstart', 'figure[data-type=image] img', $.proxy(function (event) {
+      //   this.redactor.$editor.trigger('blur');
+      //   $(this).trigger('mouseenter');
+      //   event.preventDefault();
+      //   event.stopPropagation();
+      //   window.alert('touchstart');
+      // }, this));
     },
     addCaptions: function () {
       // find images without captions, add empty figcaption
@@ -73,8 +89,8 @@
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
-        var base_class = (dot ? '.' : '') + 'wy-figure-' + (prefix || '');
-        return base_class + suffixArray.join((separator || ' ') + base_class);
+        var baseClass = (dot ? '.' : '') + 'wy-figure-' + (prefix || '');
+        return baseClass + suffixArray.join((separator || ' ') + baseClass);
       };
 
       var changeSuffix = function (removeArray, addArray) {

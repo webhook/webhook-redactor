@@ -2,11 +2,13 @@
  * webhook-redactor
  *
  *
- * Copyright (c) 2013 Mike Horn
+ * Copyright (c) 2014 Webhook
  * Licensed under the MIT license.
  */
 
 (function ($) {
+
+  'use strict';
 
   // Collection method.
   $.fn.webhookRedactor = function (options) {
@@ -47,11 +49,11 @@
       // Ensure first and last elements are always P
       var borderSelector = 'p, h1, h2, h3, h4, h5';
 
-      if (!this.$editor.children(":first-child").is(borderSelector)) {
+      if (!this.$editor.children(':first-child').is(borderSelector)) {
         this.$editor.prepend('<p><br></p>');
       }
 
-      if (!this.$editor.children(":last-child").is(borderSelector)) {
+      if (!this.$editor.children(':last-child').is(borderSelector)) {
         this.$editor.append('<p><br></p>');
       }
 

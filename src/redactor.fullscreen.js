@@ -2,12 +2,12 @@
  * webhook-redactor
  * Adapted from Redactor's Fullscreen plugin.
  *
- * Copyright (c) 2013 Mike Horn
+ * Copyright (c) 2014 Webhook
  * Licensed under the MIT license.
  */
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   var RedactorPlugins = window.RedactorPlugins = window.RedactorPlugins || {};
 
