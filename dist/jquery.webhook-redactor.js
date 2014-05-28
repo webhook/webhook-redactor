@@ -1,8 +1,8 @@
-/*! webhook-redactor - v0.0.1 - 2014-04-04
+/*! webhook-redactor - v0.0.1 - 2014-05-28
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
-  "use strict";
+  'use strict';
 
   window.RedactorPlugins = window.RedactorPlugins || {};
 
@@ -71,7 +71,7 @@
 }(jQuery));
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Cleanup = function (redactor) {
@@ -100,7 +100,7 @@
 }(jQuery));
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Figure = function (redactor) {
@@ -115,11 +115,15 @@
       '|'   : { classSuffix: 'divider' },
       remove: { classSuffix: 'delete' }
     },
+
     controlGroup: ['up', 'down', 'remove'],
+
     init: function () {
       this.observeCaptions();
       this.observeToolbars();
+      this.observeKeyboard();
     },
+
     observeCaptions: function () {
 
       // adding a BR to empty captions and citations on click will put the cursor in the expected place
@@ -138,41 +142,43 @@
       // prevent user from removing captions or citations with delete/backspace keys
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
         var current         = this.redactor.getCurrent(),
-            is_empty        = !current.length,
-            is_caption_node = !!$(current).closest('figcaption, cite').length,
-            is_delete_key   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
+            isEmpty        = !current.length,
+            isCaptionNode = !!$(current).closest('figcaption, cite').length,
+            isDeleteKey   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
 
-        if (is_empty && is_delete_key && is_caption_node) {
+        if (isEmpty && isDeleteKey && isCaptionNode) {
           event.preventDefault();
         }
       }, this));
+
     },
+
     cleanCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).empty();
     },
+
     clearCaptions: function () {
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
       if (this.redactor.opts.visual) {
         this.redactor.sync();
       }
     },
+
+    showToolbar: function (event) {
+      var $figure = $(event.currentTarget),
+          type = $figure.data('type') || 'default',
+          $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
+
+      if (this.redactor[type] && this.redactor[type].onShow) {
+        this.redactor[type].onShow($figure, $toolbar);
+      }
+    },
+
+    hideToolbar: function (event) {
+      $(event.currentTarget).find('.wy-figure-controls').appendTo(this.redactor.$box);
+    },
+
     observeToolbars: function () {
-
-      // move toolbar into figure on mouseenter
-      this.redactor.$editor.on('mouseenter', 'figure', $.proxy(function (event) {
-        var $figure = $(event.currentTarget),
-            type = $figure.data('type') || 'default',
-            $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
-
-        if (this.redactor[type] && this.redactor[type].onShow) {
-          this.redactor[type].onShow($figure, $toolbar);
-        }
-      }, this));
-
-      // remove toolbar from figure on mouseleave
-      this.redactor.$editor.on('mouseleave', 'figure', $.proxy(function (event) {
-        $(event.currentTarget).find('.wy-figure-controls').appendTo(this.redactor.$box);
-      }, this));
 
       // before clicking a command, make sure we save the current node within the editor
       this.redactor.$editor.on('mousedown', '.wy-figure-controls', $.proxy(function () {
@@ -181,11 +187,13 @@
       }, this));
 
       this.redactor.$editor.on('click', '.wy-figure-controls span, .wy-figure-controls a', $.proxy(function (event) {
+
         event.stopPropagation();
         var $target = $(event.currentTarget),
             command = $target.data('command'),
             $figure = $target.closest('figure'),
             plugin  = this.redactor[$figure.data('type')];
+
         this.command(command, $figure, plugin);
       }, this));
 
@@ -193,7 +201,31 @@
         $(this).find('figure').trigger('mouseleave');
       });
 
+      if (this.redactor.isMobile()) {
+
+        // if $editor is focused, click doesn't seem to fire
+        this.redactor.$editor.on('touchstart', 'figure', function (event) {
+          if (event.target.nodeName !== 'FIGCAPTION' && $(event.target).parents('.wy-figure-controls').length) {
+            $(this).trigger('click', event);
+          }
+        });
+
+        this.redactor.$editor.on('click', 'figure', $.proxy(function (event) {
+          if (event.target.nodeName !== 'FIGCAPTION') {
+            this.redactor.$editor.trigger('blur');
+          }
+          this.showToolbar(event);
+        }, this));
+      } else {
+        // move toolbar into figure on mouseenter
+        this.redactor.$editor.on('mouseenter', 'figure', $.proxy(this.showToolbar, this));
+
+        // remove toolbar from figure on mouseleave
+        this.redactor.$editor.on('mouseleave', 'figure', $.proxy(this.hideToolbar, this));
+      }
+
     },
+
     getToolbar: function (type) {
 
       if (this.toolbar[type]) {
@@ -205,8 +237,11 @@
           $controls = this.buildControls(controlGroup, controls),
           $toolbar = $('<div class="wy-figure-controls">').append($controls);
 
-      return this.toolbar[type] = $toolbar;
+      this.toolbar[type] = $toolbar;
+
+      return $toolbar;
     },
+
     buildControls: function (controlGroup, controls) {
 
       var $controls = $();
@@ -264,6 +299,7 @@
 
       return $controls;
     },
+
     command: function (command, $figure, plugin) {
 
       // move the toolbar before carrying out the command so it doesn't break when undoing/redoing
@@ -295,6 +331,17 @@
 
       this.redactor.sync();
 
+    },
+
+    observeKeyboard: function () {
+      var redactor = this.redactor;
+      redactor.$editor.on('keydown', function (event) {
+        // delete key
+        var currentNode = redactor.getBlock();
+        if (event.keyCode === 8 && !redactor.getCaretOffset(currentNode) && currentNode.previousSibling && currentNode.previousSibling.nodeName === 'FIGURE') {
+          event.preventDefault();
+        }
+      });
     }
   };
 
@@ -317,8 +364,19 @@
     this.$window = $(redactor.window);
     this.$window.on('scroll', $.proxy(this.checkOffset, this));
     redactor.$box.on('scroll', $.proxy(this.checkOffset, this));
+
+    this.redactor.$editor.on('focus', $.proxy(function () {
+      this.isFocused = true;
+    }, this));
+
+    this.redactor.$editor.on('blur', $.proxy(function () {
+      this.isFocused = false;
+    }, this));
   };
   Fixedtoolbar.prototype = {
+    isFixed: false,
+    isFocused: false,
+
     checkOffset: function () {
 
       var boxOffset = this.redactor.$box.offset();
@@ -332,26 +390,53 @@
         this.unfix();
       }
     },
+
     fix: function () {
+
+      if (this.isFixed) {
+
+        // webkit does not recalc top: 0 when focused on contenteditable
+        if (this.redactor.isMobile() && this.isFocused) {
+          this.redactor.$toolbar.css({
+            position: 'absolute',
+            top     : this.$window.scrollTop() - this.redactor.$box.offset().top,
+            left    : this.redactor.$box.offset().left
+          });
+        }
+
+        return;
+      }
 
       var border_left = parseInt(this.redactor.$box.css('border-left-width').replace('px', ''), 10);
 
       this.redactor.$toolbar.css({
         position: 'fixed',
-        left: this.redactor.$box.offset().left + border_left,
-        width: this.redactor.$box.width(),
-        zIndex: 1
+        left    : this.redactor.$box.offset().left + border_left,
+        width   : this.redactor.$box.width(),
+        zIndex  : 1
       });
 
       this.redactor.$editor.css('padding-top', this.redactor.$toolbar.height() + 10);
+
+      this.isFixed = true;
+
     },
+
     unfix: function () {
+      if (!this.isFixed) {
+        return;
+      }
+
       this.redactor.$toolbar.css({
         position: 'relative',
-        left: 'auto',
-        width: 'auto'
+        left    : '',
+        width   : '',
+        top     : ''
       });
+
       this.redactor.$editor.css('padding-top', 10);
+
+      this.isFixed = false;
     }
   };
 
@@ -366,7 +451,7 @@
 }(jQuery));
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   var RedactorPlugins = window.RedactorPlugins = window.RedactorPlugins || {};
 
@@ -550,7 +635,7 @@
 }(jQuery));
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Image = function (redactor) {
@@ -571,6 +656,22 @@
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
       this.addCaptions();
+
+      // this.redactor.$editor.on('mousedown', 'figure[data-type=image] img', function () {
+      //   var range = document.createRange();
+      //   range.selectNodeContents($(this).siblings('figcaption').get(0));
+      //   var sel = window.getSelection();
+      //   sel.removeAllRanges();
+      //   sel.addRange(range);
+      // });
+
+      // this.redactor.$editor.on('touchstart', 'figure[data-type=image] img', $.proxy(function (event) {
+      //   this.redactor.$editor.trigger('blur');
+      //   $(this).trigger('mouseenter');
+      //   event.preventDefault();
+      //   event.stopPropagation();
+      //   window.alert('touchstart');
+      // }, this));
     },
     addCaptions: function () {
       // find images without captions, add empty figcaption
@@ -616,8 +717,8 @@
     command: function (command, $figure) {
 
       var classString = function (suffixArray, separator, prefix, dot) {
-        var base_class = (dot ? '.' : '') + 'wy-figure-' + (prefix || '');
-        return base_class + suffixArray.join((separator || ' ') + base_class);
+        var baseClass = (dot ? '.' : '') + 'wy-figure-' + (prefix || '');
+        return baseClass + suffixArray.join((separator || ' ') + baseClass);
       };
 
       var changeSuffix = function (removeArray, addArray) {
@@ -668,7 +769,7 @@
 }(jQuery));
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Quote = function (redactor) {
@@ -683,10 +784,10 @@
       small       : { classSuffix: 'small', text: 'S' },
       medium      : { classSuffix: 'medium', text: 'M' },
       large       : { classSuffix: 'large', text: 'L' },
-      resize_full : { classSuffix: 'resize-full' },
-      resize_small: { classSuffix: 'resize-small' }
+      resizeFull : { classSuffix: 'resize-full' },
+      resizeSmall: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resize_full', 'resize_small', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resizeFull', 'resizeSmall', 'remove'],
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCites, this));
       this.addCites();
@@ -798,7 +899,7 @@
 }(jQuery));
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Table = function (redactor) {
@@ -806,31 +907,30 @@
   };
   Table.prototype = {
     control: {
-      row_up     : { text: 'Add row above' },
-      row_down   : { text: 'Add row below' },
-      col_left   : { text: 'Add column left' },
-      col_right  : { text: 'Add column right' },
-      add_head   : { text: 'Add header' },
-      del_head   : { text: 'Delete header' },
-      del_col    : { text: 'Delete column' },
-      del_row    : { text: 'Delete row' },
-      del_table  : { text: 'Delete table' },
-      stripe     : { text: 'Striped row' },
-      border     : { text: 'Borders on rows' },
-      full_border: { text: 'Borders everywhere' }
+      rowUp     : { text: 'Add row above' },
+      rowDown   : { text: 'Add row below' },
+      colLeft   : { text: 'Add column left' },
+      colRight  : { text: 'Add column right' },
+      addHead   : { text: 'Add header' },
+      delHead   : { text: 'Delete header' },
+      delCol    : { text: 'Delete column' },
+      delRow    : { text: 'Delete row' },
+      delTable  : { text: 'Delete table' },
+      stripe    : { text: 'Striped row' },
+      border    : { text: 'Borders on rows' },
+      fullBorder: { text: 'Borders everywhere' }
     },
-    controlGroup: [
-      'up', 'down', '|', {
-        'Table Options': [
-          'row_up', 'row_down', 'col_left', 'col_right', '|',
-          'add_head', 'del_head', '|',
-          'del_col', 'del_row', 'del_table', '|',
-          'border', 'stripe', 'full_border'
-        ]
-      }, 'remove'],
+    controlGroup: [ 'up', 'down', '|', {
+      'Table Options': [
+        'rowUp', 'rowDown', 'colLeft', 'colRight', '|',
+        'addHead', 'delHead', '|',
+        'delCol', 'delRow', 'delTable', '|',
+        'border', 'stripe', 'fullBorder'
+      ]
+    }, 'remove'],
     insertTable: function (rows, columns) {
 
-      var $table_box = $('<div></div>'),
+      var $tableBox = $('<div></div>'),
           tableId = Math.floor(Math.random() * 99999),
           $table = $('<table id="table' + tableId + '">'),
           $thead = $('<thead>').appendTo($table),
@@ -859,8 +959,8 @@
         $tbody.append($row);
       }
 
-      $('<figure data-type="table">').addClass('wy-table wy-table-bordered-rows').append($table).appendTo($table_box);
-      var html = $table_box.html();
+      $('<figure data-type="table">').addClass('wy-table wy-table-bordered-rows').append($table).appendTo($tableBox);
+      var html = $tableBox.html();
 
       this.redactor.modalClose();
       this.redactor.selectionRestore();
@@ -888,81 +988,81 @@
     command: function (command, $figure, $target) {
 
       switch (command) {
-        case 'row_up':
-        case 'row_down':
-          $.proxy(function () {
-            var $row = $target.closest('tr'), i, $clone = $('<tr>');
-            for (i = 0; i < $row.children().length; i++) {
-              $('<td>').text('Data').appendTo($clone);
-            }
-            if (command === 'row_up') {
-              $clone.insertBefore($row);
-            } else {
-              $clone.insertAfter($row);
-            }
-          }, this)();
-          break;
-
-        case 'col_left':
-        case 'col_right':
-          $.proxy(function () {
-            var $cell = $target.closest('td'),
-                $row = $cell.closest('tr'),
-                $table = $row.closest('table'),
-                position = $row.children().index($cell) + 1,
-                insert_position = command === 'col_left' ? 'before' : 'after';
-
-            $table.find('thead tr').children(':nth-child(' + position + ')')[insert_position]($('<th>').text('Header'));
-            $table.find('tbody tr').children(':nth-child(' + position + ')')[insert_position]($('<td>').text('Data'));
-          }, this)();
-          break;
-
-        case 'add_head':
-          if (!$figure.find('table thead').length) {
-            $.proxy(function () {
-              var num_cols = $figure.find('tr').first().children().length,
-                  $table = $figure.find('table'),
-                  $thead = $('<thead>').prependTo($table),
-                  $row = $('<tr>').appendTo($thead);
-
-              for (var i = 0; i < num_cols; i++) {
-                $('<th>').text('Header').appendTo($row);
-              }
-            }, this)();
+      case 'rowUp':
+      case 'rowDown':
+        $.proxy(function () {
+          var $row = $target.closest('tr'), i, $clone = $('<tr>');
+          for (i = 0; i < $row.children().length; i++) {
+            $('<td>').text('Data').appendTo($clone);
           }
-          break;
+          if (command === 'rowUp') {
+            $clone.insertBefore($row);
+          } else {
+            $clone.insertAfter($row);
+          }
+        }, this)();
+        break;
 
-        case 'del_head':
-          $figure.find('thead').remove();
-          break;
+      case 'colLeft':
+      case 'colRight':
+        $.proxy(function () {
+          var $cell = $target.closest('td'),
+              $row = $cell.closest('tr'),
+              $table = $row.closest('table'),
+              position = $row.children().index($cell) + 1,
+              insertPosition = command === 'colLeft' ? 'before' : 'after';
 
-        case 'del_col':
+          $table.find('thead tr').children(':nth-child(' + position + ')')[insertPosition]($('<th>').text('Header'));
+          $table.find('tbody tr').children(':nth-child(' + position + ')')[insertPosition]($('<td>').text('Data'));
+        }, this)();
+        break;
+
+      case 'addHead':
+        if (!$figure.find('table thead').length) {
           $.proxy(function () {
-            var $cell = $target.closest('td'),
-                position = $cell.parent().children().index($cell) + 1;
-            $cell.closest('table').find('tr').children(':nth-child(' + position + ')').remove();
+            var numCols = $figure.find('tr').first().children().length,
+                $table = $figure.find('table'),
+                $thead = $('<thead>').prependTo($table),
+                $row = $('<tr>').appendTo($thead);
+
+            for (var i = 0; i < numCols; i++) {
+              $('<th>').text('Header').appendTo($row);
+            }
           }, this)();
-          break;
+        }
+        break;
 
-        case 'del_row':
-          $target.closest('tr').remove();
-          break;
+      case 'delHead':
+        $figure.find('thead').remove();
+        break;
 
-        case 'del_table':
-          $figure.remove();
-          break;
+      case 'delCol':
+        $.proxy(function () {
+          var $cell = $target.closest('td'),
+              position = $cell.parent().children().index($cell) + 1;
+          $cell.closest('table').find('tr').children(':nth-child(' + position + ')').remove();
+        }, this)();
+        break;
 
-        case 'border':
-          $figure.removeClass('wy-table-bordered-all').toggleClass('wy-table-bordered-rows');
-          break;
+      case 'delRow':
+        $target.closest('tr').remove();
+        break;
 
-        case 'stripe':
-          $figure.toggleClass('wy-table-striped');
-          break;
+      case 'delTable':
+        $figure.remove();
+        break;
 
-        case 'full_border':
-          $figure.removeClass('wy-table-bordered-rows').toggleClass('wy-table-bordered-all');
-          break;
+      case 'border':
+        $figure.removeClass('wy-table-bordered-all').toggleClass('wy-table-bordered-rows');
+        break;
+
+      case 'stripe':
+        $figure.toggleClass('wy-table-striped');
+        break;
+
+      case 'fullBorder':
+        $figure.removeClass('wy-table-bordered-rows').toggleClass('wy-table-bordered-all');
+        break;
       }
     }
   };
@@ -1016,7 +1116,7 @@
 }(jQuery));
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   // namespacing
   var Video = function (redactor) {
@@ -1026,10 +1126,10 @@
 
   Video.prototype = {
     control: {
-      resize_full : { classSuffix: 'resize-full' },
-      resize_small: { classSuffix: 'resize-small' }
+      resizeFull : { classSuffix: 'resize-full' },
+      resizeSmall: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['up', 'down', '|', 'resize_full', 'resize_small', 'remove'],
+    controlGroup: ['up', 'down', '|', 'resizeFull', 'resizeSmall', 'remove'],
     init: function () {
       // find videos without captions, add empty figcaption
       this.redactor.$editor.find('figure[data-type=video]:not(:has(figcaption))').each(function () {
@@ -1144,6 +1244,8 @@
 
 (function ($) {
 
+  'use strict';
+
   // Collection method.
   $.fn.webhookRedactor = function (options) {
     // Act as proxy to redactor.
@@ -1183,11 +1285,11 @@
       // Ensure first and last elements are always P
       var borderSelector = 'p, h1, h2, h3, h4, h5';
 
-      if (!this.$editor.children(":first-child").is(borderSelector)) {
+      if (!this.$editor.children(':first-child').is(borderSelector)) {
         this.$editor.prepend('<p><br></p>');
       }
 
-      if (!this.$editor.children(":last-child").is(borderSelector)) {
+      if (!this.$editor.children(':last-child').is(borderSelector)) {
         this.$editor.append('<p><br></p>');
       }
 
