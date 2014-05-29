@@ -344,14 +344,6 @@
           event.preventDefault();
         }
       });
-
-      redactor.$editor.on('paste', function () {
-        setTimeout(function () {
-          redactor.$editor.find('figure[style], figure img[style]').filter(function () {
-            return $(this).css('width');
-          }).css('width', '');
-        }, 5);
-      });
     }
   };
 
@@ -1287,6 +1279,15 @@
           this.sync();
         }
       }, this));
+
+      var redactor = this;
+      this.$editor.on('paste', function () {
+        setTimeout(function () {
+          redactor.$editor.find('[style]').removeAttr('style');
+          redactor.$editor.find('[dir]').removeAttr('dir');
+        }, 5);
+      });
+
       this.$element.trigger('init.webhookRedactor', this.getObject());
     },
     // Expose change event.
