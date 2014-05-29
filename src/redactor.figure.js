@@ -251,14 +251,6 @@
           event.preventDefault();
         }
       });
-
-      redactor.$editor.on('paste', function () {
-        setTimeout(function () {
-          redactor.$editor.find('figure[style], figure img[style]').filter(function () {
-            return $(this).css('width');
-          }).css('width', '');
-        }, 5);
-      });
     }
   };
 
