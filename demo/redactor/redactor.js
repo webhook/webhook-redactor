@@ -4690,10 +4690,10 @@
 			html = html.replace(/<img(.*?)>/gi, '[img$1]');
 
 			// remove classes
-			html = html.replace(/ class="(.*?)"/gi, '');
+			// html = html.replace(/ class="(.*?)"/gi, '');
 
 			// remove all attributes
-			html = html.replace(/<(\w+)([\w\W]*?)>/gi, '<$1>');
+			// html = html.replace(/<(\w+)([\w\W]*?)>/gi, '<$1>');
 
 			// remove empty
 			if (this.opts.linebreaks)

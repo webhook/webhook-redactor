@@ -243,11 +243,21 @@
     observeKeyboard: function () {
       var redactor = this.redactor;
       redactor.$editor.on('keydown', function (event) {
-        // delete key
+        // node where cursor is
         var currentNode = redactor.getBlock();
+
+        // delete key
         if (event.keyCode === 8 && !redactor.getCaretOffset(currentNode) && currentNode.previousSibling && currentNode.previousSibling.nodeName === 'FIGURE') {
           event.preventDefault();
         }
+      });
+
+      redactor.$editor.on('paste', function () {
+        setTimeout(function () {
+          redactor.$editor.find('figure[style], figure img[style]').filter(function () {
+            return $(this).css('width');
+          }).css('width', '');
+        }, 5);
       });
     }
   };
