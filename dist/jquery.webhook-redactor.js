@@ -1149,9 +1149,9 @@
 
     },
     command: function (command, $figure) {
-      if (command === 'resize_full') {
+      if (command === 'resizeFull') {
         $figure.addClass('wy-figure-full');
-      } else if (command === 'resize_small') {
+      } else if (command === 'resizeSmall') {
         $figure.removeClass('wy-figure-full');
       }
     }
