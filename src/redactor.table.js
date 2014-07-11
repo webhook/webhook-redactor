@@ -38,6 +38,8 @@
     }, 'remove'],
     insertTable: function (rows, columns) {
 
+      this.redactor.bufferSet(false);
+
       var $tableBox = $('<div></div>'),
           tableId = Math.floor(Math.random() * 99999),
           $table = $('<table id="table' + tableId + '">'),
@@ -72,9 +74,6 @@
 
       this.redactor.modalClose();
       this.redactor.selectionRestore();
-
-      // maintain undo buffer
-      this.redactor.bufferSet(this.redactor.$editor.html());
 
       var current = this.redactor.getBlock() || this.redactor.getCurrent();
       if (current) {
