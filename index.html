@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Webhook Redactor Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.min.css"/>
 </head>
 <body>
@@ -11,9 +12,15 @@
 
     <div class="wy-nav-content">
 
+      <pre id="logger"></pre>
+
       <form action=".">
 
-        <textarea id="redactor" name="content">
+        <textarea class="redactor" name="content"></textarea>
+
+        <hr>
+
+        <textarea class="redactor" name="content">
 
           <h1>Wysiwyg example</h1>
 
