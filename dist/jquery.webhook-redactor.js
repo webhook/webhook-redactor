@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2014-05-29
+/*! webhook-redactor - v0.0.1 - 2014-07-11
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2014 Mike Horn; Licensed MIT */
 (function ($) {
@@ -932,6 +932,8 @@
     }, 'remove'],
     insertTable: function (rows, columns) {
 
+      this.redactor.bufferSet(false);
+
       var $tableBox = $('<div></div>'),
           tableId = Math.floor(Math.random() * 99999),
           $table = $('<table id="table' + tableId + '">'),
@@ -966,9 +968,6 @@
 
       this.redactor.modalClose();
       this.redactor.selectionRestore();
-
-      // maintain undo buffer
-      this.redactor.bufferSet(this.redactor.$editor.html());
 
       var current = this.redactor.getBlock() || this.redactor.getCurrent();
       if (current) {
