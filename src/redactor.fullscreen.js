@@ -30,6 +30,11 @@
 
       if (!this.fullscreen)
       {
+
+        if (this.fixedtoolbar) {
+          this.fixedtoolbar.unfix();
+        }
+
         this.buttonChangeIcon('fullscreen', 'normalscreen');
         this.buttonActive('fullscreen');
         this.fullscreen = true;
