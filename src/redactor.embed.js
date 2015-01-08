@@ -23,11 +23,11 @@
         + '<section id="redactor-modal-embed-code">'
         + '<label>Enter Embed code:</label>'
         + '<textarea id="embed-code-textarea"></textarea>'
-        + '</section>' /* +
+        + '</section>' +
         '<footer>' +
           '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.redactor.opts.curLang.cancel + '" />' +
           '<input type="button" class="redactor_modal_btn" id="redactor_insert_embed_code_btn" value="' + this.redactor.opts.curLang.insert + '" />' +
-        '</footer>'*/;
+        '</footer>';
     },
     init: function ()
     {
