@@ -58,7 +58,7 @@
       this.redactor.modal.close();
       this.redactor.selection.restore();
 
-      this.redactor.insert.html('<figure data-type="embed">' + html + '</figure>', false);
+      this.redactor.insert.html('<figure data-type="embed">' + html + '<figcaption></figcaption></figure>', false);
 
       this.redactor.code.sync();
     }

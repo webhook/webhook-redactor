@@ -76,37 +76,6 @@
 (function ($) {
   'use strict';
 
-  // namespacing
-  var Cleanup = function (redactor) {
-    this.redactor = redactor;
-    this.init();
-  };
-  Cleanup.prototype = {
-    init: function () {
-      this.removeEmptyPs();
-    },
-    removeEmptyPs: function () {
-      this.redactor.$editor.find('p').filter(function() {
-        return ! $.trim($(this).text());
-      }).remove();
-    }
-  };
-
-  // Hook up plugin to Redactor.
-  window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.cleanup = function() {
-    return {
-      init: function () {
-        this.cleanup = new Cleanup(this);
-      }
-    }
-  };
-
-}(jQuery));
-
-(function ($) {
-  'use strict';
-
   if (!window.RedactorPlugins) window.RedactorPlugins = {};
       
   var WebhookEmbed = function (redactor) {
@@ -156,7 +125,7 @@
       this.redactor.modal.close();
       this.redactor.selection.restore();
 
-      this.redactor.insert.html('<figure data-type="embed">' + html + '</figure>', false);
+      this.redactor.insert.html('<figure data-type="embed">' + html + '<figcaption></figcaption></figure>', false);
 
       this.redactor.code.sync();
     }
@@ -211,12 +180,13 @@
       // remove redactor generated <br> tags from otherwise empty figcaptions
       $(window).on('click', $.proxy(this.cleanCaptions, this));
       this.redactor.$editor.on('blur', $.proxy(this.cleanCaptions, this));
+
       this.redactor.$editor.closest('form').one('submit', $.proxy(this.clearCaptions, this));
 
       // prevent user from removing captions or citations with delete/backspace keys
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
-        var current         = this.redactor.selection.getCurrent(),
-            isEmpty        = !current.length,
+        var current         = $(this.redactor.selection.getCurrent()),
+            isEmpty        = !current.text().length,
             isCaptionNode = !!$(current).closest('figcaption, cite').length,
             isDeleteKey   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
 
@@ -232,7 +202,6 @@
     },
 
     clearCaptions: function () {
-      console.log('clearing figcaption');
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
       if (this.redactor.opts.visual) {
         this.redactor.code.sync();
@@ -754,7 +723,7 @@
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
-      this.addCaptions();
+   //   this.addCaptions();
 
       // this.redactor.$editor.on('mousedown', 'figure[data-type=image] img', function () {
       //   var range = document.createRange();
@@ -891,7 +860,7 @@
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resizeFull', 'resizeSmall', 'remove'],
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCites, this));
-      this.addCites();
+     // this.addCites();
       this.observe();
     },
     addCites: function () {
@@ -1382,7 +1351,7 @@
     dragFileUpload: false,
     deniedTags: ['html', 'head', 'body'],
     // Custom plugins.
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
+    plugins: ['fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
     // Sync textarea with editor before submission.
     initCallback: function () {
       $.each(this.opts.buttons, $.proxy(function (index, button) {
@@ -1408,7 +1377,19 @@
 
       // find videos without captions, add empty figcaption
       this.$editor.find('figure[data-type=video]:not(:has(figcaption))').each(function () {
-        $(this).append('<figcaption></figcaption>');
+        $(this).append('<figcaption>');
+      });
+
+      this.$editor.find('figure[data-type=quote] blockquote:not(:has(cite))').each(function () {
+        $(this).append('<cite>');
+      });
+
+      this.$editor.find('figure[data-type=image]:not(:has(figcaption))').each(function () {
+        $(this).append('<figcaption>');
+      });
+
+      this.$editor.find('figure[data-type=embed]:not(:has(figcaption))').each(function () {
+        $(this).append('<figcaption>');
       });
     },
     // Expose change event.

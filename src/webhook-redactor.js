@@ -33,7 +33,7 @@
     dragFileUpload: false,
     deniedTags: ['html', 'head', 'body'],
     // Custom plugins.
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
+    plugins: ['fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
     // Sync textarea with editor before submission.
     initCallback: function () {
       $.each(this.opts.buttons, $.proxy(function (index, button) {
@@ -59,7 +59,19 @@
 
       // find videos without captions, add empty figcaption
       this.$editor.find('figure[data-type=video]:not(:has(figcaption))').each(function () {
-        $(this).append('<figcaption></figcaption>');
+        $(this).append('<figcaption>');
+      });
+
+      this.$editor.find('figure[data-type=quote] blockquote:not(:has(cite))').each(function () {
+        $(this).append('<cite>');
+      });
+
+      this.$editor.find('figure[data-type=image]:not(:has(figcaption))').each(function () {
+        $(this).append('<figcaption>');
+      });
+
+      this.$editor.find('figure[data-type=embed]:not(:has(figcaption))').each(function () {
+        $(this).append('<figcaption>');
       });
     },
     // Expose change event.

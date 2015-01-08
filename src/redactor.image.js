@@ -27,7 +27,7 @@
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
-      this.addCaptions();
+   //   this.addCaptions();
 
       // this.redactor.$editor.on('mousedown', 'figure[data-type=image] img', function () {
       //   var range = document.createRange();

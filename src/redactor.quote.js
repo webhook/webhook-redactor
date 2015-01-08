@@ -28,7 +28,7 @@
     controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resizeFull', 'resizeSmall', 'remove'],
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCites, this));
-      this.addCites();
+     // this.addCites();
       this.observe();
     },
     addCites: function () {

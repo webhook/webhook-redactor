@@ -44,12 +44,13 @@
       // remove redactor generated <br> tags from otherwise empty figcaptions
       $(window).on('click', $.proxy(this.cleanCaptions, this));
       this.redactor.$editor.on('blur', $.proxy(this.cleanCaptions, this));
+
       this.redactor.$editor.closest('form').one('submit', $.proxy(this.clearCaptions, this));
 
       // prevent user from removing captions or citations with delete/backspace keys
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
-        var current         = this.redactor.selection.getCurrent(),
-            isEmpty        = !current.length,
+        var current         = $(this.redactor.selection.getCurrent()),
+            isEmpty        = !current.text().length,
             isCaptionNode = !!$(current).closest('figcaption, cite').length,
             isDeleteKey   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
 
@@ -65,7 +66,6 @@
     },
 
     clearCaptions: function () {
-      console.log('clearing figcaption');
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
       if (this.redactor.opts.visual) {
         this.redactor.code.sync();
