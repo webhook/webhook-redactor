@@ -107,30 +107,32 @@
 
     },
     toggle: function () {
+        this.redactor.block.format('blockquote');
 
-        this.redactor.formatQuote();
-
-        var $target = $(this.redactor.getBlock() || this.redactor.getCurrent());
+        var $target = $(this.redactor.selection.getBlock() || this.redactor.selection.getCurrent());
 
         if ($target.is('blockquote')) {
-          $('<figure data-type="quote">').insertBefore($target).prepend($target).append('<cite>');
+          $('<figure data-type="quote">').insertBefore($target).prepend($target.append('<cite>'));
         } else {
           $target.closest('figure').before($target).remove();
           $target.find('cite').remove();
         }
 
-        this.redactor.sync();
+        this.redactor.code.sync();
 
       }
   };
 
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.quote = {
-    init: function () {
-      this.quote = new Quote(this);
-      this.buttonAddBefore('link', 'quote', 'Quote', $.proxy(this.quote.toggle, this.quote));
-      this.buttonGet('quote').addClass('redactor_btn_quote');
+  window.RedactorPlugins.quote = function() {
+    return {
+      init: function () {
+        this.quote = new Quote(this);
+        var button = this.button.addBefore('link', 'quote', 'Quote');
+        this.button.addCallback(button, $.proxy(this.quote.toggle, this.quote));
+        this.button.get('quote').addClass('redactor_btn_quote');
+      }
     }
   };
 

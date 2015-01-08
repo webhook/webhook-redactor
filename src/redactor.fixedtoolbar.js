@@ -47,7 +47,7 @@
       if (this.isFixed) {
 
         // webkit does not recalc top: 0 when focused on contenteditable
-        if (this.redactor.isMobile() && this.isFocused) {
+        if (this.redactor.utils.isMobile() && this.isFocused) {
           this.redactor.$toolbar.css({
             position: 'absolute',
             top     : this.$window.scrollTop() - this.redactor.$box.offset().top,
@@ -93,9 +93,11 @@
 
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.fixedtoolbar = {
-    init: function () {
-      this.fixedtoolbar = new Fixedtoolbar(this);
+  window.RedactorPlugins.fixedtoolbar = function() {
+    return {
+      init: function () {
+        this.fixedtoolbar = new Fixedtoolbar(this);
+      }
     }
   };
 

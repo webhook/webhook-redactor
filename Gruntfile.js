@@ -91,7 +91,7 @@ module.exports = function (grunt) {
     },
     watch: {
       options: {
-        livereload: true,
+       // livereload: true,
       },
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -112,6 +112,10 @@ module.exports = function (grunt) {
       sass: {
         files: '<%= sass.demo.src %>',
         tasks: ['sass']
+      },
+      dist: {
+        files: '<%= jshint.src.src %>',
+        tasks: ['clean:dist', 'concat', 'uglify']
       }
     },
     connect: {

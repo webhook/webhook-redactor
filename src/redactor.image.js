@@ -132,9 +132,11 @@
 
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.image = {
-    init: function () {
-      this.image = new Image(this);
+  window.RedactorPlugins.webhookImage = function() {
+    return {
+      init: function () {
+        this.webhookImage = new Image(this);
+      }
     }
   };
 

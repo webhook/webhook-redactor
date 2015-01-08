@@ -1,130 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Webhook Redactor Demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- build:css style.min.css -->
-    <link rel="stylesheet" href="style.css">
-  <!-- endbuild -->
-</head>
-<body>
+    <head>
+        <title>Redactor</title>
+        <meta charset="utf-8">
 
-  <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-    <div class="wy-nav-content">
+        <!-- Redactor is here -->
+	    <link rel="stylesheet" href="redactor/redactor.css" />
+	    <script src="redactor/redactor.min.js"></script>
 
-      <pre id="logger"></pre>
-
-      <form action=".">
-
-        <textarea class="redactor" name="content"></textarea>
-
-        <hr>
-
-        <textarea class="redactor" name="content">
-
-          <h1>Wysiwyg example</h1>
-
-          <figure data-type="image" class='wy-figure-small wy-figure-left'>
-            <img src="ryancop.png">
-            <figcaption>I have a caption</figcaption>
-          </figure>
-
-          <figure data-type="image" class='wy-figure-small wy-figure-right'>
-            <img src="ryancop.png">
-          </figure>
-
-          <p>Hey everybody, it's Tuuuuuuuesday! Can we enhance this? He's like the J.R.R. Tolkien of being shitty. This is like a fuckin' Woody Allen heist going on here. They're basically sperm. You know, up until the part where you died, I thought you were having a pretty good run there. Let's play some meat! I hate Game Room so much. I'm going to ride my fucking resentment into a fucking volcano! </p>
-
-          <p>You know, up until the part where you died, I thought you were having a pretty good run there. Let's play some meat! I hate Game Room so much. I'm going to ride my fucking resentment into a fucking volcano! Fuck you, Brad Garrett! I hope you burn in hell! Oh, Dennis Leary is in this for no good reason. Walk the cow through a warm room, and then bring it to my plate. I didn't come here to get harassed by asshole teenagers, I get enough of that as it is. </p>
-
-          <figure data-type="table" class="wy-table wy-table-bordered-rows full-width">
-            <table>
-              <thead>
-              <tr>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>Data</td>
-                <td>Data</td>
-                <td>Data</td>
-              </tr>
-              <tr>
-                <td>Data</td>
-                <td>Data</td>
-                <td>Data</td>
-              </tr>
-              <tr>
-                <td>Data</td>
-                <td>Data</td>
-                <td>Data</td>
-              </tr>
-              <tr>
-                <td>Data</td>
-                <td>Data</td>
-                <td>Data</td>
-              </tr>
-              <tr>
-                <td>Data</td>
-                <td>Data</td>
-                <td>Data</td>
-              </tr>
-              </tbody>
-            </table>
-          </figure>
-
-          <figure data-type="video">
-            <iframe width="560" height="315" src="//www.youtube.com/embed/MLrC7e3vSv8?list=FL7uO9V1Frl_wPd9d1qOm_RQ" frameborder="0" allowfullscreen=""></iframe>
-          </figure>
-
-          <p>BLOCKED. CHINA DON'T CARE. You are history's greatest monster. THESE ARE SHEETS FOR FUCKING IN. You're talking about sex, right? Because the Dutch are cheap. </p>
-          <p>Fuck your milk! Exécutable? What the fuck are you saying!? Let me put my hot blade inside you. What PopCap game do you think the Master Chief would like the most? I hate socks. This Quick Look is over! I don't believe in wheels. You are looking for far too much logical consistency. You don't have to go home, but you can't stay here. </p>
-          <p>My dick doesn't have tits. BLOCKED. CHINA DON'T CARE. You are history's greatest monster. THESE ARE SHEETS FOR FUCKING IN. You're talking about sex, right? Because the Dutch are cheap. I can play Simon Says like a motherfucker. I'm gonna no scope these crops. </p>
-          <p>Seattle is actually Spanish for "taco." The laziest dubstep is arguably the best dubstep. You're just anti-people-believing-in-things. My dick doesn't have tits. BLOCKED. CHINA DON'T CARE. You are history's greatest monster. THESE ARE SHEETS FOR FUCKING IN. You're talking about sex, right? </p>
-          <p>Fuck you, Brad Garrett! I hope you burn in hell! Oh, Dennis Leary is in this for no good reason. Walk the cow through a warm room, and then bring it to my plate. I didn't come here to get harassed by asshole teenagers, I get enough of that as it is. It's 18 years old, Daytona USA. You could fuck it if you wanted to. There's nothing I'd rather talk about right now than Peter Molyneux's balls! Jeff, I have a question. Why do we keep doing this? I've got a salty mustache. </p>
-          <p>He's like the J.R.R. Tolkien of being shitty. This is like a fuckin' Woody Allen heist going on here. They're basically sperm. You know, up until the part where you died, I thought you were having a pretty good run there. Let's play some meat! I hate Game Room so much. </p>
-
-          <figure data-type="quote">
-            <blockquote>Don't buy a racing wheel! I've got a salty mustache. Suck on it, Ron Weasley. This Quick Look is over! I didn't come here to get harassed by asshole teenagers, I get enough of that as it is. I just magic'd in my pants. At first I cringe, but I want more. I've been a party to many, many stupid things in my life. This is by far the stupidest. I'm an old man. I like turns. I'm gonna no scope these crops.</blockquote>
-          </figure>
-
-          <p>Hey everybody, it's Tuuuuuuuesday! I'm going to ride my fucking resentment into a fucking volcano! Infinite beards. I hate socks. I feel like I'm gonna throw up, but in a good way. YO THOSE ARE FUCKING DOUBLE-UNDERLINE SICK. Fuck you and your medicine ball! </p>
-          <p>Don't buy a racing wheel! I've got a salty mustache. Suck on it, Ron Weasley. This Quick Look is over! I didn't come here to get harassed by asshole teenagers, I get enough of that as it is. I just magic'd in my pants. At first I cringe, but I want more. I've been a party to many, many stupid things in my life. This is by far the stupidest. I'm an old man. I like turns. I'm gonna no scope these crops. </p>
-          <p>Take that you shitty wizard. I can't believe this was actually allowed to be released to people. I can play Simon Says like a motherfucker. Why anything about gelatinous cubes? I want a game that is nothing but kicking dumpsters at enemies. There's nothing I'd rather talk about right now than Peter Molyneux's balls! I try not to affiliate myself with Canadians. Oh, Dennis Leary is in this for no good reason. </p>
-          <p>You're just anti-people-believing-in-things. You need to spit on it first. Let's play some meat! You're talking about sex, right? I always get run over from behind. You don't have to go home, but you can't stay here. My dick doesn't have tits. I WILL CONTINUE TO CALL PAX AUSTRALIA PAXA UNTIL IT FUCKING CATCHES ON. John McTiernan, master of modern fucking action movies. The man made Predator, god dammit! If you're gonna sit there and tell me Renny Harlin made a better movie than him, you are all assholes and I don't want to work with you anymore! </p>
-          <p>At first I cringe, but I want more. I've been a party to many, many stupid things in my life. This is by far the stupidest. I'm an old man. I like turns. I'm gonna no scope these crops. I am the street! It's like I'm in a techno womb. Let me put my hot blade inside you. You are looking for far too much logical consistency. Hold on to your fucking hats, gentlemen. They called us "charmingly garrulous", which I couldn't think of a more New Yorker thing to describe us as. </p>
-        </textarea>
-
-      </form>
-
-    </div>
-
-  </section>
-
-  <!-- build:js vendor.min.js -->
-    <script src="../bower_components/jquery/dist/jquery.js"></script>
-    <script src="../bower_components/embedly-jquery/jquery.embedly.js"></script>
-  <!-- endbuild -->
-  <script src="redactor/redactor.js"></script>
-  <!-- build:js webhook.min.js -->
-    <script src="../src/webhook-redactor.js"></script>
-    <script src="../src/redactor.cleanup.js"></script>
-    <script src="../src/redactor.fullscreen.js"></script>
-    <script src="../src/redactor.fixedtoolbar.js"></script>
-    <script src="../src/redactor.autoembedly.js"></script>
-    <script src="../src/redactor.figure.js"></script>
-    <script src="../src/redactor.image.js"></script>
-    <script src="../src/redactor.table.js"></script>
-    <script src="../src/redactor.video.js"></script>
-    <script src="../src/redactor.quote.js"></script>
-  <!-- endbuild -->
-  <!-- build:js app.min.js -->
-    <script src="app.js"></script>
-  <!-- endbuild -->
-</body>
+        <script type="text/javascript">
+        $(function()
+        {
+            $('#content').redactor({
+	            focus: true
+            });
+        });
+        </script>
+    </head>
+    <body style="margin: 0;">
+    	<div style="width: 70%; margin: auto; padding: 50px;">
+            <textarea id="content" name="content">
+            <h2>Hello and Welcome</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </textarea>
+    	</div>
+    </body>
 </html>

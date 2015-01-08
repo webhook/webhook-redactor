@@ -25,20 +25,25 @@
   // Static method default options.
   $.webhookRedactor.options = {
     // We roll our own image plugin.
-    observeImages: false,
+    imageEditable: false,
     buttons: ['formatting', 'bold', 'italic', 'unorderedlist', 'orderedlist', 'link', 'html'],
+    buttonSource: true,
+    convertLinks: false,
+    dragImageUpload: false,
+    dragFileUpload: false,
+    deniedTags: ['html', 'head', 'body'],
     // Custom plugins.
-    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'image', 'video', 'table', 'quote'],
+    plugins: ['cleanup', 'fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
     // Sync textarea with editor before submission.
     initCallback: function () {
       $.each(this.opts.buttons, $.proxy(function (index, button) {
-        this.buttonGet(button).addClass('redactor_btn_' + button);
+        this.button.get(button).addClass('redactor_btn_' + button);
       }, this));
 
       this.$element.closest('form').one('submit', $.proxy(function () {
         // only sync if we're in visual mode
         if (this.opts.visual) {
-          this.sync();
+          this.code.sync();
         }
       }, this));
 
@@ -50,7 +55,12 @@
         }, 5);
       });
 
-      this.$element.trigger('init.webhookRedactor', this.getObject());
+      this.$element.trigger('init.webhookRedactor', this.core.getObject());
+
+      // find videos without captions, add empty figcaption
+      this.$editor.find('figure[data-type=video]:not(:has(figcaption))').each(function () {
+        $(this).append('<figcaption></figcaption>');
+      });
     },
     // Expose change event.
     changeCallback: function () {
@@ -67,7 +77,7 @@
       }
 
       this.$editor.trigger('mutate');
-      this.$element.trigger('mutate.webhookRedactor', this.getObject());
+      this.$element.trigger('mutate.webhookRedactor', this.core.getObject());
 
     }
   };

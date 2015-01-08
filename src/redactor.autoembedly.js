@@ -37,7 +37,7 @@
       $.each(node.childNodes, $.proxy(function (index, node) {
         if (node.nodeType === 3 && node.nodeValue && this.urlRegex.test(node.nodeValue)) {
 
-          this.redactor.bufferSet();
+          this.redactor.buffer.set();
 
           var url = node.nodeValue.match(this.urlRegex)[0],
               shiv = $('<span>loading embed...</span>');
@@ -49,6 +49,7 @@
           $.embedly.oembed(url).done(function (results) {
             $.each(results, function () {
               if (this.html) {
+                console.log('here here');
                 shiv.replaceWith('<figure data-type="video">' + this.html + '<figcaption></figcaption></figure>');
               } else {
                 shiv.replaceWith($('<p>').text(url));
@@ -67,9 +68,11 @@
   };
 
   // Hook up plugin to Redactor.
-  window.RedactorPlugins.autoembedly = {
-    init: function () {
-      this.autoembedly = new AutoEmbedly(this);
+  window.RedactorPlugins.autoembedly = function() {
+    return {
+      init: function () {
+        this.autoembedly = new AutoEmbedly(this);
+      }
     }
   };
 

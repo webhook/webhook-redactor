@@ -37,7 +37,7 @@
       // (centered for centered text)
       this.redactor.$editor.on('click', 'figcaption:empty, cite:empty', $.proxy(function (event) {
         $(event.target).prepend('<br>');
-        this.redactor.selectionEnd(event.target);
+        this.redactor.caret.setEnd(event.target);
         event.stopPropagation();
       }, this));
 
@@ -48,7 +48,7 @@
 
       // prevent user from removing captions or citations with delete/backspace keys
       this.redactor.$editor.on('keydown', $.proxy(function (event) {
-        var current         = this.redactor.getCurrent(),
+        var current         = this.redactor.selection.getCurrent(),
             isEmpty        = !current.length,
             isCaptionNode = !!$(current).closest('figcaption, cite').length,
             isDeleteKey   = $.inArray(event.keyCode, [this.redactor.keyCode.BACKSPACE, this.redactor.keyCode.DELETE]) >= 0;
@@ -65,16 +65,21 @@
     },
 
     clearCaptions: function () {
+      console.log('clearing figcaption');
       this.redactor.$editor.find('figcaption, cite').filter(function () { return !$(this).text(); }).remove();
       if (this.redactor.opts.visual) {
-        this.redactor.sync();
+        this.redactor.code.sync();
       }
     },
 
     showToolbar: function (event) {
       var $figure = $(event.currentTarget),
-          type = $figure.data('type') || 'default',
-          $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
+          type = $figure.data('type') || 'default';
+
+      if(type === 'image') 
+        type = 'webhookImage';
+
+      var $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
 
       if (this.redactor[type] && this.redactor[type].onShow) {
         this.redactor[type].onShow($figure, $toolbar);
@@ -90,7 +95,7 @@
       // before clicking a command, make sure we save the current node within the editor
       this.redactor.$editor.on('mousedown', '.wy-figure-controls', $.proxy(function () {
         event.preventDefault();
-        this.current = this.redactor.getCurrent();
+        this.current = this.redactor.selection.getCurrent();
       }, this));
 
       this.redactor.$editor.on('click', '.wy-figure-controls span, .wy-figure-controls a', $.proxy(function (event) {
@@ -99,7 +104,12 @@
         var $target = $(event.currentTarget),
             command = $target.data('command'),
             $figure = $target.closest('figure'),
-            plugin  = this.redactor[$figure.data('type')];
+            type = $figure.data('type');
+
+        if(type === 'image')
+          type = 'webhookImage';
+        
+        var plugin  = this.redactor[type];
 
         this.command(command, $figure, plugin);
       }, this));
@@ -108,7 +118,7 @@
         $(this).find('figure').trigger('mouseleave');
       });
 
-      if (this.redactor.isMobile()) {
+      if (this.redactor.utils.isMobile()) {
 
         // if $editor is focused, click doesn't seem to fire
         this.redactor.$editor.on('touchstart', 'figure', function (event) {
@@ -213,7 +223,7 @@
       $figure.find('.wy-figure-controls').appendTo(this.redactor.$box);
 
       // maintain undo buffer
-      this.redactor.bufferSet(this.redactor.$editor.html());
+      this.redactor.buffer.set(this.redactor.$editor.html());
 
       // only handle a few commands here, everything else should be taken care of from other plugins
       switch (command) {
@@ -236,7 +246,7 @@
           break;
       }
 
-      this.redactor.sync();
+      this.redactor.code.sync();
 
     },
 
@@ -244,10 +254,10 @@
       var redactor = this.redactor;
       redactor.$editor.on('keydown', function (event) {
         // node where cursor is
-        var currentNode = redactor.getBlock();
+        var currentNode = redactor.selection.getBlock();
 
         // delete key
-        if (event.keyCode === 8 && !redactor.getCaretOffset(currentNode) && currentNode.previousSibling && currentNode.previousSibling.nodeName === 'FIGURE') {
+        if (event.keyCode === 8 && !redactor.caret.getOffset(currentNode) && currentNode.previousSibling && currentNode.previousSibling.nodeName === 'FIGURE') {
           event.preventDefault();
         }
       });
@@ -256,9 +266,11 @@
 
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.figure = {
-    init: function () {
-      this.figure = new Figure(this);
+  window.RedactorPlugins.figure = function() {
+    return {
+      init: function () {
+        this.figure = new Figure(this);
+      }
     }
   };
 

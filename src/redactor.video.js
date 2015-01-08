@@ -22,10 +22,6 @@
     },
     controlGroup: ['up', 'down', '|', 'resizeFull', 'resizeSmall', 'remove'],
     init: function () {
-      // find videos without captions, add empty figcaption
-      this.redactor.$editor.find('figure[data-type=video]:not(:has(figcaption))').each(function () {
-        $(this).append('<figcaption>');
-      });
     },
     onShow: function ($figure, $toolbar) {
 
@@ -49,85 +45,92 @@
 
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.video = {
-    init: function () {
-      this.video = new Video(this);
+  window.RedactorPlugins.video = function() { 
+    return {
+      init: function () {
+        this.video = new Video(this);
 
-      var insertVideo = function (data) {
+        var insertVideo = function (data) {
 
-        // maintain undo buffer
-        this.bufferSet();
+          // maintain undo buffer
+          this.buffer.set();
 
-        data = '<figure data-type="video"><p>' + this.cleanStripTags(data) + '</p><figcaption></figcaption></figure>';
+          console.log(data);
+          data = '<figure data-type="video"><p>' + data + '</p><figcaption></figcaption></figure>';
 
-        this.selectionRestore();
+          this.selection.restore();
 
-        var current = this.getBlock() || this.getCurrent();
+          var current = this.selection.getBlock() || this.selection.getCurrent();
 
-        if (current) {
-          $(current).after(data);
-        } else {
-          this.insertHtmlAdvanced(data, false);
-        }
+          if (current) {
+            $(current).after(data);
+          } else {
+            this.insert.html(data, false);
+          }
 
-        this.sync();
-        this.modalClose();
+          this.code.sync();
+          this.modal.close();
 
-      };
+        };
 
-      var urlRegex = /(http|https):\/\/[\w\-]+(\.[\w\-]+)+([\w.,@?\^=%&amp;:\/~+#\-]*[\w@?\^=%&amp;\/~+#\-])?/;
+        var urlRegex = /(http|https):\/\/[\w\-]+(\.[\w\-]+)+([\w.,@?\^=%&amp;:\/~+#\-]*[\w@?\^=%&amp;\/~+#\-])?/;
 
-      this.buttonAddBefore('link', 'video', 'Video', $.proxy(function () {
+        var button = this.button.addBefore('link', 'video', 'Video');
 
-        // callback (optional)
-        var callback = $.proxy(function () {
+        this.button.addCallback(button, $.proxy(function () {
 
-          // save cursor position
-          this.selectionSave();
+          // callback (optional)
+          var callback = $.proxy(function () {
 
-          $('#redactor_insert_video_btn').click($.proxy(function () {
+            // save cursor position
+            this.selection.save();
 
-            var data = $.trim($('#redactor_insert_video_area').val());
+            $('#redactor_insert_video_btn').click($.proxy(function () {
 
-            if (urlRegex.test(data)) {
+              var data = $.trim($('#redactor_insert_video_area').val());
+              if (urlRegex.test(data)) {
 
-              $.embedly.oembed(data).done($.proxy(function (results) {
-                $.each(results, $.proxy(function (index, result) {
-                  insertVideo.call(this, result.html);
+                $.embedly.oembed(data).done($.proxy(function (results) {
+                  $.each(results, $.proxy(function (index, result) {
+                    insertVideo.call(this, result.html);
+                  }, this));
                 }, this));
-              }, this));
 
-            } else {
-              insertVideo.call(this, data);
-            }
+              } else {
+                insertVideo.call(this, data);
+              }
 
-          }, this));
+            }, this));
 
-          setTimeout(function () {
-            $('#redactor_insert_video_area').focus();
-          }, 200);
+            setTimeout(function () {
+              $('#redactor_insert_video_area').focus();
+            }, 200);
 
-        }, this);
+          }, this);
 
-        var modal = String() +
-          '<section>' +
-            '<form id="redactorInsertVideoForm">' +
-              '<label>' + this.opts.curLang.video_html_code + '</label>' +
-              '<textarea id="redactor_insert_video_area" style="width: 99%; height: 160px;"></textarea>' +
-            '</form>' +
-          '</section>' +
-          '<footer>' +
-            '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
-            '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
-          '</footer>';
+          var modal = String() +
+            '<section>' +
+              '<form id="redactorInsertVideoForm">' +
+                '<label>' + this.opts.curLang.video_html_code + '</label>' +
+                '<textarea id="redactor_insert_video_area" style="width: 99%; height: 160px;"></textarea>' +
+              '</form>' +
+            '</section>' +
+            '<footer>' +
+              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
+              '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
+            '</footer>';
 
-        // or call a modal with a code
-        this.modalInit('Insert Video', modal, 500, callback);
+          // or call a modal with a code
+          this.modal.addTemplate('insert-video', modal);
+          this.modal.addCallback('insert-video', callback);
+          this.modal.load('insert-video', 'Insert Video', 500);
+          this.modal.show();
 
-      }, this));
+        }, this));
 
-      this.buttonGet('video').addClass('redactor_btn_video');
+        this.button.get('video').addClass('redactor_btn_video');
 
+      }
     }
   };
 

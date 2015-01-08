@@ -38,7 +38,7 @@
     }, 'remove'],
     insertTable: function (rows, columns) {
 
-      this.redactor.bufferSet(false);
+      this.redactor.buffer.set(false);
 
       var $tableBox = $('<div></div>'),
           tableId = Math.floor(Math.random() * 99999),
@@ -72,24 +72,24 @@
       $('<figure data-type="table">').addClass('wy-table wy-table-bordered-rows').append($table).appendTo($tableBox);
       var html = $tableBox.html();
 
-      this.redactor.modalClose();
-      this.redactor.selectionRestore();
+      this.redactor.modal.close();
+      this.redactor.selection.restore();
 
-      var current = this.redactor.getBlock() || this.redactor.getCurrent();
+      var current = this.redactor.selection.getBlock() || this.redactor.selection.getCurrent();
       if (current) {
         $(current).after(html);
       } else {
-        this.redactor.insertHtmlAdvanced(html, false);
+        this.redactor.insert.html(html, false);
       }
 
-      this.redactor.selectionRestore();
+      this.redactor.selection.restore();
 
       var table = this.redactor.$editor.find('#table' + tableId);
 
       table.find('span#selection-marker-1').remove();
       table.removeAttr('id');
 
-      this.redactor.sync();
+      this.redactor.code.sync();
 
     },
     command: function (command, $figure, $target) {
@@ -176,47 +176,55 @@
 
   // Hook up plugin to Redactor.
   window.RedactorPlugins = window.RedactorPlugins || {};
-  window.RedactorPlugins.table = {
-    init: function () {
-      this.table = new Table(this);
-      this.buttonAddBefore('link', 'table', 'Table', $.proxy(function () {
+  window.RedactorPlugins.table = function() {
+      return {
+        init: function () {
+        this.table = new Table(this);
+        var button = this.button.addBefore('link', 'table', 'Table');
 
-        // save cursor position
-        this.selectionSave();
+        this.button.addCallback(button, $.proxy(function () {
 
-        var callback = $.proxy(function () {
+          // save cursor position
+          this.selection.save();
 
-          $('#redactor_insert_table_btn').on('click', $.proxy(function () {
-            this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
-            this.buttonInactive('table');
-          }, this));
+          var callback = $.proxy(function () {
 
-          $('.redactor_btn_modal_close').on('click', $.proxy(function () {
-            this.buttonInactive('table');
-          }, this));
+            $('#redactor_insert_table_btn').on('click', $.proxy(function () {
+              this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
+              this.button.setInactive('table');
+            }, this));
 
-          setTimeout(function () {
-            $('#redactor_table_rows').trigger('focus');
-          }, 200);
+            $('.redactor_btn_modal_close').on('click', $.proxy(function () {
+              this.button.setInactive('table');
+            }, this));
 
-        }, this);
+            setTimeout(function () {
+              $('#redactor_table_rows').trigger('focus');
+            }, 200);
 
-        var modal = String() +
-          '<section>' +
-            '<label>' + this.opts.curLang.rows + '</label>' +
-            '<input type="text" size="5" value="2" id="redactor_table_rows">' +
-            '<label>' + this.opts.curLang.columns + '</label>' +
-            '<input type="text" size="5" value="3" id="redactor_table_columns">' +
-          '</section>' +
-          '<footer>' +
-            '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
-            '<input type="button" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '" />' +
-          '</footer>';
+          }, this);
 
-        this.modalInit('Insert Table', modal, 500, callback);
+          var modal = String() +
+            '<section>' +
+              '<label>' + this.opts.curLang.rows + '</label>' +
+              '<input type="text" size="5" value="2" id="redactor_table_rows">' +
+              '<label>' + this.opts.curLang.columns + '</label>' +
+              '<input type="text" size="5" value="3" id="redactor_table_columns">' +
+            '</section>' +
+            '<footer>' +
+              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
+              '<input type="button" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '" />' +
+            '</footer>';
 
-      }, this));
-      this.buttonGet('table').addClass('redactor_btn_table');
+          // or call a modal with a code
+          this.modal.addTemplate('insert-table', modal);
+          this.modal.addCallback('insert-table', callback);
+          this.modal.load('insert-table', 'Insert Table', 500);
+          this.modal.show();
+
+        }, this));
+        this.button.get('table').addClass('redactor_btn_table');
+      }
     }
   };
 
