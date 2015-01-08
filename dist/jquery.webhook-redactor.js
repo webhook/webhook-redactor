@@ -92,13 +92,13 @@
         + '<textarea id="embed-code-textarea"></textarea>'
         + '</section>' +
         '<footer>' +
-          '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.redactor.opts.curLang.cancel + '" />' +
+          '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_embed_close_btn" value="' + this.redactor.opts.curLang.cancel + '" />' +
           '<input type="button" class="redactor_modal_btn" id="redactor_insert_embed_code_btn" value="' + this.redactor.opts.curLang.insert + '" />' +
         '</footer>';
     },
     init: function ()
     {
-      window.redactor = this.redactor;
+     // window.redactor = this.redactor;
       var button = this.redactor.button.add('embed', 'Embed');
 
 
@@ -120,6 +120,9 @@
           $('#embed-code-textarea').focus();
         }, 200);
 
+        $('#redactor_insert_embed_close_btn').on('click', $.proxy(function () {
+          this.redactor.modal.close();
+        }, this));
       }, this));
       this.redactor.modal.load('insert-embed', 'Insert Embed', 500);
       this.redactor.modal.show();
@@ -365,7 +368,7 @@
       $figure.find('.wy-figure-controls').appendTo(this.redactor.$box);
 
       // maintain undo buffer
-      this.redactor.buffer.set(this.redactor.$editor.html());
+      this.redactor.buffer.add(this.redactor.$editor.html());
 
       // only handle a few commands here, everything else should be taken care of from other plugins
       switch (command) {
@@ -542,6 +545,7 @@
 
         if (!this.isFullscreen)
         {
+          this.selection.save();
 
           if (this.fixedtoolbar) {
             this.fixedtoolbar.unfix();
@@ -579,14 +583,21 @@
 
           this.fullscreen.fullScreenResize();
           $(window).resize($.proxy(this.fullscreen.fullScreenResize, this));
+
+
+          this.oldScrollTop = $(document).scrollTop();
           $(document).scrollTop(0, 0);
 
           this.focus.setStart();
           this.observe.load();
 
+          this.selection.restore();
+
         }
         else
         {
+          this.selection.save();
+
           this.button.removeIcon('fullscreen', 'normalscreen');
           this.button.setInactive('fullscreen');
           this.isFullscreen = false;
@@ -626,15 +637,18 @@
           }
 
           if (!this.opts.iframe) {
-            this.$editor.css('height', height);
+        //    this.$editor.css('height', height);
           }
           else {
             this.$frame.css('height', height);
           }
 
-          this.$editor.css('height', height);
+          //this.$editor.css('height', height);
           this.focus.setStart();
           this.observe.load();
+          
+          $(document).scrollTop(this.oldScrollTop);
+          this.selection.restore();
         }
 
         $(window).trigger('scroll');
@@ -829,6 +843,8 @@
           changeSuffix(['small', 'large', 'right'], ['medium', 'left']);
           break;
       }
+
+     // this.redactor.caret.setEnd($figure.find('figcaption').first());
     }
   };
 
@@ -1164,8 +1180,9 @@
               this.button.setInactive('table');
             }, this));
 
-            $('.redactor_btn_modal_close').on('click', $.proxy(function () {
+            $('#redactor_insert_table_close_btn').on('click', $.proxy(function () {
               this.button.setInactive('table');
+              this.modal.close();
             }, this));
 
             setTimeout(function () {
@@ -1182,7 +1199,7 @@
               '<input type="text" size="5" value="3" id="redactor_table_columns">' +
             '</section>' +
             '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
+              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_table_close_btn" value="' + this.opts.curLang.cancel + '" />' +
               '<input type="button" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '" />' +
             '</footer>';
 
@@ -1190,6 +1207,8 @@
           this.modal.addTemplate('insert-table', modal);
           this.modal.addCallback('insert-table', callback);
           this.modal.load('insert-table', 'Insert Table', 500);
+
+            this.modal.createCancelButton();
           this.modal.show();
 
         }, this));
@@ -1296,6 +1315,10 @@
 
             }, this));
 
+            $('#redactor_insert_video_close_btn').on('click', $.proxy(function () {
+              this.modal.close();
+            }, this));
+
             setTimeout(function () {
               $('#redactor_insert_video_area').focus();
             }, 200);
@@ -1310,7 +1333,7 @@
               '</form>' +
             '</section>' +
             '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
+              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_video_close_btn" value="' + this.opts.curLang.cancel + '" />' +
               '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
             '</footer>';
 
@@ -1355,12 +1378,48 @@
     convertLinks: false,
     dragImageUpload: false,
     dragFileUpload: false,
+    formatting: [],
+    formattingAdd: [
+      {
+          tag: 'p',
+          title: 'Normal text'
+      },
+      {
+          tag: 'code',
+          title: 'Code'
+      },
+      {
+          tag: 'pre',
+          title: 'Code Block'
+      },
+      {
+          tag: 'h1',
+          title: 'Header 1'
+      },
+      {
+          tag: 'h2',
+          title: 'Header 2'
+      },
+      {
+          tag: 'h3',
+          title: 'Header 3'
+      },
+      {
+          tag: 'h4',
+          title: 'Header 4'
+      },
+      {
+          tag: 'h5',
+          title: 'Header 5'
+      },
+    ],
     deniedTags: ['html', 'head', 'body'],
     // Custom plugins.
     plugins: ['fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
     // Sync textarea with editor before submission.
     initCallback: function () {
       //this.clean.savePreCode = function(html) { return html; }
+      //this.modal.setDraggable = function() {};
 
       $.each(this.opts.buttons, $.proxy(function (index, button) {
         this.button.get(button).addClass('redactor_btn_' + button);

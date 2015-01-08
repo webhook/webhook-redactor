@@ -31,12 +31,48 @@
     convertLinks: false,
     dragImageUpload: false,
     dragFileUpload: false,
+    formatting: [],
+    formattingAdd: [
+      {
+          tag: 'p',
+          title: 'Normal text'
+      },
+      {
+          tag: 'code',
+          title: 'Code'
+      },
+      {
+          tag: 'pre',
+          title: 'Code Block'
+      },
+      {
+          tag: 'h1',
+          title: 'Header 1'
+      },
+      {
+          tag: 'h2',
+          title: 'Header 2'
+      },
+      {
+          tag: 'h3',
+          title: 'Header 3'
+      },
+      {
+          tag: 'h4',
+          title: 'Header 4'
+      },
+      {
+          tag: 'h5',
+          title: 'Header 5'
+      },
+    ],
     deniedTags: ['html', 'head', 'body'],
     // Custom plugins.
     plugins: ['fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
     // Sync textarea with editor before submission.
     initCallback: function () {
       //this.clean.savePreCode = function(html) { return html; }
+      //this.modal.setDraggable = function() {};
 
       $.each(this.opts.buttons, $.proxy(function (index, button) {
         this.button.get(button).addClass('redactor_btn_' + button);

@@ -102,6 +102,10 @@
 
             }, this));
 
+            $('#redactor_insert_video_close_btn').on('click', $.proxy(function () {
+              this.modal.close();
+            }, this));
+
             setTimeout(function () {
               $('#redactor_insert_video_area').focus();
             }, 200);
@@ -116,7 +120,7 @@
               '</form>' +
             '</section>' +
             '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
+              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_video_close_btn" value="' + this.opts.curLang.cancel + '" />' +
               '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
             '</footer>';
 

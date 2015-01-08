@@ -223,7 +223,7 @@
       $figure.find('.wy-figure-controls').appendTo(this.redactor.$box);
 
       // maintain undo buffer
-      this.redactor.buffer.set(this.redactor.$editor.html());
+      this.redactor.buffer.add(this.redactor.$editor.html());
 
       // only handle a few commands here, everything else should be taken care of from other plugins
       switch (command) {

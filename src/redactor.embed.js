@@ -25,13 +25,13 @@
         + '<textarea id="embed-code-textarea"></textarea>'
         + '</section>' +
         '<footer>' +
-          '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.redactor.opts.curLang.cancel + '" />' +
+          '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_embed_close_btn" value="' + this.redactor.opts.curLang.cancel + '" />' +
           '<input type="button" class="redactor_modal_btn" id="redactor_insert_embed_code_btn" value="' + this.redactor.opts.curLang.insert + '" />' +
         '</footer>';
     },
     init: function ()
     {
-      window.redactor = this.redactor;
+     // window.redactor = this.redactor;
       var button = this.redactor.button.add('embed', 'Embed');
 
 
@@ -53,6 +53,9 @@
           $('#embed-code-textarea').focus();
         }, 200);
 
+        $('#redactor_insert_embed_close_btn').on('click', $.proxy(function () {
+          this.redactor.modal.close();
+        }, this));
       }, this));
       this.redactor.modal.load('insert-embed', 'Insert Embed', 500);
       this.redactor.modal.show();

@@ -194,8 +194,9 @@
               this.button.setInactive('table');
             }, this));
 
-            $('.redactor_btn_modal_close').on('click', $.proxy(function () {
+            $('#redactor_insert_table_close_btn').on('click', $.proxy(function () {
               this.button.setInactive('table');
+              this.modal.close();
             }, this));
 
             setTimeout(function () {
@@ -212,7 +213,7 @@
               '<input type="text" size="5" value="3" id="redactor_table_columns">' +
             '</section>' +
             '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.opts.curLang.cancel + '" />' +
+              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_table_close_btn" value="' + this.opts.curLang.cancel + '" />' +
               '<input type="button" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '" />' +
             '</footer>';
 
@@ -220,6 +221,8 @@
           this.modal.addTemplate('insert-table', modal);
           this.modal.addCallback('insert-table', callback);
           this.modal.load('insert-table', 'Insert Table', 500);
+
+            this.modal.createCancelButton();
           this.modal.show();
 
         }, this));

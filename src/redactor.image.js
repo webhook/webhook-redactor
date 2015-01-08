@@ -127,6 +127,8 @@
           changeSuffix(['small', 'large', 'right'], ['medium', 'left']);
           break;
       }
+
+     // this.redactor.caret.setEnd($figure.find('figcaption').first());
     }
   };
 

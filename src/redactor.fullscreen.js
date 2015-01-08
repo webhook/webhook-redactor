@@ -33,6 +33,7 @@
 
         if (!this.isFullscreen)
         {
+          this.selection.save();
 
           if (this.fixedtoolbar) {
             this.fixedtoolbar.unfix();
@@ -70,14 +71,21 @@
 
           this.fullscreen.fullScreenResize();
           $(window).resize($.proxy(this.fullscreen.fullScreenResize, this));
+
+
+          this.oldScrollTop = $(document).scrollTop();
           $(document).scrollTop(0, 0);
 
           this.focus.setStart();
           this.observe.load();
 
+          this.selection.restore();
+
         }
         else
         {
+          this.selection.save();
+
           this.button.removeIcon('fullscreen', 'normalscreen');
           this.button.setInactive('fullscreen');
           this.isFullscreen = false;
@@ -117,15 +125,18 @@
           }
 
           if (!this.opts.iframe) {
-            this.$editor.css('height', height);
+        //    this.$editor.css('height', height);
           }
           else {
             this.$frame.css('height', height);
           }
 
-          this.$editor.css('height', height);
+          //this.$editor.css('height', height);
           this.focus.setStart();
           this.observe.load();
+          
+          $(document).scrollTop(this.oldScrollTop);
+          this.selection.restore();
         }
 
         $(window).trigger('scroll');
