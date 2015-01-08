@@ -114,18 +114,14 @@
       this.redactor.modal.addCallback('insert-embed', $.proxy(function() {
         this.redactor.selection.save();
 
+        $('#redactor_insert_embed_code_btn').click($.proxy(this.insert, this));
+
         setTimeout(function () {
           $('#embed-code-textarea').focus();
         }, 200);
 
       }, this));
       this.redactor.modal.load('insert-embed', 'Insert Embed', 500);
-
-      this.redactor.modal.createCancelButton();
-
-      var button = this.redactor.modal.createActionButton('Insert');
-      button.on('click', $.proxy(this.insert, this));
-
       this.redactor.modal.show();
     },
     insert: function()
