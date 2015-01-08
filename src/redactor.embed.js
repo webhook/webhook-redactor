@@ -32,12 +32,12 @@
     init: function ()
     {
      // window.redactor = this.redactor;
-      var button = this.redactor.button.add('embed', 'Embed');
+      var button = this.redactor.button.addBefore('html', 'embed', 'Insert Embed Code');
 
 
       var $button = this.redactor.button.get('embed');
       $button.removeClass('redactor-btn-image').addClass('fa-redactor-btn');
-      $button.html('<i class="icon icon-cog"></i>');
+      $button.html('<i class="icon icon-share-alt"></i>');
 
       this.redactor.button.addCallback(button, $.proxy(this.show, this));
     },
