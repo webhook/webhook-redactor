@@ -22,7 +22,7 @@
         return String()
         + '<section id="redactor-modal-embed-code">'
         + '<label>Enter Embed code:</label>'
-        + '<textarea id="embed-code-textarea" rows="6"></textarea>'
+        + '<textarea id="embed-code-textarea"></textarea>'
         + '</section>' +
         '<footer>' +
           '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.redactor.opts.curLang.cancel + '" />' +
@@ -33,6 +33,12 @@
     {
       window.redactor = this.redactor;
       var button = this.redactor.button.add('embed', 'Embed');
+
+
+      var $button = this.redactor.button.get('embed');
+      $button.removeClass('redactor-btn-image').addClass('fa-redactor-btn');
+      $button.html('<i class="icon icon-cog"></i>');
+
       this.redactor.button.addCallback(button, $.proxy(this.show, this));
     },
     show: function()

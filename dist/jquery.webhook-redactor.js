@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2015-01-07
+/*! webhook-redactor - v0.0.1 - 2015-01-08
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2015 Mike Horn; Licensed MIT */
 (function ($) {
@@ -89,7 +89,7 @@
         return String()
         + '<section id="redactor-modal-embed-code">'
         + '<label>Enter Embed code:</label>'
-        + '<textarea id="embed-code-textarea" rows="6"></textarea>'
+        + '<textarea id="embed-code-textarea"></textarea>'
         + '</section>' +
         '<footer>' +
           '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" value="' + this.redactor.opts.curLang.cancel + '" />' +
@@ -100,6 +100,12 @@
     {
       window.redactor = this.redactor;
       var button = this.redactor.button.add('embed', 'Embed');
+
+
+      var $button = this.redactor.button.get('embed');
+      $button.removeClass('redactor-btn-image').addClass('fa-redactor-btn');
+      $button.html('<i class="icon icon-cog"></i>');
+
       this.redactor.button.addCallback(button, $.proxy(this.show, this));
     },
     show: function()
@@ -1354,6 +1360,8 @@
     plugins: ['fullscreen', 'fixedtoolbar', 'autoembedly', 'figure', 'video', 'webhookImage', 'table', 'quote', 'embed'],
     // Sync textarea with editor before submission.
     initCallback: function () {
+      //this.clean.savePreCode = function(html) { return html; }
+
       $.each(this.opts.buttons, $.proxy(function (index, button) {
         this.button.get(button).addClass('redactor_btn_' + button);
       }, this));
