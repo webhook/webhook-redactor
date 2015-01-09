@@ -90,7 +90,7 @@
       var redactor = this;
       this.$editor.on('paste', function () {
         setTimeout(function () {
-          redactor.$editor.find('[style]').removeAttr('style');
+     //     redactor.$editor.find('[style]').removeAttr('style');
           redactor.$editor.find('[dir]').removeAttr('dir');
         }, 5);
       });

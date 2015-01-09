@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2015-01-08
+/*! webhook-redactor - v0.0.1 - 2015-01-09
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2015 Mike Horn; Licensed MIT */
 (function ($) {
@@ -1437,7 +1437,7 @@
       var redactor = this;
       this.$editor.on('paste', function () {
         setTimeout(function () {
-          redactor.$editor.find('[style]').removeAttr('style');
+     //     redactor.$editor.find('[style]').removeAttr('style');
           redactor.$editor.find('[dir]').removeAttr('dir');
         }, 5);
       });
