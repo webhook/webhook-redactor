@@ -64,7 +64,7 @@
         position: 'fixed',
         left    : this.redactor.$box.offset().left + border_left,
         width   : this.redactor.$box.width(),
-        zIndex  : 1
+        zIndex  : 300
       });
 
       this.redactor.$editor.css('padding-top', this.redactor.$toolbar.height() + 10);
