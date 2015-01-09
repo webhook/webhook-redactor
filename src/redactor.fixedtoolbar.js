@@ -12,7 +12,7 @@
   // namespacing
   var Fixedtoolbar = function (redactor) {
     this.redactor = redactor;
-    this.$window = $(redactor.window);
+    this.$window = $(window);
     this.$window.on('scroll', $.proxy(this.checkOffset, this));
     redactor.$box.on('scroll', $.proxy(this.checkOffset, this));
 
