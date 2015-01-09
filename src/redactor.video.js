@@ -84,28 +84,7 @@
 
             // save cursor position
             this.selection.save();
-
-            $('#redactor_insert_video_btn').click($.proxy(function () {
-
-              var data = $.trim($('#redactor_insert_video_area').val());
-              if (urlRegex.test(data)) {
-
-                $.embedly.oembed(data).done($.proxy(function (results) {
-                  $.each(results, $.proxy(function (index, result) {
-                    insertVideo.call(this, result.html);
-                  }, this));
-                }, this));
-
-              } else {
-                insertVideo.call(this, data);
-              }
-
-            }, this));
-
-            $('#redactor_insert_video_close_btn').on('click', $.proxy(function () {
-              this.modal.close();
-            }, this));
-
+            
             setTimeout(function () {
               $('#redactor_insert_video_area').focus();
             }, 200);
@@ -118,16 +97,33 @@
                 '<label>' + this.opts.curLang.video_html_code + '</label>' +
                 '<textarea id="redactor_insert_video_area" style="width: 99%; height: 160px;"></textarea>' +
               '</form>' +
-            '</section>' +
-            '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_video_close_btn" value="' + this.opts.curLang.cancel + '" />' +
-              '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
-            '</footer>';
+            '</section>';
 
           // or call a modal with a code
           this.modal.addTemplate('insert-video', modal);
           this.modal.addCallback('insert-video', callback);
           this.modal.load('insert-video', 'Insert Video', 500);
+
+
+          this.modal.createCancelButton();
+          var button = this.modal.createActionButton('Insert');
+          button.on('click', $.proxy(function () {
+
+            var data = $.trim($('#redactor_insert_video_area').val());
+            if (urlRegex.test(data)) {
+
+              $.embedly.oembed(data).done($.proxy(function (results) {
+                $.each(results, $.proxy(function (index, result) {
+                  insertVideo.call(this, result.html);
+                }, this));
+              }, this));
+
+            } else {
+              insertVideo.call(this, data);
+            }
+
+          }, this));
+
           this.modal.show();
 
         }, this));

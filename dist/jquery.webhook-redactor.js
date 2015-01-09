@@ -90,11 +90,7 @@
         + '<section id="redactor-modal-embed-code">'
         + '<label>Enter Embed code:</label>'
         + '<textarea id="embed-code-textarea"></textarea>'
-        + '</section>' +
-        '<footer>' +
-          '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_embed_close_btn" value="' + this.redactor.opts.curLang.cancel + '" />' +
-          '<input type="button" class="redactor_modal_btn" id="redactor_insert_embed_code_btn" value="' + this.redactor.opts.curLang.insert + '" />' +
-        '</footer>';
+        + '</section>';
     },
     init: function ()
     {
@@ -113,18 +109,16 @@
       this.redactor.modal.addTemplate('insert-embed', this.getTemplate());
       this.redactor.modal.addCallback('insert-embed', $.proxy(function() {
         this.redactor.selection.save();
-
-        $('#redactor_insert_embed_code_btn').click($.proxy(this.insert, this));
-
         setTimeout(function () {
           $('#embed-code-textarea').focus();
         }, 200);
-
-        $('#redactor_insert_embed_close_btn').on('click', $.proxy(function () {
-          this.redactor.modal.close();
-        }, this));
       }, this));
       this.redactor.modal.load('insert-embed', 'Insert Embed', 500);
+
+      this.redactor.modal.createCancelButton();
+      var button = this.redactor.modal.createActionButton('Insert');
+      button.on('click', $.proxy(this.insert, this));
+
       this.redactor.modal.show();
     },
     insert: function()
@@ -1175,14 +1169,8 @@
 
           var callback = $.proxy(function () {
 
-            $('#redactor_insert_table_btn').on('click', $.proxy(function () {
-              this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
+            $('.redactor_insert_table_close_btn').on('click', $.proxy(function () {
               this.button.setInactive('table');
-            }, this));
-
-            $('#redactor_insert_table_close_btn').on('click', $.proxy(function () {
-              this.button.setInactive('table');
-              this.modal.close();
             }, this));
 
             setTimeout(function () {
@@ -1197,18 +1185,21 @@
               '<input type="text" size="5" value="2" id="redactor_table_rows">' +
               '<label>' + this.opts.curLang.columns + '</label>' +
               '<input type="text" size="5" value="3" id="redactor_table_columns">' +
-            '</section>' +
-            '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_table_close_btn" value="' + this.opts.curLang.cancel + '" />' +
-              '<input type="button" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '" />' +
-            '</footer>';
+            '</section>';
 
           // or call a modal with a code
           this.modal.addTemplate('insert-table', modal);
           this.modal.addCallback('insert-table', callback);
+
           this.modal.load('insert-table', 'Insert Table', 500);
 
-            this.modal.createCancelButton();
+          this.modal.createCancelButton();
+          var button = this.modal.createActionButton('Insert');
+          button.on('click', $.proxy(function () {
+              this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
+              this.button.setInactive('table');
+          }, this));
+
           this.modal.show();
 
         }, this));
@@ -1297,28 +1288,7 @@
 
             // save cursor position
             this.selection.save();
-
-            $('#redactor_insert_video_btn').click($.proxy(function () {
-
-              var data = $.trim($('#redactor_insert_video_area').val());
-              if (urlRegex.test(data)) {
-
-                $.embedly.oembed(data).done($.proxy(function (results) {
-                  $.each(results, $.proxy(function (index, result) {
-                    insertVideo.call(this, result.html);
-                  }, this));
-                }, this));
-
-              } else {
-                insertVideo.call(this, data);
-              }
-
-            }, this));
-
-            $('#redactor_insert_video_close_btn').on('click', $.proxy(function () {
-              this.modal.close();
-            }, this));
-
+            
             setTimeout(function () {
               $('#redactor_insert_video_area').focus();
             }, 200);
@@ -1331,16 +1301,33 @@
                 '<label>' + this.opts.curLang.video_html_code + '</label>' +
                 '<textarea id="redactor_insert_video_area" style="width: 99%; height: 160px;"></textarea>' +
               '</form>' +
-            '</section>' +
-            '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_video_close_btn" value="' + this.opts.curLang.cancel + '" />' +
-              '<input type="button" class="redactor_modal_btn" id="redactor_insert_video_btn" value="' + this.opts.curLang.insert + '" />' +
-            '</footer>';
+            '</section>';
 
           // or call a modal with a code
           this.modal.addTemplate('insert-video', modal);
           this.modal.addCallback('insert-video', callback);
           this.modal.load('insert-video', 'Insert Video', 500);
+
+
+          this.modal.createCancelButton();
+          var button = this.modal.createActionButton('Insert');
+          button.on('click', $.proxy(function () {
+
+            var data = $.trim($('#redactor_insert_video_area').val());
+            if (urlRegex.test(data)) {
+
+              $.embedly.oembed(data).done($.proxy(function (results) {
+                $.each(results, $.proxy(function (index, result) {
+                  insertVideo.call(this, result.html);
+                }, this));
+              }, this));
+
+            } else {
+              insertVideo.call(this, data);
+            }
+
+          }, this));
+
           this.modal.show();
 
         }, this));
@@ -1386,14 +1373,6 @@
           title: 'Normal text'
       },
       {
-          tag: 'code',
-          title: 'Code'
-      },
-      {
-          tag: 'pre',
-          title: 'Code Block'
-      },
-      {
           tag: 'h1',
           title: 'Header 1'
       },
@@ -1413,6 +1392,14 @@
           tag: 'h5',
           title: 'Header 5'
       },
+      {
+          tag: 'code',
+          title: 'Inline Code'
+      },
+      {
+          tag: 'pre',
+          title: 'Code Block'
+      },
     ],
     deniedTags: ['html', 'head', 'body'],
     // Custom plugins.
@@ -1421,7 +1408,7 @@
     // Sync textarea with editor before submission.
     initCallback: function () {
       //this.clean.savePreCode = function(html) { return html; }
-      //this.modal.setDraggable = function() {};
+      this.modal.setDraggable = function() {};
 
       $.each(this.opts.buttons, $.proxy(function (index, button) {
         this.button.get(button).addClass('redactor_btn_' + button);

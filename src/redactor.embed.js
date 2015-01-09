@@ -23,11 +23,7 @@
         + '<section id="redactor-modal-embed-code">'
         + '<label>Enter Embed code:</label>'
         + '<textarea id="embed-code-textarea"></textarea>'
-        + '</section>' +
-        '<footer>' +
-          '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_embed_close_btn" value="' + this.redactor.opts.curLang.cancel + '" />' +
-          '<input type="button" class="redactor_modal_btn" id="redactor_insert_embed_code_btn" value="' + this.redactor.opts.curLang.insert + '" />' +
-        '</footer>';
+        + '</section>';
     },
     init: function ()
     {
@@ -46,18 +42,16 @@
       this.redactor.modal.addTemplate('insert-embed', this.getTemplate());
       this.redactor.modal.addCallback('insert-embed', $.proxy(function() {
         this.redactor.selection.save();
-
-        $('#redactor_insert_embed_code_btn').click($.proxy(this.insert, this));
-
         setTimeout(function () {
           $('#embed-code-textarea').focus();
         }, 200);
-
-        $('#redactor_insert_embed_close_btn').on('click', $.proxy(function () {
-          this.redactor.modal.close();
-        }, this));
       }, this));
       this.redactor.modal.load('insert-embed', 'Insert Embed', 500);
+
+      this.redactor.modal.createCancelButton();
+      var button = this.redactor.modal.createActionButton('Insert');
+      button.on('click', $.proxy(this.insert, this));
+
       this.redactor.modal.show();
     },
     insert: function()

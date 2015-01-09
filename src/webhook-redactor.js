@@ -39,14 +39,6 @@
           title: 'Normal text'
       },
       {
-          tag: 'code',
-          title: 'Code'
-      },
-      {
-          tag: 'pre',
-          title: 'Code Block'
-      },
-      {
           tag: 'h1',
           title: 'Header 1'
       },
@@ -66,6 +58,14 @@
           tag: 'h5',
           title: 'Header 5'
       },
+      {
+          tag: 'code',
+          title: 'Inline Code'
+      },
+      {
+          tag: 'pre',
+          title: 'Code Block'
+      },
     ],
     deniedTags: ['html', 'head', 'body'],
     // Custom plugins.
@@ -74,7 +74,7 @@
     // Sync textarea with editor before submission.
     initCallback: function () {
       //this.clean.savePreCode = function(html) { return html; }
-      //this.modal.setDraggable = function() {};
+      this.modal.setDraggable = function() {};
 
       $.each(this.opts.buttons, $.proxy(function (index, button) {
         this.button.get(button).addClass('redactor_btn_' + button);

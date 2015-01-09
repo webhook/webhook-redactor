@@ -189,14 +189,8 @@
 
           var callback = $.proxy(function () {
 
-            $('#redactor_insert_table_btn').on('click', $.proxy(function () {
-              this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
+            $('.redactor_insert_table_close_btn').on('click', $.proxy(function () {
               this.button.setInactive('table');
-            }, this));
-
-            $('#redactor_insert_table_close_btn').on('click', $.proxy(function () {
-              this.button.setInactive('table');
-              this.modal.close();
             }, this));
 
             setTimeout(function () {
@@ -211,18 +205,21 @@
               '<input type="text" size="5" value="2" id="redactor_table_rows">' +
               '<label>' + this.opts.curLang.columns + '</label>' +
               '<input type="text" size="5" value="3" id="redactor_table_columns">' +
-            '</section>' +
-            '<footer>' +
-              '<input type="button" class="redactor_modal_btn redactor_btn_modal_close" id="redactor_insert_table_close_btn" value="' + this.opts.curLang.cancel + '" />' +
-              '<input type="button" class="redactor_modal_btn" id="redactor_insert_table_btn" value="' + this.opts.curLang.insert + '" />' +
-            '</footer>';
+            '</section>';
 
           // or call a modal with a code
           this.modal.addTemplate('insert-table', modal);
           this.modal.addCallback('insert-table', callback);
+
           this.modal.load('insert-table', 'Insert Table', 500);
 
-            this.modal.createCancelButton();
+          this.modal.createCancelButton();
+          var button = this.modal.createActionButton('Insert');
+          button.on('click', $.proxy(function () {
+              this.table.insertTable($('#redactor_table_rows').val(), $('#redactor_table_columns').val());
+              this.button.setInactive('table');
+          }, this));
+
           this.modal.show();
 
         }, this));
