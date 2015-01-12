@@ -139,7 +139,7 @@
       init: function () {
         this.webhookImage = new Image(this);
       }
-    }
+    };
   };
 
 }(jQuery));

@@ -133,7 +133,7 @@
         this.button.addCallback(button, $.proxy(this.quote.toggle, this.quote));
         this.button.get('quote').addClass('redactor_btn_quote');
       }
-    }
+    };
   };
 
 }(jQuery));

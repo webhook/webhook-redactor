@@ -9,7 +9,9 @@
 (function ($) {
   'use strict';
 
-  if (!window.RedactorPlugins) window.RedactorPlugins = {};
+  if (!window.RedactorPlugins) {
+    window.RedactorPlugins = {};
+  }
       
   var WebhookEmbed = function (redactor) {
     this.redactor = redactor;
@@ -19,11 +21,11 @@
   WebhookEmbed.prototype = {
     getTemplate: function()
     {
-        return String()
-        + '<section id="redactor-modal-embed-code">'
-        + '<label>Enter Embed code:</label>'
-        + '<textarea id="embed-code-textarea"></textarea>'
-        + '</section>';
+        return String() +
+         '<section id="redactor-modal-embed-code">' +
+         '<label>Enter Embed code:</label>' +
+         '<textarea id="embed-code-textarea"></textarea>' +
+         '</section>';
     },
     init: function ()
     {

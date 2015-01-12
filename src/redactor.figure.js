@@ -76,8 +76,9 @@
       var $figure = $(event.currentTarget),
           type = $figure.data('type') || 'default';
 
-      if(type === 'image') 
+      if(type === 'image') {
         type = 'webhookImage';
+      }
 
       var $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
 
@@ -106,8 +107,9 @@
             $figure = $target.closest('figure'),
             type = $figure.data('type');
 
-        if(type === 'image')
+        if(type === 'image') {
           type = 'webhookImage';
+        }
         
         var plugin  = this.redactor[type];
 
@@ -271,7 +273,7 @@
       init: function () {
         this.figure = new Figure(this);
       }
-    }
+    };
   };
 
 }(jQuery));

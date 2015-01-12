@@ -205,7 +205,7 @@
 
         // this.$editor.height(height);
       }
-    }
+    };
   };
 
 }(jQuery));

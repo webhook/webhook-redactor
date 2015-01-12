@@ -55,7 +55,6 @@
           // maintain undo buffer
           this.buffer.set();
 
-          console.log(data);
           data = '<figure data-type="video"><p>' + data + '</p><figcaption></figcaption></figure>';
 
           this.selection.restore();
@@ -131,7 +130,7 @@
         this.button.get('video').addClass('redactor_btn_video');
 
       }
-    }
+    };
   };
 
 }(jQuery));

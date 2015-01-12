@@ -225,7 +225,7 @@
         }, this));
         this.button.get('table').addClass('redactor_btn_table');
       }
-    }
+    };
   };
 
 }(jQuery));

@@ -98,7 +98,7 @@
       init: function () {
         this.fixedtoolbar = new Fixedtoolbar(this);
       }
-    }
+    };
   };
 
 }(jQuery));

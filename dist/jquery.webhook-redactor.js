@@ -1,4 +1,4 @@
-/*! webhook-redactor - v0.0.1 - 2015-01-09
+/*! webhook-redactor - v0.0.1 - 2015-01-12
 * https://github.com/webhook/webhook-redactor
 * Copyright (c) 2015 Mike Horn; Licensed MIT */
 (function ($) {
@@ -44,7 +44,6 @@
           $.embedly.oembed(url).done(function (results) {
             $.each(results, function () {
               if (this.html) {
-                console.log('here here');
                 shiv.replaceWith('<figure data-type="video">' + this.html + '<figcaption></figcaption></figure>');
               } else {
                 shiv.replaceWith($('<p>').text(url));
@@ -68,7 +67,7 @@
       init: function () {
         this.autoembedly = new AutoEmbedly(this);
       }
-    }
+    };
   };
 
 }(jQuery));
@@ -76,7 +75,9 @@
 (function ($) {
   'use strict';
 
-  if (!window.RedactorPlugins) window.RedactorPlugins = {};
+  if (!window.RedactorPlugins) {
+    window.RedactorPlugins = {};
+  }
       
   var WebhookEmbed = function (redactor) {
     this.redactor = redactor;
@@ -86,11 +87,11 @@
   WebhookEmbed.prototype = {
     getTemplate: function()
     {
-        return String()
-        + '<section id="redactor-modal-embed-code">'
-        + '<label>Enter Embed code:</label>'
-        + '<textarea id="embed-code-textarea"></textarea>'
-        + '</section>';
+        return String() +
+         '<section id="redactor-modal-embed-code">' +
+         '<label>Enter Embed code:</label>' +
+         '<textarea id="embed-code-textarea"></textarea>' +
+         '</section>';
     },
     init: function ()
     {
@@ -215,8 +216,9 @@
       var $figure = $(event.currentTarget),
           type = $figure.data('type') || 'default';
 
-      if(type === 'image') 
+      if(type === 'image') {
         type = 'webhookImage';
+      }
 
       var $toolbar = this.getToolbar(type).data('figure', $figure).prependTo($figure);
 
@@ -245,8 +247,9 @@
             $figure = $target.closest('figure'),
             type = $figure.data('type');
 
-        if(type === 'image')
+        if(type === 'image') {
           type = 'webhookImage';
+        }
         
         var plugin  = this.redactor[type];
 
@@ -410,7 +413,7 @@
       init: function () {
         this.figure = new Figure(this);
       }
-    }
+    };
   };
 
 }(jQuery));
@@ -507,7 +510,7 @@
       init: function () {
         this.fixedtoolbar = new Fixedtoolbar(this);
       }
-    }
+    };
   };
 
 }(jQuery));
@@ -711,7 +714,7 @@
 
         // this.$editor.height(height);
       }
-    }
+    };
   };
 
 }(jQuery));
@@ -849,7 +852,7 @@
       init: function () {
         this.webhookImage = new Image(this);
       }
-    }
+    };
   };
 
 }(jQuery));
@@ -981,7 +984,7 @@
         this.button.addCallback(button, $.proxy(this.quote.toggle, this.quote));
         this.button.get('quote').addClass('redactor_btn_quote');
       }
-    }
+    };
   };
 
 }(jQuery));
@@ -1205,7 +1208,7 @@
         }, this));
         this.button.get('table').addClass('redactor_btn_table');
       }
-    }
+    };
   };
 
 }(jQuery));
@@ -1259,7 +1262,6 @@
           // maintain undo buffer
           this.buffer.set();
 
-          console.log(data);
           data = '<figure data-type="video"><p>' + data + '</p><figcaption></figcaption></figure>';
 
           this.selection.restore();
@@ -1335,7 +1337,7 @@
         this.button.get('video').addClass('redactor_btn_video');
 
       }
-    }
+    };
   };
 
 }(jQuery));

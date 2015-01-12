@@ -49,7 +49,6 @@
           $.embedly.oembed(url).done(function (results) {
             $.each(results, function () {
               if (this.html) {
-                console.log('here here');
                 shiv.replaceWith('<figure data-type="video">' + this.html + '<figcaption></figcaption></figure>');
               } else {
                 shiv.replaceWith($('<p>').text(url));
@@ -73,7 +72,7 @@
       init: function () {
         this.autoembedly = new AutoEmbedly(this);
       }
-    }
+    };
   };
 
 }(jQuery));
