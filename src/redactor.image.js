@@ -136,7 +136,7 @@
           break;
 
         case 'resize_small':
-          changeSuffix(['small', 'large', 'full', 'right'], ['medium', 'left']);
+          changeSuffix(['small', 'medium', 'full', 'right'], ['large', 'left']);
           break;
       }
 

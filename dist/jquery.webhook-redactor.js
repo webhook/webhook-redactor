@@ -1,6 +1,6 @@
-/*! webhook-redactor - v0.0.1 - 2015-01-12
+/*! webhook-redactor - v0.0.1 - 2016-03-29
 * https://github.com/webhook/webhook-redactor
-* Copyright (c) 2015 Mike Horn; Licensed MIT */
+* Copyright (c) 2016 Mike Horn; Licensed MIT */
 (function ($) {
   'use strict';
 
@@ -734,10 +734,11 @@
       right       : { classSuffix: 'arrow-right' },
       small       : { classSuffix: 'small', text: 'S' },
       medium      : { classSuffix: 'medium', text: 'M' },
+      large       : { classSuffix: 'large', text: 'L' },
       resize_full : { classSuffix: 'resize-full' },
       resize_small: { classSuffix: 'resize-small' }
     },
-    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'resize_full', 'resize_small', 'remove'],
+    controlGroup: ['left', 'up', 'down', 'right', '|', 'small', 'medium', 'large', 'resize_full', 'resize_small', 'remove'],
     init: function () {
       this.redactor.$editor.on('focus', $.proxy(this.addCaptions, this));
    //   this.addCaptions();
@@ -771,6 +772,7 @@
       if ($figure.hasClass('wy-figure-small')) {
         $toolbar.find('.wy-figure-controls-small').show().addClass('on');
         $toolbar.find('.wy-figure-controls-medium').show();
+        $toolbar.find('.wy-figure-controls-large').show();
         $toolbar.find('.wy-figure-controls-resize-full').show();
         $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
@@ -778,6 +780,15 @@
       else if ($figure.hasClass('wy-figure-medium')) {
         $toolbar.find('.wy-figure-controls-small').show();
         $toolbar.find('.wy-figure-controls-medium').show().addClass('on');
+        $toolbar.find('.wy-figure-controls-large').show();
+        $toolbar.find('.wy-figure-controls-resize-full').show();
+        $toolbar.find('.wy-figure-controls-resize-small').hide();
+      }
+
+      else if ($figure.hasClass('wy-figure-large')) {
+        $toolbar.find('.wy-figure-controls-small').show();
+        $toolbar.find('.wy-figure-controls-medium').show();
+        $toolbar.find('.wy-figure-controls-large').show().addClass('on');
         $toolbar.find('.wy-figure-controls-resize-full').show();
         $toolbar.find('.wy-figure-controls-resize-small').hide();
       }
@@ -825,7 +836,8 @@
 
         case 'small':
         case 'medium':
-          changeSuffix(['small', 'medium', 'large'], [command]);
+        case 'large':
+          changeSuffix(['small', 'medium', 'large', 'full'], [command]);
           if (!$figure.hasClass('wy-figure-left') && !$figure.hasClass('wy-figure-right')) {
             $figure.addClass('wy-figure-left');
             $figure.trigger('left');
@@ -833,11 +845,11 @@
           break;
 
         case 'resize_full':
-          changeSuffix(['small', 'medium', 'left', 'right'], ['large']);
+          changeSuffix(['small', 'medium', 'large', 'left', 'right'], ['full']);
           break;
 
         case 'resize_small':
-          changeSuffix(['small', 'large', 'right'], ['medium', 'left']);
+          changeSuffix(['small', 'medium', 'full', 'right'], ['large', 'left']);
           break;
       }
 
